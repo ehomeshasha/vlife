@@ -1,0 +1,42 @@
+@CHARSET "UTF-8";
+.z{float:left;}.y{float:right;}
+.line-n{height:38px;line-height:38px;}
+.datetext{width:80px;}
+.mrm{margin-right:10px;}
+.mrn{margin-right:5px;}
+.mrw{margin-right:20px;}
+.mbm{margin-bottom:10px;}
+.mbn{margin-bottom:5px;}
+.mbw{margin-bottom:20px;}
+.mtm{margin-top:10px;}
+.mtn{margin-top:5px;}
+.mtw{margin-top:20px;}
+.ptn{padding-top:5px;}
+.ptm{padding-top:10px;}
+.ptw{padding-top:20px;}
+.pbn{padding-bottom:5px;}
+.pbm{padding-bottom:10px;}
+.pbw{padding-bottom:20px;}
+.post_info span{margin-right:15px;}
+.remove_opt{height:31px;line-height:31px;}
+.table-noline {margin-bottom:0;}
+.table-noline th, .table-noline td{border-top:0;}
+.divide-line {height: 1px;margin:20px 1px 15px 1px;overflow: hidden;background-color: #e5e5e5;border-bottom: 1px solid #fff;}
+.memberlist .checkbox.inline+.checkbox.inline {margin-left:0;}
+.memberlist .checkbox.inline {margin-right:10px;}
+.businesslog_area p {min-height:110px;}
+.index_tablerow {min-height:20px;}
+.bref_title {line-height:30px;}
+.iframe-modal{
+	width: 94%;
+    margin-left: -47%; /* - width/2 */
+    height:87%;
+    overflow:auto;
+    margin-top: -13%;
+}
+.iframe-modal .modal-body {max-height:2000px;height:92%;}
+.bg-green {background:#dff0d8;}
+.bg-grey {background:#f5f5f5;}
+input[type="checkbox"].input-checkbox-table {margin:-3px 0 0 0;}
+/*.table {word-break:break-all;word-wrap:break-word;}*/
+.breadcrumb .label{font-size:100%;padding:.1em .3em;}
