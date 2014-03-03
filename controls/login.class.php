@@ -9,9 +9,17 @@ class login_controller {
 		$this->users = new common('users');
 	}
 	public function index_action() {
+		global $_G;
+		$head_text = lang('Login Form');
+		$breadcrumb = array(
+			$_G['BREAD_HOME'],
+			array('text' => $head_text),
+		);
+		$csrf = $GLOBALS['session']->get_csrf();
 		include template('login');
 	}
 	public function login_action() {
+		$GLOBALS['session']->csrfguard_start();
 		$username = getgpc('username');
 		$password = getgpc('password');
 		$user = $this->users->GetOne(" AND username='$username'");

@@ -9,7 +9,7 @@ class upload {
 		
 		global $_G;
 		$curdate = date("Y-m-d", $_G['timestamp']);
-		print_r($_FILES['file_upload']);
+		//print_r($_FILES['file_upload']);
 		$filepath = "";
 		$uploadDir = ROOT_PATH.UPLOAD_DIR.$_G['username']."/";
 		$filesname = $_FILES['file_upload']['name'];

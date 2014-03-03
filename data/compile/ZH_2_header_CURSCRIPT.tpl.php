@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>家长100 OA系统</title>
+<title>Vlife system</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="views/default/css/bootstrap.min.css" type="text/css" rel="stylesheet" media="screen">
 <link href="views/default/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet" media="screen">
@@ -34,7 +34,7 @@ $(".clear_session").trigger('click');
 <div class="row-fluid">
 <div class="span12">
 <div class="navbar">
-<div class="navbar-inner"><a class="brand" href="index.php">家长100 OA系统</a>
+<div class="navbar-inner"><a class="brand" href="index.php">Vlife</a>
 <? if($_G['uid']) { ?>
 <ul class="nav jznav">
 <li <? if($_G['active_nav'] == 'index') { ?>class="active"<? } ?>>

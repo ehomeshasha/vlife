@@ -3,7 +3,7 @@ if(!defined('IN_SYSTEM')) {
 	exit('Access Denied');
 }
 
-class superadmin_controller {
+class superadmin_user_controller {
 
 	public function __construct() {
 		global $_G;
@@ -26,11 +26,11 @@ class superadmin_controller {
 		global $_G;
 		
 		$breadcrumb = array(
-			$_G['BREAD_HOME'],
+			$_G['SUPER_BREAD_HOME'],
 			array('text' => lang('User Management')),
 			array(
 				'text' => '+', 
-				'href' => 'index.php?home=superadmin&act=post',
+				'href' => 'index.php?home='.$_G['controller'].'&act=post',
 				'is_label' => 1, 
 				'tooltip' => lang('Create new User'),
 				'label_type' => 'default',
@@ -61,7 +61,7 @@ class superadmin_controller {
 		}
 		$user_list = $GLOBALS['db']->fetch_all("SELECT * FROM ".tname('users')." WHERE 1 AND userlevel='$userlevel' ORDER BY dateline DESC $limit");
 		
-		include template('admin_user');
+		include template('superadmin_user');
 	}
 	
 	public function post_action() {
@@ -82,13 +82,13 @@ class superadmin_controller {
 			}
 			
 			$breadcrumb = array(
-				$_G['BREAD_HOME'],
-				array('text' => lang('User Management'), 'href' => 'index.php?home=superadmin'),
+				$_G['SUPER_BREAD_HOME'],
+				array('text' => lang('User Management'), 'href' => 'index.php?home='.$_G['controller']),
 				array('text' => $head_text),
 			);
 			
 			
-			include template('user_post');
+			include template('superadmin_user_post');
 		} else {
 			$GLOBALS['session']->csrfguard_start();
 			$username = getgpc('username');
@@ -96,12 +96,12 @@ class superadmin_controller {
 			$password = getgpc('password');
 			if($username == "" || $password == "") {
 				$_SESSION['message'] = array('code' => '-1', 'content' => array(lang("Please input username or password")));
-				header('Location: index.php?home=superadmin&act=add');
+				header("Location: ".$_SERVER['HTTP_REFERER']);
 			}
 			
 			if($opt == 'new' && getcount('users', "username='".global_addslashes($username)."'") > 0) {
 				$_SESSION['message'] = array('code' => '-1', 'content' => array(lang("User exists")));
-				header('Location: index.php?home=superadmin&act=add');
+				header("Location: ".$_SERVER['HTTP_REFERER']);
 			}
 			$data = array(
 				'username' => $username,
@@ -118,7 +118,7 @@ class superadmin_controller {
 			}
 			$_SESSION['message'] = array('code' => '1', 'content' => array(lang($msg)));
 			
-			header('Location: index.php?home=superadmin');
+			header('Location: index.php?home='.$_G['controller']);
 		}
 		
 		

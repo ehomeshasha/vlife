@@ -26,7 +26,7 @@ if (!empty($_FILES) && $_POST['token'] == $verifyToken) {
 	
 	
 	// Validate the file type
-	$fileTypes = array('jpg','jpeg','gif','png','pdf','doc','docx','xls','csv'); // File extensions
+	$fileTypes = array('jpg','jpeg','gif','png','bmp'); // File extensions
 	$fileParts = pathinfo($_FILES['Filedata']['name']);
 	$targetFile = rtrim($targetPath,'/') . '/' . $filename.'.'.$fileParts['extension'];
 	if (in_array(strtolower($fileParts['extension']),$fileTypes)) {
@@ -34,7 +34,7 @@ if (!empty($_FILES) && $_POST['token'] == $verifyToken) {
 		move_uploaded_file($tempFile,$targetFile);
 		echo rtrim(UPLOAD_DIR.$username."/",'/') . '/' . $filename.'.'.$fileParts['extension'];
 	} else {
-		echo '文件类型不符合要求';
+		echo 'invalid filetype';
 	}
 }
 

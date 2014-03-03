@@ -3,8 +3,8 @@
 <div class="row-fluid">
 <div class="span12"><? include template('breadcrumb', '0', ''); ?><?=$_G['message']?>
 <ul class="nav nav-tabs">
-<li class="<?=$company_active?>"><a href="index.php?home=superadmin&amp;userlevel=<?=$_G['setting']['userlevel']['company']?>">CompanyUser(<?=$company_count?>)</a></li>
-<li class="<?=$custom_active?>"><a href="index.php?home=superadmin&amp;userlevel=<?=$_G['setting']['userlevel']['custom']?>">CustomUser(<?=$custom_count?>)</a></li>
+<li class="<?=$company_active?>"><a href="index.php?home=superadmin_user&amp;userlevel=<?=$_G['setting']['userlevel']['company']?>">CompanyUser(<?=$company_count?>)</a></li>
+<li class="<?=$custom_active?>"><a href="index.php?home=superadmin_user&amp;userlevel=<?=$_G['setting']['userlevel']['custom']?>">CustomUser(<?=$custom_count?>)</a></li>
         	</ul>
 <table class="table table-condensed">
 <tr>
@@ -20,8 +20,8 @@
     	<td><?=$v['userlevel']?></td>
     	<td><? echo get_abbr_date($v['dateline'], true); ?></td>
     	<td>
-    		<a href="index.php?home=superadmin&amp;act=post&amp;opt=edit&amp;uid=<?=$v['uid']?>" href="">Edit</a>
-    		<a data-toggle="modal" data-href="index.php?home=superadmin&amp;act=delete&amp;uid=<?=$v['uid']?>" href="">Delete</a>
+    		<a href="index.php?home=superadmin_user&amp;act=post&amp;opt=edit&amp;uid=<?=$v['uid']?>" href="">Edit</a>
+    		<a data-toggle="modal" data-href="index.php?home=superadmin_user&amp;act=delete&amp;uid=<?=$v['uid']?>" href="">Delete</a>
     	</td>
     </tr><? } } ?></table>
 <? if(!$_G['mobile']) { ?>

@@ -1,14 +1,29 @@
-<? if(!defined('IN_SYSTEM')) exit('Access Denied'); include template('header', '0', ''); ?><style type="text/css">
-#username, #password {float: left; margin-right: 10px;}
-</style>
-<section>
+<? if(!defined('IN_SYSTEM')) exit('Access Denied'); include template('header', '0', ''); ?><section>
 <div class="container-fluid">
 <div class="row-fluid">
-<div class="span12">
-<form action="index.php?home=login&amp;act=login" method="post">
-<input type="text" name="username" id="username" value="" placeholder="用户名" />
-<input type="password" name="password" id="password" value="" placeholder="密码" />
-<button type="submit" class="btn btn-primary" id="login_btn">登录</button>
+<div class="span12"><? include template('breadcrumb', '0', ''); ?><?=$_G['message']?>
+<form action="index.php?home=login&amp;act=login" class="post_form form-horizontal" method="post" autocomplete="off">
+<?=$csrf?>
+<fieldset>
+<legend class="mbn"><?=$head_text?></legend>
+<div class="control-group">
+<label class="control-label" for="inputUsername">Username</label>
+<div class="controls">
+<input type="text" name="username" id="inputUsername" placeholder="Username">
+</div>
+</div>
+<div class="control-group">
+<label class="control-label" for="inputPassword">Password</label>
+<div class="controls">
+<input type="password" name="password" id="inputPassword" placeholder="Password">
+</div>
+</div>
+<div class="control-group">
+<div class="controls">
+<button type="submit" class="btn btn-primary" id="login_btn">Login</button>
+</div>
+</div>
+</fieldset>
 </form>
 </div>
 </div>

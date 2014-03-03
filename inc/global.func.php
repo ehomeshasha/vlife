@@ -226,6 +226,9 @@ function get_active_nav() {
 	{
 		return 'membercenter';
 	}
+	if($_G['controller'] == 'superadmin_user' && in_array($_G['action'], array('index', 'post'))) {
+		return 'superadmin_user';
+	}
 	if($_G['controller'] == 'businesslog' && in_array($_G['action'], array('index', 'post'))) {
 		return 'businesslog';
 	}
@@ -976,11 +979,18 @@ function url($home='index',$act='index',$paramer=array())
 }
 //模版替换函数
 function template($file, $templateid = 0, $tpldir = '') {
-	
-	$tpldir		= $tpldir ? $tpldir : 'views/'.TPLDIR;
-	$templateid = $templateid ? $templateid : TEMPLATEID;
+	$filearr = explode(":", $file);
+	if(count($filearr) == 2) {
+		$tpldir = $filearr[0]."/views/".TPLDIR;
+		$file = $filearr[1];
+	} else {
+		$tpldir		= $tpldir ? $tpldir : 'views/'.TPLDIR;
+	}	
 	$tplfile	= ROOT_PATH.'./'.$tpldir.'/'.$file.'.htm';
 	$file		== 'header' && CURSCRIPT && $file = 'header_'.CURSCRIPT;
+	
+	
+	$templateid = $templateid ? $templateid : TEMPLATEID;
 	
 	$filebak = $file;
 	$objfile = ROOT_PATH.'./data/'.COMPILEDIR.'/'.STYLEID.'_'.$templateid.'_'.$file.'.tpl.php';

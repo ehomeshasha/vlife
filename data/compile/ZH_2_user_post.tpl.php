@@ -1,4 +1,4 @@
-<? if(!defined('IN_SYSTEM')) exit('Access Denied'); include template('header', '0', ''); ?><section>
+<? if(!defined('IN_SYSTEM')) exit('Access Denied'); include template('superadmin_header', '0', ''); ?><section>
 <div class="container-fluid">
 <div class="row-fluid">
 <div class="span12"><? include template('breadcrumb', '0', ''); ?><?=$_G['message']?>

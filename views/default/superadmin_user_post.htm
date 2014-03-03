@@ -1,0 +1,48 @@
+{template superadmin_header}
+<section>
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span12">
+				{template breadcrumb}
+				{$_G['message']}
+				<form class="post_form" method="post" action="" autocomplete="off">
+				{$csrf}
+				<input type="hidden" name="submit" value="true" />
+				<input type="hidden" name="opt" value="{$opt}" />
+				<input type="hidden" name="uid" value="{$user['uid']}" />
+				<fieldset>
+					<legend class="mbn">{$head_text}</legend>
+					<div class="control-group">
+						<label class="control-label" for="inputUsername">Username</label>
+						<div class="controls">
+							<input type="text" name="username" id="inputUsername" placeholder="Username">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="inputPassword">Password</label>
+						<div class="controls">
+							<input type="password" name="password" id="inputPassword" placeholder="Password">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="inputUserLevel">UserLevel</label>
+						<div class="controls">
+							<select name="userlevel" id="inputUserLevel">
+						    	<!--{loop $userlevel_array $k $v}-->
+						    	<option value="{$v}">{eval echo lang($k);}</option>
+						    	<!--{/loop}-->
+						    </select>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="controls">
+							<button type="submit" class="btn btn-primary" id="login_btn">{lang Submit}</button>
+						</div>
+					</div>
+				</fieldset>
+				</form>
+			</div>
+		</div>
+	</div>
+<section>
+{template footer}
