@@ -12,6 +12,6 @@ $_G['setting']['userlevel']['superadmin'] = 9; //设置超级管理员userlevel
 $_G['setting']['userlevel']['company'] = 6; //设置超级管理员userlevel
 $_G['setting']['userlevel']['custom'] = 1; //设置普通客户userlevel
 $_G['setting']['perpage'] = 20; //设置每页显示条数
-$_G['siteurl'] = "http://localhost/"; //设置域名,结尾要加/
+$_G['siteurl'] = "http://localhost/vlife/"; //设置域名,结尾要加/
 $_G['setting']['date_short_format'] = "y-n-j";
 $_G['setting']['time_short_format'] = "H:i:s";

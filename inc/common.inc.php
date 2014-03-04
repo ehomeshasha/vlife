@@ -45,7 +45,7 @@ if(0) {
 	define('STYLEID','ZH');
 	define('TPLDIR','default');
 }
-define("SITE_ROOT",$setting['site_url']);
+define("SITE_ROOT", $_G['siteurl']);
 define('VERSION','VLIFE_1.0');
 
 $tplrefresh = 0;
@@ -57,7 +57,7 @@ $_G['timestamp'] = time();
 $_G['date'] = date("Y-m-d H:i:s", $_G['timestamp']);
 $GLOBALS['language'] = $lang;
 $_G['BREAD_HOME'] = array('text' => lang('Home'), 'href' => '.');
-$_G['SUPER_BREAD_HOME'] = array('text' => lang('Home'), 'href' => 'index.php?home=superadmin_user');
-$_G['ADMIN_BREAD_HOME'] = array('text' => lang('Home'), 'href' => 'index.php?home=admin_foodorder_company');
+$_G['SUPER_BREAD_HOME'] = array('text' => lang('Home'), 'href' => 'index.php?home=user');
+$_G['ADMIN_BREAD_HOME'] = array('text' => lang('Home'), 'href' => 'index.php?home=foodorder_company');
 
 ?>

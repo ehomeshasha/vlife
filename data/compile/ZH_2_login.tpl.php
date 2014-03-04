@@ -1,9 +1,17 @@
-<? if(!defined('IN_SYSTEM')) exit('Access Denied'); include template('header', '0', ''); ?><section>
+<? if(!defined('IN_SYSTEM')) exit('Access Denied'); include template('header', '0', ''); ?><script type="text/javascript">
+$(function(){
+$(document).ready(function(){
+$("#next").val(location.href);
+});
+});
+</script>
+<section>
 <div class="container-fluid">
 <div class="row-fluid">
 <div class="span12"><? include template('breadcrumb', '0', ''); ?><?=$_G['message']?>
-<form action="index.php?home=login&amp;act=login" class="post_form form-horizontal" method="post" autocomplete="off">
+<form action="<?=SITE_ROOT?>index.php?home=login&act=login" class="post_form form-horizontal" method="post" autocomplete="off">
 <?=$csrf?>
+<input type="hidden" name="next" id="next" value="" />
 <fieldset>
 <legend class="mbn"><?=$head_text?></legend>
 <div class="control-group">

@@ -105,7 +105,7 @@ $(function(){
 		}
 	});
 	$(document).on("click", ".clear_session", function() {
-		$.post('index.php?home=misc&act=clear_session');
+		$.post(site_url+'index.php?home=misc&act=clear_session');
 	});
 	$(document).on("click", ".close_thread", function() {
 		$(this).parent().remove();

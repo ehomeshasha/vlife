@@ -2,6 +2,19 @@
 if(!defined('IN_SYSTEM')) {
 	exit('Access Denied');
 }
+
+function login_page() {
+	global $_G;
+	$_G['message'] = initmessage();
+	include_once ROOT_PATH.'./controls/login.class.php';
+	$login = new login_controller();
+	$login->index_action();
+	exit;
+}
+
+
+
+
 function selectOpt($opt, $optArr) {
 	if(empty($opt) || !in_array($opt, $optArr)) {
 		return $optArr[0];
@@ -226,8 +239,11 @@ function get_active_nav() {
 	{
 		return 'membercenter';
 	}
-	if($_G['controller'] == 'superadmin_user' && in_array($_G['action'], array('index', 'post'))) {
-		return 'superadmin_user';
+	if($_G['controller'] == 'user' && in_array($_G['action'], array('index', 'post'))) {
+		return 'user';
+	}
+	if($_G['controller'] == 'foodorder_company' && in_array($_G['action'], array('index', 'post'))) {
+		return 'foodorder_company';
 	}
 	if($_G['controller'] == 'businesslog' && in_array($_G['action'], array('index', 'post'))) {
 		return 'businesslog';
@@ -979,7 +995,7 @@ function url($home='index',$act='index',$paramer=array())
 }
 //模版替换函数
 function template($file, $templateid = 0, $tpldir = '') {
-	$filearr = explode(":", $file);
+	$filearr = explode("#", $file);
 	if(count($filearr) == 2) {
 		$tpldir = $filearr[0]."/views/".TPLDIR;
 		$file = $filearr[1];
@@ -994,6 +1010,7 @@ function template($file, $templateid = 0, $tpldir = '') {
 	
 	$filebak = $file;
 	$objfile = ROOT_PATH.'./data/'.COMPILEDIR.'/'.STYLEID.'_'.$templateid.'_'.$file.'.tpl.php';
+	//echo $objfile;
 	if($templateid != 1 && !file_exists($tplfile)) {
 		$tplfile = ROOT_PATH.'./views/default/'.$filebak.'.htm';
 	}

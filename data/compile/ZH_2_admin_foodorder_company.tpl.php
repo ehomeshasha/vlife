@@ -68,6 +68,7 @@
 <script type="text/javascript">
 $(function(){
 $('#file_upload').uploadify({
+'multi'    : false,
 'buttonText' : 'Upload',
 'height'   : '26',
 'removeTimeout' : 999,
@@ -84,6 +85,7 @@ $('#file_upload').uploadify({
 
 var status = 0;
 var ext = new Array('jpg','jpeg','gif','png','bmp');
+
 for (i=0;i<ext.length;i++) {
 if(ext[i] == file.type.substr(1).toLowerCase()) {
 status = 1; 

@@ -5,7 +5,7 @@ if(!defined('IN_SYSTEM')) {
 
 class login_controller {
 	public function __construct() {
-		include ROOT_PATH.'./models/common.php';
+		include_once ROOT_PATH.'./models/common.php';
 		$this->users = new common('users');
 	}
 	public function index_action() {
@@ -32,7 +32,14 @@ class login_controller {
 			);
 			$cookies->set($cookiearr);
 		}
-		header("Location: index.php");
+		$next = getgpc('next');
+		if(strpos($next, "index.php?home=login") === false) {
+			header("Location: ".$next);
+			
+		} else {
+			header("Location: index.php");	
+		}
+		
 	}
 	public function logout_action() {
 		global $cookies;

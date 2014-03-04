@@ -12,7 +12,6 @@ function parse_template($tplfile, $templateid, $tpldir) {
 	$basefile = $file = basename($tplfile, '.htm');
 	$file == 'header' && CURSCRIPT && $file = 'header_'.CURSCRIPT;
 	$objfile = ROOT_PATH.'./data/'.COMPILEDIR.'/'.STYLEID.'_'.$templateid.'_'.$file.'.tpl.php';
-
 	if(!@$fp = fopen($tplfile, 'r')) {
 		dexit("Current template file './$tpldir/$file.htm' not found or have no access!");
 	}

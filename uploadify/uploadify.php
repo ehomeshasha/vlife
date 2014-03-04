@@ -1,9 +1,5 @@
 <?php
-/*
-Uploadify
-Copyright (c) 2012 Reactive Apps, Ronnie Garcia
-Released under the MIT License <http://www.opensource.org/licenses/mit-license.php> 
-*/
+echo file_exists('/var/www/html/');
 
 error_reporting(E_ALL ^ E_NOTICE);
 $username = $_GET['username'];
