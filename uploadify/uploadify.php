@@ -1,6 +1,4 @@
 <?php
-echo file_exists('/var/www/html/');
-
 error_reporting(E_ALL ^ E_NOTICE);
 $username = $_GET['username'];
 define('ROOT_PATH',str_replace('\\','/',substr(dirname(__FILE__),0,-9)));

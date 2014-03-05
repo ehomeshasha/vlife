@@ -60,4 +60,44 @@ $_G['BREAD_HOME'] = array('text' => lang('Home'), 'href' => '.');
 $_G['SUPER_BREAD_HOME'] = array('text' => lang('Home'), 'href' => 'index.php?home=user');
 $_G['ADMIN_BREAD_HOME'] = array('text' => lang('Home'), 'href' => 'index.php?home=foodorder_company');
 
+
+
+/*---------------------------readcache-----------------------------*/
+//category
+if(!checkfile('category',0)) {
+	$categoryArr = $GLOBALS['db']->fetch_all("SELECT * FROM ".tname('category')." WHERE 1 ORDER BY displayorder ASC, cid ASC");
+	foreach($categoryArr as $value) {
+		$_G['category'][$value[cid]] = $value;
+	}
+	write('category',$_G['category']);
+}else{
+	$_G['category']=read('category');
+}
+
+if(!checkfile('categorytree',0)) {
+	
+	$_G['categorytree'] = get_categorytree();
+	write('categorytree',$_G['categorytree']);
+}else{
+	$_G['categorytree']=read('categorytree');
+}
+
+$_G['categorytree_merge'] = array();
+foreach($_G['categorytree'] as $v) {
+	$_G['categorytree_merge'] = array_merge($_G['categorytree_merge'], $v);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ?>

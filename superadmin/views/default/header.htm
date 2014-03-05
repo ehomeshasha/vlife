@@ -36,12 +36,12 @@ setTimeout(function() {
 				<div class="navbar">
 					<div class="navbar-inner"><a class="brand" href="index.php?home=user">SuperAdmin Center</a>
 					<ul class="nav jznav">
-						<li class="{if $_G['active_nav'] == 'user'}active{/if}"><a href="index.php?home=user">Users</a></li>
+						<li class="{if $_G['active_nav']['model'] == 'user'}active{/if}"><a href="index.php?home=user">Users</a></li>
 					</ul>
 					<ul class="nav pull-right">
 						<li><a href="#" style="color:#000;"><i class="{eval echo geticon($_G['userlevel']);} mrn"></i>{$_G['username']}</a></li>
 						<li><a href="{SITE_ROOT}index.php">{lang HomePage}</a></li>
-						<li><a href="{SITE_ROOT}index.php?home=login&act=logout">{lang Logout}</a></li>
+						<li><a href="{SITE_ROOT}index.php?home=login&act=logout">{lang Signout}</a></li>
 					</ul>
 					</div>
 				</div>
@@ -49,3 +49,11 @@ setTimeout(function() {
 		</div>
 	</div>
 </header>
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="tabbable">
+				<ul class="nav nav-tabs">
+					<li class="{if $_G['active_nav']['value'] == 'user#index'}active{/if}"><a href="index.php?home=user">UserList</a></li>
+					<li class="{if $_G['active_nav']['value'] == 'user#post'}active{/if}"><a href="index.php?home=user&act=post">AddUser</a></li>
+				</ul>

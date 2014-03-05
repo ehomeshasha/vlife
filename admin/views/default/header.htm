@@ -36,12 +36,12 @@ setTimeout(function() {
 				<div class="navbar">
 					<div class="navbar-inner"><a class="brand" href="index.php?home=user">Admin Center</a>
 					<ul class="nav jznav">
-						<li class="{if $_G['active_nav'] == 'foodorder_company'}active{/if}"><a href="index.php?home=foodorder_company">Food Order</a></li>
+						<li class="{if $_G['active_nav']['model'] == 'foodorder'}active{/if}"><a href="index.php?home=foodorder_company">Food Order</a></li>
 					</ul>
 					<ul class="nav pull-right">
 						<li><a href="#" style="color:#000;"><i class="{eval echo geticon($_G['userlevel']);} mrn"></i>{$_G['username']}</a></li>
 						<li><a href="{SITE_ROOT}index.php">{lang HomePage}</a></li>
-						<li><a href="{SITE_ROOT}index.php?home=login&act=logout">{lang Logout}</a></li>
+						<li><a href="{SITE_ROOT}index.php?home=login&act=logout">{lang Signout}</a></li>
 					</ul>
 					</div>
 				</div>
@@ -49,3 +49,13 @@ setTimeout(function() {
 		</div>
 	</div>
 </header>
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="tabbable">
+				<ul class="nav nav-tabs">
+					<li class="{if $_G['active_nav']['value'] == 'foodorder_company#index'}active{/if}"><a href="index.php?home=foodorder_company">Restaurant Info.</a></li>
+					<li class="{if $_G['active_nav']['value'] == 'foodorder_category#index'}active{/if}"><a href="index.php?home=foodorder_category">Category</a></li>
+					<li class="{if $_G['active_nav']['value'] == 'foodorder_dishes#index'}active{/if}"><a href="index.php?home=foodorder_dishes">Dishes</a></li>
+					<li class="{if $_G['active_nav']['value'] == 'foodorder_order#index'}active{/if}"><a href="index.php?home=foodorder_order">Order</a></li>
+				</ul>

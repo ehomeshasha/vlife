@@ -1,6 +1,7 @@
 <?php
 session_start();
 global $_G;
+$_G['system_model'] = 1;
 define(ADMIN_DIR, 'admin');
 
 require('../inc/common.inc.php');
@@ -29,8 +30,7 @@ if(!is_file(ROOT_PATH.'/'.ADMIN_DIR.'/controls/'.$controller.'.class.php')) {
 }
 if(!check_login() || $_G['userlevel'] != $_G['setting']['userlevel']['company']) {
 	$msg = "Company only for Admin Center";
-	$_SESSION['message'] = array('code' => '-1', 'content' => array(lang($msg)));
-	login_page();
+	login_page($msg);
 }
 $_G['controller'] = $controller;
 $_G['action'] = $action;

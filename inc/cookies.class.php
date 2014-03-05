@@ -18,8 +18,7 @@ class cookies {
 	function set($val) {
 		foreach($val as $k=>$v) {
 			$this->destroy($k);
-			echo $k;echo $v;
-			setcookie($k,$v,time()+3600);
+			setcookie($k,$v,time()+COOKIE_EXPIRE);
 		}
 	}
 	

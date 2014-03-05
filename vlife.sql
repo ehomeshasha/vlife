@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 03, 2014 at 05:39 PM
+-- Generation Time: Mar 05, 2014 at 05:51 PM
 -- Server version: 5.1.73
 -- PHP Version: 5.3.3
 
@@ -8106,6 +8106,111 @@ INSERT INTO `oa_users` (`uid`, `username`, `password`, `userlevel`, `manager`, `
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `vl_category`
+--
+
+DROP TABLE IF EXISTS `vl_category`;
+CREATE TABLE IF NOT EXISTS `vl_category` (
+  `cid` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `fid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `uid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(30) NOT NULL DEFAULT '',
+  `displayorder` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `app` varchar(30) NOT NULL DEFAULT '',
+  PRIMARY KEY (`cid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
+
+--
+-- Dumping data for table `vl_category`
+--
+
+INSERT INTO `vl_category` (`cid`, `fid`, `uid`, `name`, `displayorder`, `app`) VALUES
+(2, 0, 3, 'Thai', 1, 'foodorder'),
+(3, 2, 3, 'Coffee', 0, 'foodorder'),
+(13, 0, 3, 'Spaghetti', 0, 'foodorder'),
+(5, 0, 3, 'Pizza', 0, 'foodorder'),
+(6, 0, 3, 'Seafood', 0, 'foodorder'),
+(7, 0, 3, 'BBQ', 0, 'foodorder'),
+(8, 0, 3, 'Cafes', 0, 'foodorder'),
+(9, 0, 3, 'Vegetarian', 0, 'foodorder'),
+(12, 0, 3, 'Drink', 0, 'foodorder');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `vl_company`
+--
+
+DROP TABLE IF EXISTS `vl_company`;
+CREATE TABLE IF NOT EXISTS `vl_company` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(30) NOT NULL DEFAULT '',
+  `brand` varchar(20) NOT NULL DEFAULT '',
+  `phone` varchar(30) NOT NULL DEFAULT '',
+  `address` varchar(100) NOT NULL DEFAULT '',
+  `description` varchar(255) NOT NULL DEFAULT '',
+  `filepath` text NOT NULL,
+  `app` varchar(20) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `vl_company`
+--
+
+INSERT INTO `vl_company` (`id`, `uid`, `name`, `brand`, `phone`, `address`, `description`, `filepath`, `app`) VALUES
+(1, 3, 'Adagio Teas(Chicago)', 'Adagio Teas', '312-698-9773', '617 N. State St. Chicago, Illinois 60654', 'Seasoned sippers and new tea drinkers alike gather around the fragrant vapors of Adagio''s expansive selection, which includes thousands of unique green, chai, and herbal teas.', 'Adagio_Teas.jpg^data/upload/uid_3/13263985r7z3793fgznlkn.jpg', 'foodorder');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `vl_dishes`
+--
+
+DROP TABLE IF EXISTS `vl_dishes`;
+CREATE TABLE IF NOT EXISTS `vl_dishes` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `cid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `uid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(50) NOT NULL DEFAULT '',
+  `price` varchar(10) NOT NULL DEFAULT '',
+  `filepath` text NOT NULL,
+  `description` varchar(255) NOT NULL DEFAULT '',
+  `displayorder` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `createtime` int(10) unsigned NOT NULL DEFAULT '0',
+  `updatetime` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
+
+--
+-- Dumping data for table `vl_dishes`
+--
+
+INSERT INTO `vl_dishes` (`id`, `cid`, `uid`, `name`, `price`, `filepath`, `description`, `displayorder`, `createtime`, `updatetime`) VALUES
+(1, 6, 3, 'fresh Florida stone crab', '20.85', 'fresh Florida stone crab.jpg^data/upload/uid_3/1601001q1lrxee1x8xec1d.jpg', 'fresh Florida stone crab', 0, 1394005776, 1394012235),
+(2, 12, 3, 'Hot Milk Tea', '10.58', 'Adagio_Teas.jpg^data/upload/uid_3/160302tuvtetzq7tp02nrd.jpg', 'Hot Milk Tea', 0, 1394006584, 1394006584),
+(3, 12, 3, 'chocolate', '15.25', 'chocolate.jpg^data/upload/uid_3/160401dezwevwjifdbubt8.jpg', 'chocolate', 0, 1394006643, 1394006643),
+(4, 13, 3, 'Bacon', '25.8', 'Bacon.jpg^data/upload/uid_3/160445hzkrbcvkzv2kpe3v.jpg', 'Bacon', 0, 1394006689, 1394006689),
+(5, 13, 3, 'Bolognaise', '11.5', 'Bolognaise.jpg^data/upload/uid_3/160526eaorgpeep5oae6lr.jpg', 'Bolognaise', 0, 1394006727, 1394006727),
+(6, 13, 3, 'Tomato sauce', '30.5', 'Tomato sauce.jpg^data/upload/uid_3/160559mmwq3mqnzm8y1ydw.jpg', 'Tomato sauce', 0, 1394006761, 1394006761),
+(7, 13, 3, 'Sausage', '15.00', 'Sausage.jpg^data/upload/uid_3/160638ckryj5yykqollgzf.jpg', 'Sausage', 0, 1394006800, 1394006817),
+(8, 13, 3, 'Shrimp', '34.52', 'Shrimp.jpg^data/upload/uid_3/160725wl08a8nwnnlann0q.jpg', 'Shrimp', 0, 1394006846, 1394006846),
+(9, 13, 3, 'minced pork', '17.2', 'minced pork.jpg^data/upload/uid_3/160759qxok8se82gogk8jy.jpg', 'minced pork', 0, 1394006881, 1394006881),
+(10, 13, 3, 'Mushrooms', '35.8', 'Mushrooms.jpg^data/upload/uid_3/1608281ad7z1hu1h9da9za.jpg', 'Mushrooms', 0, 1394006909, 1394006909),
+(11, 5, 3, 'Seafood Supreme', '34', 'Seafood Supreme.jpg^data/upload/uid_3/160949qsgb8sb9g2ocrv2q.jpg', 'Seafood Supreme', 0, 1394006991, 1394006991),
+(12, 5, 3, 'Delicious Bacon', '65.3', 'Delicious Bacon.jpg^data/upload/uid_3/161022omknsfcnqmmxysnv.jpg', 'Delicious Bacon', 0, 1394007023, 1394007023),
+(13, 5, 3, 'Corn Chicken', '45.68', 'Corn Chicken.jpg^data/upload/uid_3/161047cjnz9905223xj2j9.jpg', 'Corn Chicken', 0, 1394007048, 1394007048),
+(14, 5, 3, 'BBQ Sausage', '68.2', 'BBQ Sausage.jpg^data/upload/uid_3/161115t0gwz6z6f5jgj09o.jpg', 'BBQ Sausage', 0, 1394007077, 1394007077),
+(15, 5, 3, 'New Orleans', '45.62', 'New Orleans.jpg^data/upload/uid_3/161152folurddc2vlukpdm.jpg', 'New Orleans', 0, 1394007113, 1394007133),
+(16, 5, 3, 'Surf&Turf Pizza', '54.5', 'Surf&Turf Pizza.jpg^data/upload/uid_3/1612447maa1c7amovzaaj3.jpg', 'Surf&Turf Pizza', 0, 1394007166, 1394007330),
+(17, 5, 3, 'Popcorn Shrimp', '39.58', 'Popcorn Shrimp.jpg^data/upload/uid_3/1613144zysqy0by0248bi8.jpg', 'Popcorn Shrimp', 0, 1394007195, 1394007195),
+(18, 12, 3, 'Regular Drink', '12.85', 'Regular Drink.jpg^data/upload/uid_3/161340jvcp7j8vv77io3j3.jpg', 'Regular Drink', 0, 1394007221, 1394007221),
+(19, 12, 3, 'Large Drink', '17.5', 'Large Drink.jpg^data/upload/uid_3/161408557l625i6y60jzhh.jpg', 'Large Drink', 0, 1394007249, 1394007249);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `vl_users`
 --
 
@@ -8117,7 +8222,7 @@ CREATE TABLE IF NOT EXISTS `vl_users` (
   `userlevel` tinyint(1) NOT NULL DEFAULT '0',
   `dateline` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`uid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `vl_users`
@@ -8126,7 +8231,7 @@ CREATE TABLE IF NOT EXISTS `vl_users` (
 INSERT INTO `vl_users` (`uid`, `username`, `password`, `userlevel`, `dateline`) VALUES
 (3, 'company1', 'fc538398defd0ba100bf9ccb33b93e00', 6, 1393838424),
 (2, 'ehomeshasha', 'fc538398defd0ba100bf9ccb33b93e00', 9, 1393837091),
-(4, 'custom1', 'fc538398defd0ba100bf9ccb33b93e00', 1, 1393838449);
+(5, 'custom2', 'fc538398defd0ba100bf9ccb33b93e00', 1, 1393980706);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -1,7 +1,7 @@
 <?php
 session_start();
 global $_G;
-
+$_G['system_model'] = 0;
 require('inc/common.inc.php');
 require(ROOT_PATH.'/inc/cookies.class.php');
 require(ROOT_PATH.'/inc/session.class.php');
@@ -33,6 +33,12 @@ if(!check_login()) {
 $_G['controller'] = $controller;
 $_G['action'] = $action;
 $_G['active_nav'] = get_active_nav();
+$_G['company_id'] = getgpc('company_id');
+if(!empty($_G['company_id'])) {
+	$_SESSION['company_id'] = $_G['company_id'];
+} else {
+	$_G['company_id'] = empty($_SESSION['company_id'])? $_G['setting']['company_id'] : $_SESSION['company_id'];
+}
 
 //echo " home=".$_G['controller']." act=".$_G['action'];
 

@@ -1,76 +1,77 @@
 {template admin#header}
-<section>
-	<div class="container-fluid">
-		<div class="row-fluid">
-			<div class="span12">
-				{template breadcrumb}
-				{$_G['message']}
-				<form action="" method="post" id="form" class="post_form"  enctype="multipart/form-data">
-				{$csrf}
-				<input type="hidden" name="submit" value="true" />
-				<fieldset>
-					<legend class="mbn">{$head_text}</legend>
-					<div class="control-group">
-						<label class="control-label" for="inputName">Name</label>
-						<div class="controls">
-							<input type="text" name="name" id="inputName" placeholder="Restaurant name">
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="inputBrand">Brand</label>
-						<div class="controls">
-							<input type="text" name="brand" id="inputBrand" placeholder="Brand">
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="inputPhone">TelePhone</label>
-						<div class="controls">
-							<input type="text" name="phone" id="inputPhone" placeholder="TelePhone">
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="inputAddress">Address</label>
-						<div class="controls">
-							<input type="text" name="address" id="inputAddress" placeholder="Restaurant address">
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="inputBrand">Brand</label>
-						<div class="controls">
-							<input type="text" name="brand" id="inputBrand" placeholder="Brand">
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="file_upload">Thumb</label>
-						<div class="controls">
-							<!--{if !empty($filepatharr[0])}-->
-							<ul class="well" style="margin:15px 0;list-style:none;">
-					       	<!--{loop $filepatharr $v}-->
-					       	{eval $filearr = explode("^", $v);}
-					       	<li>
-					       		<a href="{$filearr[1]}" target="_blank">$filearr[0]</a>
-					       		<a href='javascript:;' class='cancel_upload'>
-					       			<img src='uploadify/uploadify-cancel.png' width='16' height='16'>
-					       		</a>
-					       		<input class='filepath' type='hidden' name='filepath[]' value='$v'/>
-					       	</li>
-					       	<!--{/loop}-->
-					       	</ul>
-					       	<!--{/if}-->
-							<input id="file_upload" name="file_upload" type="file">
-						</div>
-					</div>
-					<div class="control-group">
-						<div class="controls">
-							<button type="submit" class="btn btn-primary" id="login_btn">{lang Submit}</button>
-						</div>
-					</div>
-				</fieldset>
-				</form>	
+<div class="tab-content">
+	{template breadcrumb}
+	{$_G['message']}
+	<form action="" method="post" id="company_form" class="post_form">
+	{$csrf}
+	<input type="hidden" name="submit" value="true" />
+	<fieldset>
+		<legend class="mbn">{$head_text}</legend>
+		<div class="control-group">
+			<label class="control-label" for="inputName">{lang Name}</label>
+			<div class="controls">
+				<input type="text" name="name" value="{$restaurant['name']}" id="inputName" placeholder="Restaurant name" maxlength="30" />
 			</div>
 		</div>
-	</div>
-</section>
+		<div class="control-group">
+			<label class="control-label" for="inputBrand">{lang Brand}</label>
+			<div class="controls">
+				<input type="text" name="brand" value="{$restaurant['brand']}" id="inputBrand" placeholder="Brand" maxlength="20" >
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="inputPhone">{lang TelePhone}</label>
+			<div class="controls">
+				<input type="text" name="phone" value="{$restaurant['phone']}" id="inputPhone" placeholder="TelePhone" maxlength="30" >
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="inputAddress">{lang Address}</label>
+			<div class="controls">
+				<input type="text" name="address" value="{$restaurant['address']}" id="inputAddress" placeholder="Restaurant address" maxlength="100" >
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="inputDescription">{lang Short Description}</label>
+			<div class="controls">
+				<textarea name="description" id="inputDescription" placeholder="Short Description" rows="5">{$restaurant['description']}</textarea>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="file_upload">{lang Thumb}</label>
+			<div class="controls">
+				<ul id="picture_show" class="" style="margin-left:0;list-style:none;">
+				<!--{if !empty($filepatharr[0])}-->
+				<!--{loop $filepatharr $v}-->
+		       	{eval $filearr = explode("^", $v);}
+		       	<li>
+		       		<div>
+			       		<a href="{$_G['siteurl']}{$filearr[1]}" target="_blank">$filearr[0]</a>
+			       		<a href='javascript:;' class='cancel_upload'>
+			       			<img src='{$_G['siteurl']}uploadify/uploadify-cancel.png' width='12' height='12'>
+			       		</a>
+			       		<input class='filepath' type='hidden' name='filepath[]' value='$v'/>
+		       		</div>
+		       		<div>
+		       			<img src="{$_G['siteurl']}{$filearr[1]}" style="width:260px;height:195px" />
+		       		</div>
+		       		
+		       	</li>
+		       	<!--{/loop}-->
+		       	<!--{/if}-->
+		       	</ul>
+		       	<input id="file_upload" name="file_upload" type="file">
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="controls">
+				<button type="submit" class="btn btn-primary" id="">{lang Submit}</button>
+			</div>
+		</div>
+	</fieldset>
+	</form>	
+</div>
+</div></div></div></div>
 <script type="text/javascript">
 $(function(){
 	$('#file_upload').uploadify({
@@ -89,7 +90,10 @@ $(function(){
 		'uploader' : '{$_G['siteurl']}uploadify/uploadify.php?username=uid_{$_G[uid]}',
 		
 		'onUploadStart' : function(file) {
-			
+			$("#file_upload input").remove();
+			if($("#file_upload-queue .uploadify-queue-item").length > 1) { 
+				$("#file_upload-queue .uploadify-queue-item:first").remove();
+			}
 			var status = 0;
 			var ext = new Array('jpg','jpeg','gif','png','bmp');
 			
@@ -108,7 +112,8 @@ $(function(){
 				alert("Invalid filetype, Pictures only for uploading");
 				$("#" + file.id).css("display","none");
 			} else {
-				$("#file_upload").append('<input class="filepath" id="input_'+ file.id +'" type="hidden" name="filepath[]" value="'+ file.name + '^' + data +'"/>')
+				$("#file_upload").append('<input class="filepath" id="input_'+ file.id +'" type="hidden" name="filepath[]" value="'+ file.name + '^' + data +'"/>');
+				$("#picture_show").html("<li><img src='{$_G['siteurl']}"+data+"' style='width:260px;height:195px;' /></li>");
 			}
 		},
 		/*
@@ -123,12 +128,33 @@ $(function(){
 	{if !empty($filepatharr[0])}
 	$(".cancel_upload").click(function(){
 		if(confirm("cancel this upload?")) {
-			$(this).parent().remove();
+			$(this).parent().parent().remove();
 			var path = $(this).next().val();
-			$.post('{$_G['siteurl']}index.php?home=misc&act=cancel_upload',{bid:'{$businesslog['bid']}',path:path});
+			$.post('{$_G['siteurl']}index.php?home=misc&act=cancel_upload',{table_name: 'company', id:'{$restaurant['id']}',path:path});
 		}
 	})
 	{/if}
+	
+	$("#company_form").submit(function(){
+		if(
+			chkLength("Restaurant name", $("#inputName").val(), 0, 30) &&
+			chkLength("TelePhone", $("#inputPhone").val(), 0, 30) &&
+			chkLength("Restaurant address", $("#inputAddress").val(), 0, 100) &&
+			chkLength("Restaurant short description", $("#inputDescription").val(), 0, 255) &&
+			chkUploadExist("Restaurant thumb", $(".filepath"))
+		) {
+			return true;
+		}
+		return false;
+	});
+	
+	
+	
 });
+
+
+
+
+
 </script>
 {template footer}

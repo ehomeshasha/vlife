@@ -17,8 +17,7 @@ class user_controller {
 		
 		if($_G['userlevel'] != $_G['setting']['userlevel']['superadmin'] && $superadmin_count != 0) {
 			$msg = "Please login as superadmin first";
-			$_SESSION['message'] = array('code' => '-1', 'content' => array(lang($msg)));
-			login_page();
+			login_page($msg);
 		}
 	}
 	
@@ -26,7 +25,6 @@ class user_controller {
 		global $_G;
 		
 		$breadcrumb = array(
-			$_G['SUPER_BREAD_HOME'],
 			array('text' => lang('User Management')),
 			array(
 				'text' => '+', 
@@ -82,7 +80,6 @@ class user_controller {
 			}
 			
 			$breadcrumb = array(
-				$_G['SUPER_BREAD_HOME'],
 				array('text' => lang('User Management'), 'href' => 'index.php?home='.$_G['controller']),
 				array('text' => $head_text),
 			);
@@ -125,7 +122,10 @@ class user_controller {
 		
 	}
 	
-	
+	public function delete_action() {
+		$id = getgpc('id');
+		$GLOBALS['db']->query("DELETE FROM ".tname('users')." WHERE `uid`='$id'");
+	}
 		
 }
 ?>

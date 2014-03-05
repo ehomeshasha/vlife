@@ -2,9 +2,128 @@
 if(!defined('IN_SYSTEM')) {
 	exit('Access Denied');
 }
-
-function login_page() {
+function init_categorylist($categoryArr) {
 	global $_G;
+	$html = "";
+	foreach ($categoryArr as $value) {
+		if($value['uid'] != $_G['uid']) continue;
+		$html .= "<li>
+		<p>
+		<span>$value[name]</span>
+		<a href='".$_G['siteurl'].ADMIN_DIR."/index.php?home=foodorder_category&act=post&opt=edit&cid=$value[cid]'>[edit]</a>
+		<a href='javascript:;' class='deletelink' data-id='$value[cid]' data-type='Category' data-href='index.php?home=foodorder_category&act=delete'>[delete]</a></p><ul>";
+		$html .= init_categorylist($value['subcate']);
+		$html .= "</ul></li>";
+	}
+	return $html;
+}
+
+function get_categorytree($fid = 0, $level = 0 ,$app = '') {
+	global $_G;
+	$tree = array();
+	$level++;
+	
+	if($app == '') {
+		$arr = $GLOBALS['db']->fetch_all("SELECT app FROM ".tname('category')." WHERE 1 GROUP BY app");
+		foreach($arr as $value) {
+			$tree[$value['app']] = get_categorytree(0, 0, $value['app']);
+		}
+		return $tree;
+	}
+	$arr = $GLOBALS['db']->fetch_all("SELECT * FROM ".tname('category')." WHERE app='$app' AND fid=$fid ORDER BY displayorder ASC, cid ASC");
+	foreach($arr as $value) {
+		$tree[] = array(
+				'uid' => $value['uid'],
+				'cid' => $value['cid'],
+				'fid' => $value['fid'],
+				'name' => $value['name'],
+				'subcate' => get_categorytree($value[cid], $level, $app),
+		);
+	}
+	
+	return $tree;
+}
+function init_category($categoryArr, $cid = "", $level = 0, $offset = 1, $invalid_count = 0) {
+	global $_G;
+	$level++;
+	$html = "";
+
+	foreach ($categoryArr as $value) {
+		if($value['uid'] != $_G['uid']) continue;
+		if($offset == 1 && $level <= $invalid_count) {
+			$extattr = "disabled='disabled' style='color:#000;'";
+		} else {
+			$extattr = "";
+		}
+		$selected = $value[cid] == $cid ? "selected='selected'" : "";
+		$html .= "<option value='$value[cid]' $selected $extattr>".str_repeat("&nbsp;", ($level-$offset)*4).$value[name]."</option>";
+		$html .= init_category($value['subcate'], $cid, $level, $offset, $invalid_count);
+	}
+
+	return $html;
+}
+function validate_start() {
+	global $_G;
+	if(!empty($_G['error_msg'])) {
+		$_SESSION['message'] = array('code' => '-1', 'content' => $_G['error_msg']);
+		header("Location: ".$_SERVER['HTTP_REFERER']);
+		exit;
+	}
+}
+function chkNumber($n, $v) {
+	global $_G;
+	if(empty($v) || !preg_match("/^[1-9]\d*\.{0,1}\d+$/", $v)) {
+		$_G['error_msg'][] = lang('Number only for ').$n;
+		return false;
+	}
+	return $v;
+}
+
+function chkDigits($n, $v, $min, $max) {
+	global $_G;
+	if(chkLength($n, $v, $min, $max) === false) {
+		return false;
+	}
+	if(!preg_match("/^\d+$/", $v)) {
+		$_G['error_msg'][] = lang('Digit only for ').$n;
+		return false;
+	}
+	return $v;
+}
+function chkLength($n, $v, $min, $max) {
+	global $_G;
+	if($min == 0 && empty($v)) {
+		$_G['error_msg'][] = $n.lang(' can not be empty'); 
+		return false;		
+	}
+	$len = mb_strlen($v, "UTF-8");
+	if($len < intval($min) || $len > intval($max)) {
+		$_G['error_msg'][] = lang('The length of ').$n.lang(' is not valid(must ').$min.' < '.$max.')';
+		return false;
+	}
+	return $v;
+}
+
+
+function chkUploadExist($n,$v) {
+	global $_G;
+	if(is_array($v)) {
+		$val = $v[0];
+	} else {
+		$val = $v;
+	}
+	if(empty($val)) {
+		$_G['error_msg'][] = lang("Please upload ").$n;
+		return false;
+	}
+	if(is_array($v) && count($v) == 1) {
+		return $v[0];
+	}
+	return $v;
+}
+function login_page($msg) {
+	global $_G;
+	$_SESSION['message'] = array('code' => '-1', 'content' => array(lang($msg)));
 	$_G['message'] = initmessage();
 	include_once ROOT_PATH.'./controls/login.class.php';
 	$login = new login_controller();
@@ -221,44 +340,12 @@ function format_score($str) {
 }
 function get_active_nav() {
 	global $_G;
-	
-	if($_G['controller'] == 'index' && $_G['action'] == 'index') {
-		return 'index';
-	}
-	if(
-		(
-			(getgpc('view') != "" || getgpc('mention') != "") 
-			&& in_array($_G['controller'], array('businesslog','thread')) 
-			&& $_G['action'] == 'index'
-		)
-		||
-		(
-			$_G['controller'] == 'draft'
-		)
-	) 
-	{
-		return 'membercenter';
-	}
-	if($_G['controller'] == 'user' && in_array($_G['action'], array('index', 'post'))) {
-		return 'user';
-	}
-	if($_G['controller'] == 'foodorder_company' && in_array($_G['action'], array('index', 'post'))) {
-		return 'foodorder_company';
-	}
-	if($_G['controller'] == 'businesslog' && in_array($_G['action'], array('index', 'post'))) {
-		return 'businesslog';
-	}
-	if($_G['controller'] == 'thread' && in_array($_G['action'], array('index', 'post'))) {
-		return 'thread';
-	}
-	if(
-		$_G['controller'] == 'recyclebin' && $_G['action'] == 'index'
-		||
-		$_G['controller'] == 'login' && $_G['action'] == 'adduser'
-	)
-	{
-		return 'admincenter';	
-	}
+	$value = $_G['controller']."#".$_G['action'];
+	preg_match("/^[a-zA-Z0-9]+/", $value, $matches);
+	return array(
+		'model' => $matches[0],
+		'value' => $value,
+	);
 }
 function showerror($errorstr) {
 	$cfm_box = array(
@@ -496,7 +583,10 @@ function showresult($result_body, $alert_type = 'alert-error', $button_type = 'b
 	exit;
 }
 function global_addslashes($str) {
-	return addslashes(htmlspecialchars(trim($str)));
+	if (get_magic_quotes_gpc()) {
+	    return trim($str);
+	}
+	return addslashes(trim($str));
 }
 
 function uc_authcode($string, $operation = 'DECODE', $key = '', $expiry = 0) {

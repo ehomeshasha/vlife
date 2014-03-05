@@ -1,7 +1,4 @@
-<? if(!defined('IN_SYSTEM')) exit('Access Denied'); include template('superadmin#header', '0', ''); ?><section>
-<div class="container-fluid">
-<div class="row-fluid">
-<div class="span12"><? include template('breadcrumb', '0', ''); ?><?=$_G['message']?>
+<? if(!defined('IN_SYSTEM')) exit('Access Denied'); include template('superadmin#header', '0', ''); ?><div class="tab-content"><? include template('breadcrumb', '0', ''); ?><?=$_G['message']?>
 <form class="post_form" method="post" action="" autocomplete="off">
 <?=$csrf?>
 <input type="hidden" name="submit" value="true" />
@@ -37,6 +34,4 @@
 </fieldset>
 </form>
 </div>
-</div>
-</div>
-<section><? include template('footer', '0', ''); ?>
+</div></div></div></div><? include template('footer', '0', ''); ?>
