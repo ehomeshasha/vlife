@@ -1,0 +1,100 @@
+	Hot Milk Tea	10.00	Drink		Sell		Change Delete
+	chocolate	10.00	Drink		Sell		Change Delete
+	Bacon	15.00	Spaghetti		Sell		Change Delete
+	Bolognaise	15.00	Spaghetti		Sell		Change Delete
+	Tomato sauce	15.00	Spaghetti		Sell		Change Delete
+	Sausage	15.00	Spaghetti		Sell		Change Delete
+	Shrimp	15.00	Spaghetti		Sell		Change Delete
+	minced pork	15.00	Spaghetti		Sell		Change Delete
+	Mushrooms	15.00	Spaghetti		Sell		Change Delete
+	Seafood Supreme	20.00	Pizza		Sell		Change Delete
+	Delicious Bacon	20.00	Pizza		Sell		Change Delete
+	Corn Chicken	20.00	Pizza		Sell		Change Delete
+	BBQ Sausage	20.00	Pizza		Sell		Change Delete
+	New Orleans	20.00	Pizza		Sell		Change Delete
+	Surf&Turf Pizza	20.00	Pizza		Sell		Change Delete
+	Popcorn Shrimp	20.00	Pizza		Sell		Change Delete
+	Regular Drink	10.00	Drink		Sell		Change Delete
+	Large Drink	10.00	Drink		Sell		Change Delete
+
+
+Seasoned sippers and new tea drinkers alike gather around the fragrant vapors of Adagio\\\\\\\\\\\\\\\'s expansive selection, which includes thousands of unique green, chai, and herbal teas.
+
+
+微信应用网站设计
+
+环境
+LAMP
+
+模块设计
+1.点餐模块
+...
+
+
+
+数据表设计
+
+1.用户数据表设计 vl_users
+uid
+username
+password
+userlevel
+9 => '超级管理员用户,可以添加删除修改商家',
+6 => '商家',
+1 => '普通用户',
+apps 设置'点餐', '团购', ...等商家或用户起作用的app类别，用json字符串进行存储,一个user可以对应多个app
+dateline 注册时间
+
+2.商户信息数据表设计 vl_company
+id
+uid
+name
+brand
+filepath
+address
+phone
+description
+app
+
+
+3.类别数据表设计 vl_category
+cid
+uid
+fid
+name
+displayorder
+app
+
+4.菜品数据表设计 vl_dishes
+id
+cid
+uid
+name
+price
+filepath
+description
+displayorder
+updatetime
+createtime
+
+
+5.购物车数据表设计 vl_cart
+id
+uid
+dishes 包含菜品信息数量的json字符串
+dateline 
+
+
+6.订单数据表设计 vl_orders
+id
+uid
+company_id
+order_number
+phone
+address
+dishes 包含菜品信息数量的json字符串
+amount
+status
+
+
+
