@@ -1,8 +1,5 @@
-<? if(!defined('IN_SYSTEM')) exit('Access Denied'); include template('admin#header', '0', ''); ?><section>
-<div class="container-fluid">
-<div class="row-fluid">
-<div class="span12"><? include template('breadcrumb', '0', ''); ?><?=$_G['message']?>
-<form action="" method="post" id="form" class="post_form"  enctype="multipart/form-data">
+<? if(!defined('IN_SYSTEM')) exit('Access Denied'); include template('admin#header', '0', ''); ?><div class="tab-content"><? include template('breadcrumb', '0', ''); ?><?=$_G['message']?>
+<form action="" method="post" id="company_form" class="post_form">
 <?=$csrf?>
 <input type="hidden" name="submit" value="true" />
 <fieldset>
@@ -10,61 +7,64 @@
 <div class="control-group">
 <label class="control-label" for="inputName">Name</label>
 <div class="controls">
-<input type="text" name="name" id="inputName" placeholder="Restaurant name">
+<input type="text" name="name" value="<?=$restaurant['name']?>" id="inputName" placeholder="Restaurant name" maxlength="30" />
 </div>
 </div>
 <div class="control-group">
 <label class="control-label" for="inputBrand">Brand</label>
 <div class="controls">
-<input type="text" name="brand" id="inputBrand" placeholder="Brand">
+<input type="text" name="brand" value="<?=$restaurant['brand']?>" id="inputBrand" placeholder="Brand" maxlength="20" >
 </div>
 </div>
 <div class="control-group">
 <label class="control-label" for="inputPhone">TelePhone</label>
 <div class="controls">
-<input type="text" name="phone" id="inputPhone" placeholder="TelePhone">
+<input type="text" name="phone" value="<?=$restaurant['phone']?>" id="inputPhone" placeholder="TelePhone" maxlength="30" >
 </div>
 </div>
 <div class="control-group">
 <label class="control-label" for="inputAddress">Address</label>
 <div class="controls">
-<input type="text" name="address" id="inputAddress" placeholder="Restaurant address">
+<input type="text" name="address" value="<?=$restaurant['address']?>" id="inputAddress" placeholder="Restaurant address" maxlength="100" >
 </div>
 </div>
 <div class="control-group">
-<label class="control-label" for="inputBrand">Brand</label>
+<label class="control-label" for="inputDescription">Short Description</label>
 <div class="controls">
-<input type="text" name="brand" id="inputBrand" placeholder="Brand">
+<textarea name="description" id="inputDescription" placeholder="Short Description" rows="5"><?=$restaurant['description']?></textarea>
 </div>
 </div>
 <div class="control-group">
 <label class="control-label" for="file_upload">Thumb</label>
 <div class="controls">
-<? if(!empty($filepatharr['0'])) { ?>
-<ul class="well" style="margin:15px 0;list-style:none;">
-       <? if(is_array($filepatharr)) { foreach($filepatharr as $v) { ?>       <? $filearr = explode("^", $v); ?>       	<li>
-       		<a href="<?=$filearr['1']?>" target="_blank"><?=$filearr['0']?></a>
+<ul id="picture_show" class="" style="margin-left:0;list-style:none;">
+<? if(!empty($filepatharr['0'])) { if(is_array($filepatharr)) { foreach($filepatharr as $v) { ?>       <? $filearr = explode("^", $v); ?>       	<li>
+       		<div>
+       		<a href="<?=$_G['siteurl']?><?=$filearr['1']?>" target="_blank"><?=$filearr['0']?></a>
        		<a href='javascript:;' class='cancel_upload'>
-       			<img src='uploadify/uploadify-cancel.png' width='16' height='16'>
+       			<img src='<?=$_G['siteurl']?>uploadify/uploadify-cancel.png' width='12' height='12'>
        		</a>
        		<input class='filepath' type='hidden' name='filepath[]' value='<?=$v?>'/>
+       		</div>
+       		<div>
+       			<img src="<?=$_G['siteurl']?><?=$filearr['1']?>" style="width:260px;height:195px" />
+       		</div>
+       		
        	</li>
-       	<? } } ?>       	</ul>
-       	<? } ?>
-<input id="file_upload" name="file_upload" type="file">
+       	<? } } ?>       	<? } ?>
+       	</ul>
+       	<input id="file_upload" name="file_upload" type="file">
 </div>
 </div>
 <div class="control-group">
 <div class="controls">
-<button type="submit" class="btn btn-primary" id="login_btn">Submit</button>
+<button type="submit" class="btn btn-primary" id="">Submit</button>
 </div>
 </div>
 </fieldset>
 </form>	
 </div>
-</div>
-</div>
-</section>
+</div></div></div></div>
 <script type="text/javascript">
 $(function(){
 $('#file_upload').uploadify({
@@ -83,7 +83,10 @@ $('#file_upload').uploadify({
 'uploader' : '<?=$_G['siteurl']?>uploadify/uploadify.php?username=uid_<?=$_G['uid']?>',
 
 'onUploadStart' : function(file) {
-
+$("#file_upload input").remove();
+if($("#file_upload-queue .uploadify-queue-item").length > 1) { 
+$("#file_upload-queue .uploadify-queue-item:first").remove();
+}
 var status = 0;
 var ext = new Array('jpg','jpeg','gif','png','bmp');
 
@@ -102,7 +105,8 @@ if(data == "invalid filetype") {
 alert("Invalid filetype, Pictures only for uploading");
 $("#" + file.id).css("display","none");
 } else {
-$("#file_upload").append('<input class="filepath" id="input_'+ file.id +'" type="hidden" name="filepath[]" value="'+ file.name + '^' + data +'"/>')
+$("#file_upload").append('<input class="filepath" id="input_'+ file.id +'" type="hidden" name="filepath[]" value="'+ file.name + '^' + data +'"/>');
+$("#picture_show").html("<li><img src='<?=$_G['siteurl']?>"+data+"' style='width:260px;height:195px;' /></li>");
 }
 },
 /*
@@ -117,11 +121,32 @@ $("#file_upload").append('<input class="filepath" id="input_'+ file.id +'" type=
 <? if(!empty($filepatharr['0'])) { ?>
 $(".cancel_upload").click(function(){
 if(confirm("cancel this upload?")) {
-$(this).parent().remove();
+$(this).parent().parent().remove();
 var path = $(this).next().val();
-$.post('<?=$_G['siteurl']?>index.php?home=misc&act=cancel_upload',{bid:'<?=$businesslog['bid']?>',path:path});
+$.post('<?=$_G['siteurl']?>index.php?home=misc&act=cancel_upload',{table_name: 'company', id:'<?=$restaurant['id']?>',path:path});
 }
 })
 <? } ?>
+
+$("#company_form").submit(function(){
+if(
+chkLength("Restaurant name", $("#inputName").val(), 0, 30) &&
+chkLength("TelePhone", $("#inputPhone").val(), 0, 30) &&
+chkLength("Restaurant address", $("#inputAddress").val(), 0, 100) &&
+chkLength("Restaurant short description", $("#inputDescription").val(), 0, 255) &&
+chkUploadExist("Restaurant thumb", $(".filepath"))
+) {
+return true;
+}
+return false;
 });
+
+
+
+});
+
+
+
+
+
 </script><? include template('footer', '0', ''); ?>

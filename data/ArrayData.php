@@ -1,5 +1,6 @@
 <?php
 $_G['ArrayData'] = array(
+	
 	'threadtype' => array(
 		'0' => array(
 					'name' => '帖子',

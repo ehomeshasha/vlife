@@ -31,6 +31,9 @@ class login_controller {
 				'system_auth' => $encode_str
 			);
 			$cookies->set($cookiearr);
+		} else {
+			$msg = lang("Username or Password is not correct");
+			login_page($msg);
 		}
 		$next = getgpc('next');
 		if(strpos($next, "index.php?home=login") === false) {
@@ -51,6 +54,7 @@ class login_controller {
 		$cookies->destroy($cookiearr);
 		header("Location: index.php");
 	}
+	/*
 	public function adduser_action() {
 		global $_G;
 		if($_G['userlevel'] != 9) exit('Access Denied');
@@ -171,5 +175,6 @@ EOF;
 			}
 			header("Location: {$_SERVER['HTTP_REFERER']}");
 		}
-	}
+		
+	}*/
 }

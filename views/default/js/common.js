@@ -1,4 +1,72 @@
+var digit_regex = /^\d+$/
+function is_empty(obj) {
+	if(typeof(redirect_url) == "undefined" || redirect_url = null || redirect_url == "") {
+		return true;
+	}
+	return false;
+}
+function chkNumber(n, v) {
+	if(v == "" || isNaN(v)) {
+		alert('Number only for '+n);
+		return false;
+	}
+	return true;
+}
+function chkDigit(n, v, min, max) {
+	if(chkLength(n, v, min, max) === false) {
+		return false;
+	}
+	if(!digit_regex.test(v)) {
+		alert('Digit only for '+n);
+		return false;
+	}
+	return true;
+}
+function chkLength(n, v, min, max) {
+	if(min == 0 && v == "") {
+		alert(n+' can not be empty');
+		return false;
+	}
+	if(v.length < min || v.length > max) {
+		alert('The length of '+n+' is not valid(must '+min+' < '+max+')');
+		return false;
+	}
+	return true;
+}
+function chkUploadExist(n,o) {
+	if(o.length == 0 || o.val() == "") {
+		alert("Please upload "+n);
+		return false;
+	}
+	return true;
+}
 $(function(){
+	$(".deletelink").click(function(){
+		var id = jQuery(this).attr("data-id");
+		var type = jQuery(this).attr("data-type");
+		var redirect_url = jQuery(this).attr("data-redirect");
+		var url = jQuery(this).attr("data-href");
+		
+		
+		var confirm_msg = 'Are you sure to delete this '+type+'?(cannot be undone)';
+		
+		if(confirm(confirm_msg)) {
+			jQuery.ajax({
+				url: url,
+	            type:'POST',
+	            data: {id:id, type:type},
+	            complete :function(){},
+	            error: function() { alert('Please try again');},
+	            success: function() {
+	            	if(is_empty) {
+	            		location.href = location.href;
+	            	} else {
+	            		location.href = redirect_url;
+	            	}
+	            }
+			});
+		}
+	});
 	$('.breadcrumb .addicon').tooltip();
 	$("#form").submit(function(){
 		if(controller == 'businesslog' && (action == 'post' || action == 'edit')) {

@@ -1,6 +1,7 @@
 <?php
 session_start();
 global $_G;
+$_G['system_model'] = 2;
 define(SUPERADMIN_DIR, 'superadmin');
 require('../inc/common.inc.php');
 require(ROOT_PATH.'/inc/cookies.class.php');
