@@ -1,0 +1,12 @@
+{template admin#header}
+<div class="tab-content">
+	{template breadcrumb}
+	{$_G['message']}
+	<fieldset>
+		<legend>Category list</legend>
+		<ul>
+			{eval echo init_categorylist($_G['categorytree']['foodorder'])}
+		</ul>
+	</fieldset>
+</div>
+{template footer}
