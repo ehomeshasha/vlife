@@ -21,7 +21,7 @@ if($_GET['uids']){
 	
 }*/
 
-$controller = empty($home) ? 'index' : $home;
+$controller = empty($home) ? 'user' : $home;
 $action		= empty($act) ? 'index' : $act;
 if(!is_file(ROOT_PATH.'/'.SUPERADMIN_DIR.'/controls/'.$controller.'.class.php')) {
 	$controller='index';

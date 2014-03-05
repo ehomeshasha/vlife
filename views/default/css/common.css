@@ -1,9 +1,11 @@
 @CHARSET "UTF-8";
+body {font-size:12px;}
 .z{float:left;}.y{float:right;}
 .line-n{height:38px;line-height:38px;}
 .datetext{width:80px;}
 
-
+.bred {font-weight:bold;color:#8B0000;}
+.bwarning {font-weight:bold;color:#c09853;}
 .rfd-link {color:#006;}
 .xi2 {color:#336699;}
 
@@ -78,3 +80,17 @@ input[type="checkbox"].input-checkbox-table {margin:-3px 0 0 0;}
 
 .navbar {min-height:20px;}
 .navbar-default .navbar-nav>li>a {padding:10px 10px;}
+
+
+.shop_content, .shop_comment {margin-bottom:10px;padding:5px 10px;}
+/*.comment_body .comment_title {border-bottom:2px solid #ccc; padding:0px 5px 5px 5px;margin-bottom:10px;}*/
+.comment_body .commentInput {height:100px;}
+.comment_area {color:#333;}
+.comment_count {}
+.food_image_area {width: 25%;}
+.food_info_area {width: 70%;}
+.food_block {padding:5px 10px 5px 10px;}
+.food_name {margin-right:5px;}
+.food_price {}
+.food_image {}
+.category_list {padding:8px 10px;}

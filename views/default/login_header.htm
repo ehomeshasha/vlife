@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Vlife | SuperAdmin Center</title>
+<title>Vlife | Sign In</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="{SITE_ROOT}views/default/css/bootstrap.min.css" type="text/css" rel="stylesheet" media="screen">
 <link href="{SITE_ROOT}views/default/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet" media="screen">
@@ -35,17 +35,13 @@ setTimeout(function() {
 			<div class="span12">
 				<div class="navbar">
 					<div class="navbar-inner">
-						<div class="brand">
-							<a href="index.php?home=user" style="color:#777;">SupderAdmin Center</a>
-							<a href="{SITE_ROOT}index.php?home=login&act=logout"class="mrm">
-								<sub>
-									[{lang Signout}]
-								</sub>
-							</a>
-						</div>
-						<ul class="nav jznav">
-							<li class="{if $_G['active_nav']['model'] == 'user'}active{/if}"><a href="index.php?home=user">Users</a></li>
+						<a class="brand" href="{$_G['siteurl']}">Vlife</a>
+						<!--{if $_G['uid']}-->
+						<ul class="nav pull-right">
+							<li><a href="#" style="color:#000;"><i class="{eval echo geticon($_G['userlevel']);} mrn"></i>{$_G['username']}</a></li>
+							<li><a href="{SITE_ROOT}index.php?home=login&act=logout">{lang Signout}</a></li>
 						</ul>
+						<!--{/if}-->
 					</div>
 				</div>
 			</div>
@@ -55,8 +51,3 @@ setTimeout(function() {
 <div class="container-fluid">
 	<div class="row-fluid">
 		<div class="span12">
-			<div class="tabbable">
-				<ul class="nav nav-tabs">
-					<li class="{if $_G['active_nav']['value'] == 'user#index'}active{/if}"><a href="index.php?home=user">UserList</a></li>
-					<li class="{if $_G['active_nav']['value'] == 'user#post'}active{/if}"><a href="index.php?home=user&act=post">AddUser</a></li>
-				</ul>

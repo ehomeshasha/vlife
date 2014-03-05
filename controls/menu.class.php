@@ -15,16 +15,39 @@ class menu_controller {
 	
 	public function index_action() {
 		global $_G;
+		foreach($_COOKIE as $k=>$v) {
+			if(preg_match("/^food_count(\d+)$/", $k, $matches)) {
+				$food_id = $matches[1];
+				$foodArr[$food_id] = $v;
+			}
+		}
 		$company = $GLOBALS['db']->fetch_first("SELECT * FROM ".tname('company')." WHERE id='{$_G['company_id']}'");
-		/*
-		
-		$filepatharr = explode(",", $company['filepath']);
-		$patharr = explode("^", $filepatharr[0]);*/
-		$category_list = $GLOBALS['db']->fetch_all("SELECT cid,name FROM ".tname('category')." WHERE uid='$company[uid]' ORDER BY displayorder ASC LIMIT 0,3");
+		$category_list = $GLOBALS['db']->fetch_all("SELECT cid,name FROM ".tname('category')." WHERE uid='$company[uid]' ORDER BY displayorder ASC");
+		$cid = getgpc('cid');
+		if(empty($cid)) {
+			$active_cid = $category_list[0]['cid'];
+		} else {
+			$active_cid = $cid;
+		}
 		foreach($category_list as $k=>$v) {
 			$category_list[$k]['count'] = $this->dishes->GetCount(" and uid='$company[uid]' AND cid='$v[cid]'");
 		}
-		//print_r($category_list);
+		$dishes = $GLOBALS['db']->fetch_all("SELECT * FROM ".tname('dishes')." WHERE uid='$company[uid]' AND cid='$active_cid'");
+		foreach($dishes as $key=>$val) {
+			$filepatharr = explode(",", $val['filepath']);
+			$patharr = explode("^", $filepatharr[0]);
+			$dishes[$key]['path'] = $patharr[1];
+			if(empty($foodArr[$val['id']])) {
+				$dishes[$key]['current_count'] = 0;
+			} else {
+				$dishes[$key]['current_count'] = $foodArr[$val['id']];
+			}
+			 
+		}
+		
+		
+		
+		
 		include template('menu');
 	}
 	

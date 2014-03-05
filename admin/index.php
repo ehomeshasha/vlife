@@ -22,7 +22,7 @@ if($_GET['uids']){
 	
 }*/
 
-$controller = empty($home) ? 'index' : $home;
+$controller = empty($home) ? 'foodorder_company' : $home;
 $action		= empty($act) ? 'index' : $act;
 if(!is_file(ROOT_PATH.'/'.ADMIN_DIR.'/controls/'.$controller.'.class.php')) {
 	$controller='index';

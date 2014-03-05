@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css" type="text/css"/>
 <script src="views/default/js/jquery-1.10.2.min.js" type="text/javascript"></script>
 <script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="views/default/js/front.js" type="text/javascript"></script>
 <link rel="stylesheet" href="views/default/css/common.css" type="text/css"/>
 <link rel="icon" href="" type="image/x-icon" />
 <link rel="shortcut icon" href="" type="image/x-icon" />

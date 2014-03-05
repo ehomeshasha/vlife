@@ -1,4 +1,4 @@
-<? if(!defined('IN_SYSTEM')) exit('Access Denied'); include template('header', '0', ''); ?><script type="text/javascript">
+<? if(!defined('IN_SYSTEM')) exit('Access Denied'); include template('login_header', '0', ''); ?><script type="text/javascript">
 $(function(){
 $(document).ready(function(){
 $("#next").val(location.href);
@@ -35,4 +35,6 @@ $("#next").val(location.href);
 </form>
 </div>
 </div>
-</section><? include template('footer', '0', ''); ?>
+</div>
+</section>
+</div></div></div><? include template('footer', '0', ''); ?>
