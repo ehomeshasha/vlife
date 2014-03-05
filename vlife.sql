@@ -1,10 +1,10 @@
 -- phpMyAdmin SQL Dump
--- version 4.1.7
+-- version 4.1.8
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 05, 2014 at 05:51 PM
--- Server version: 5.1.73
+-- Generation Time: Mar 05, 2014 at 10:48 PM
+-- Server version: 5.1.73-log
 -- PHP Version: 5.3.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -8232,6 +8232,21 @@ INSERT INTO `vl_users` (`uid`, `username`, `password`, `userlevel`, `dateline`) 
 (3, 'company1', 'fc538398defd0ba100bf9ccb33b93e00', 6, 1393838424),
 (2, 'ehomeshasha', 'fc538398defd0ba100bf9ccb33b93e00', 9, 1393837091),
 (5, 'custom2', 'fc538398defd0ba100bf9ccb33b93e00', 1, 1393980706);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `vl_user_info`
+--
+
+DROP TABLE IF EXISTS `vl_user_info`;
+CREATE TABLE IF NOT EXISTS `vl_user_info` (
+  `uid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `phone` varchar(30) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `address` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `credits` varchar(20) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  UNIQUE KEY `uid` (`uid`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
