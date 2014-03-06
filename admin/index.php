@@ -28,10 +28,8 @@ if(!is_file(ROOT_PATH.'/'.ADMIN_DIR.'/controls/'.$controller.'.class.php')) {
 	$controller='index';
 	$action='index';
 }
-if(!check_login() || $_G['userlevel'] != $_G['setting']['userlevel']['company']) {
-	$msg = "Company only for Admin Center";
-	login_page($msg);
-}
+check_login('admin');
+
 $_G['controller'] = $controller;
 $_G['action'] = $action;
 $_G['active_nav'] = get_active_nav();

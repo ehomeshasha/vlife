@@ -36,7 +36,6 @@ class paginator {
 	}
 	
 	function get_perpage() {
-		return '1';
 		return $this->perpage;
 	}
 	function get_page() {

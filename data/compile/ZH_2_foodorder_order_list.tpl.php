@@ -2,25 +2,26 @@
 <table class="table table-condensed">
 <tr>
 <td width="">ID</td>
-<td width="">Name</td>
-<? if(!$_G['mobile']) { ?>
-<td width="">Phone</td>
-<td width="">Address</td>
-<? } ?>
+<td width="">OrderID</td>
+    	<td width="">Amount</td>
+    	<? if(!$_G['mobile']) { ?>
+    	<td width="">Phone</td>
+    	<td width="">Address</td>
+    	<? } ?>
     	<td width="">Createtime</td>
     	<td width="">Opration</td>
-  	</tr><? if(is_array($company_list)) { foreach($company_list as $k => $v) { ?><tr>
+  	</tr><? if(is_array($orders)) { foreach($orders as $k => $v) { ?><tr>
 
     	<td><?=$v['id']?></td>
-    	<td><?=$v['name']?></td>
+    	<td><?=$v['order_id']?></td>
+    	<td><?=$v['totalprice']?></td>
     	<? if(!$_G['mobile']) { ?>
     	<td><?=$v['phone']?></td>
-    	<td><?=$v['address']?></td>
+    	<td><? echo get_br($v['address']); ?></td>
     	<? } ?>
     	<td><? echo get_abbr_date($v['dateline'], true); ?></td>
     	<td>
-    		<a href="index.php?home=foodorder_company&amp;act=post&amp;opt=edit&amp;id=<?=$v['id']?>" href="">Edit</a>
-    		<a href="javascript:;" class="deletelink" data-uid="<?=$v['uid']?>" data-id="<?=$v['id']?>" data-type="Restaurant" data-href="index.php?home=foodorder_company&amp;act=delete">Delete</a>
+    		<a href="index.php?home=foodorder_order&amp;act=view&amp;id=<?=$v['id']?>">View</a>
     	</td>
     </tr><? } } ?></table>
 <? if(!$_G['mobile']) { ?>

@@ -12,7 +12,7 @@ class foodorder_company_controller {
 		$this->company = new common('company');
 		if($_G['userlevel'] != $_G['setting']['userlevel']['company']) {
 			$msg = "Company only for Admin Center";
-			login_page($msg);
+			admin_login_page($msg);
 		}
 	}
 	
@@ -94,7 +94,7 @@ class foodorder_company_controller {
 		$limit = $paginator->get_limit();
 		$multi = $paginator->get_multi();
 		
-		$dishes = $GLOBALS['db']->fetch_all("SELECT * FROM ".tname('company')." WHERE uid='$_G[uid]' ORDER BY dateline DESC $limit");
+		$company_list = $GLOBALS['db']->fetch_all("SELECT * FROM ".tname('company')." WHERE uid='$_G[uid]' AND app='foodorder' ORDER BY dateline DESC $limit");
 		
 		include_once template('admin#foodorder_company_list');
 		

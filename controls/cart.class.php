@@ -67,7 +67,6 @@ class cart_controller {
 				'address' => $address,
 				'credits' => $totalprice,
 			);
-			print_r($user_data);
 			$uid = user_save($user_data);
 			
 		

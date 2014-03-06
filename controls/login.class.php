@@ -8,7 +8,7 @@ class login_controller {
 		include_once ROOT_PATH.'./models/common.php';
 		$this->users = new common('users');
 	}
-	public function index_action($username="") {
+	public function index_action() {
 		global $_G;
 		$head_text = lang('Login Form');
 		$breadcrumb = array(
@@ -52,9 +52,7 @@ class login_controller {
 	public function logout_action() {
 		global $cookies;
 		$cookiearr = array(
-			'system_uid' => '',
-			'system_username' => '',
-			'system_auth' => 'aaa'
+			'system_auth' => ''
 		);
 		$cookies->destroy($cookiearr);
 		header("Location: index.php");

@@ -1,10 +1,10 @@
 -- phpMyAdmin SQL Dump
--- version 4.1.8
+-- version 4.1.7
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 05, 2014 at 10:48 PM
--- Server version: 5.1.73-log
+-- Generation Time: Mar 06, 2014 at 08:10 PM
+-- Server version: 5.1.73
 -- PHP Version: 5.3.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -8114,26 +8114,27 @@ CREATE TABLE IF NOT EXISTS `vl_category` (
   `cid` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `fid` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `uid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `company_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `name` varchar(30) NOT NULL DEFAULT '',
   `displayorder` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `app` varchar(30) NOT NULL DEFAULT '',
   PRIMARY KEY (`cid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=16 ;
 
 --
 -- Dumping data for table `vl_category`
 --
 
-INSERT INTO `vl_category` (`cid`, `fid`, `uid`, `name`, `displayorder`, `app`) VALUES
-(2, 0, 3, 'Thai', 1, 'foodorder'),
-(3, 2, 3, 'Coffee', 0, 'foodorder'),
-(13, 0, 3, 'Spaghetti', 0, 'foodorder'),
-(5, 0, 3, 'Pizza', 0, 'foodorder'),
-(6, 0, 3, 'Seafood', 0, 'foodorder'),
-(7, 0, 3, 'BBQ', 0, 'foodorder'),
-(8, 0, 3, 'Cafes', 0, 'foodorder'),
-(9, 0, 3, 'Vegetarian', 0, 'foodorder'),
-(12, 0, 3, 'Drink', 0, 'foodorder');
+INSERT INTO `vl_category` (`cid`, `fid`, `uid`, `company_id`, `name`, `displayorder`, `app`) VALUES
+(15, 0, 0, 3, 'fdsafsdafdsaf', 0, 'foodorder'),
+(13, 0, 3, 1, 'Spaghetti', 0, 'foodorder'),
+(5, 0, 3, 1, 'Pizza', 0, 'foodorder'),
+(6, 0, 3, 1, 'Seafood', 0, 'foodorder'),
+(7, 0, 3, 1, 'BBQ', 0, 'foodorder'),
+(8, 0, 3, 1, 'Cafes', 0, 'foodorder'),
+(9, 0, 3, 1, 'Vegetarian', 0, 'foodorder'),
+(12, 0, 3, 1, 'Drink', 0, 'foodorder'),
+(14, 0, 3, 2, 'Pizza', 0, 'foodorder');
 
 -- --------------------------------------------------------
 
@@ -8152,15 +8153,18 @@ CREATE TABLE IF NOT EXISTS `vl_company` (
   `description` varchar(255) NOT NULL DEFAULT '',
   `filepath` text NOT NULL,
   `app` varchar(20) NOT NULL DEFAULT '',
+  `dateline` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `vl_company`
 --
 
-INSERT INTO `vl_company` (`id`, `uid`, `name`, `brand`, `phone`, `address`, `description`, `filepath`, `app`) VALUES
-(1, 3, 'Adagio Teas(Chicago)', 'Adagio Teas', '312-698-9773', '617 N. State St. Chicago, Illinois 60654', 'Seasoned sippers and new tea drinkers alike gather around the fragrant vapors of Adagio''s expansive selection, which includes thousands of unique green, chai, and herbal teas.', 'Adagio_Teas.jpg^data/upload/uid_3/13263985r7z3793fgznlkn.jpg', 'foodorder');
+INSERT INTO `vl_company` (`id`, `uid`, `name`, `brand`, `phone`, `address`, `description`, `filepath`, `app`, `dateline`) VALUES
+(1, 3, 'Adagio Teas(Chicago)', 'Adagio Teas', '312-698-9773', '617 N. State St. Chicago, Illinois 60654', 'Seasoned sippers and new tea drinkers alike gather around the fragrant vapors of Adagio''s expansive selection, which includes thousands of unique green, chai, and herbal teas.', 'Adagio_Teas.jpg^data/upload/uid_3/13263985r7z3793fgznlkn.jpg', 'foodorder', 1394073339),
+(2, 3, 'Adagio Teas(Naperville)', 'Adagio Teas', '630-428-255611', '27 W. Jefferson Naperville, Illinois 60540', 'Seasoned sippers and new tea drinkers alike gather around the fragrant vapors of Adagio''s expansive selection, which includes thousands of unique green, chai, and herbal teas', 'Adagio_Teas.jpg^data/upload/uid_3/1112388ga182cxa100gumu.jpg', 'foodorder', 1394073622),
+(3, 0, 'fdsfds', 'fdsaf', 'fdsafdsa', 'dfsafdsaf', 'fdsafsdafsdafsdaf', 'chocolate.jpg^data/upload/uid_/153922exz6xny7mfzbj2nx.jpg', 'foodorder', 1394091571);
 
 -- --------------------------------------------------------
 
@@ -8173,6 +8177,7 @@ CREATE TABLE IF NOT EXISTS `vl_dishes` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `cid` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `uid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `company_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `name` varchar(50) NOT NULL DEFAULT '',
   `price` varchar(10) NOT NULL DEFAULT '',
   `filepath` text NOT NULL,
@@ -8181,32 +8186,76 @@ CREATE TABLE IF NOT EXISTS `vl_dishes` (
   `createtime` int(10) unsigned NOT NULL DEFAULT '0',
   `updatetime` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
 
 --
 -- Dumping data for table `vl_dishes`
 --
 
-INSERT INTO `vl_dishes` (`id`, `cid`, `uid`, `name`, `price`, `filepath`, `description`, `displayorder`, `createtime`, `updatetime`) VALUES
-(1, 6, 3, 'fresh Florida stone crab', '20.85', 'fresh Florida stone crab.jpg^data/upload/uid_3/1601001q1lrxee1x8xec1d.jpg', 'fresh Florida stone crab', 0, 1394005776, 1394012235),
-(2, 12, 3, 'Hot Milk Tea', '10.58', 'Adagio_Teas.jpg^data/upload/uid_3/160302tuvtetzq7tp02nrd.jpg', 'Hot Milk Tea', 0, 1394006584, 1394006584),
-(3, 12, 3, 'chocolate', '15.25', 'chocolate.jpg^data/upload/uid_3/160401dezwevwjifdbubt8.jpg', 'chocolate', 0, 1394006643, 1394006643),
-(4, 13, 3, 'Bacon', '25.8', 'Bacon.jpg^data/upload/uid_3/160445hzkrbcvkzv2kpe3v.jpg', 'Bacon', 0, 1394006689, 1394006689),
-(5, 13, 3, 'Bolognaise', '11.5', 'Bolognaise.jpg^data/upload/uid_3/160526eaorgpeep5oae6lr.jpg', 'Bolognaise', 0, 1394006727, 1394006727),
-(6, 13, 3, 'Tomato sauce', '30.5', 'Tomato sauce.jpg^data/upload/uid_3/160559mmwq3mqnzm8y1ydw.jpg', 'Tomato sauce', 0, 1394006761, 1394006761),
-(7, 13, 3, 'Sausage', '15.00', 'Sausage.jpg^data/upload/uid_3/160638ckryj5yykqollgzf.jpg', 'Sausage', 0, 1394006800, 1394006817),
-(8, 13, 3, 'Shrimp', '34.52', 'Shrimp.jpg^data/upload/uid_3/160725wl08a8nwnnlann0q.jpg', 'Shrimp', 0, 1394006846, 1394006846),
-(9, 13, 3, 'minced pork', '17.2', 'minced pork.jpg^data/upload/uid_3/160759qxok8se82gogk8jy.jpg', 'minced pork', 0, 1394006881, 1394006881),
-(10, 13, 3, 'Mushrooms', '35.8', 'Mushrooms.jpg^data/upload/uid_3/1608281ad7z1hu1h9da9za.jpg', 'Mushrooms', 0, 1394006909, 1394006909),
-(11, 5, 3, 'Seafood Supreme', '34', 'Seafood Supreme.jpg^data/upload/uid_3/160949qsgb8sb9g2ocrv2q.jpg', 'Seafood Supreme', 0, 1394006991, 1394006991),
-(12, 5, 3, 'Delicious Bacon', '65.3', 'Delicious Bacon.jpg^data/upload/uid_3/161022omknsfcnqmmxysnv.jpg', 'Delicious Bacon', 0, 1394007023, 1394007023),
-(13, 5, 3, 'Corn Chicken', '45.68', 'Corn Chicken.jpg^data/upload/uid_3/161047cjnz9905223xj2j9.jpg', 'Corn Chicken', 0, 1394007048, 1394007048),
-(14, 5, 3, 'BBQ Sausage', '68.2', 'BBQ Sausage.jpg^data/upload/uid_3/161115t0gwz6z6f5jgj09o.jpg', 'BBQ Sausage', 0, 1394007077, 1394007077),
-(15, 5, 3, 'New Orleans', '45.62', 'New Orleans.jpg^data/upload/uid_3/161152folurddc2vlukpdm.jpg', 'New Orleans', 0, 1394007113, 1394007133),
-(16, 5, 3, 'Surf&Turf Pizza', '54.5', 'Surf&Turf Pizza.jpg^data/upload/uid_3/1612447maa1c7amovzaaj3.jpg', 'Surf&Turf Pizza', 0, 1394007166, 1394007330),
-(17, 5, 3, 'Popcorn Shrimp', '39.58', 'Popcorn Shrimp.jpg^data/upload/uid_3/1613144zysqy0by0248bi8.jpg', 'Popcorn Shrimp', 0, 1394007195, 1394007195),
-(18, 12, 3, 'Regular Drink', '12.85', 'Regular Drink.jpg^data/upload/uid_3/161340jvcp7j8vv77io3j3.jpg', 'Regular Drink', 0, 1394007221, 1394007221),
-(19, 12, 3, 'Large Drink', '17.5', 'Large Drink.jpg^data/upload/uid_3/161408557l625i6y60jzhh.jpg', 'Large Drink', 0, 1394007249, 1394007249);
+INSERT INTO `vl_dishes` (`id`, `cid`, `uid`, `company_id`, `name`, `price`, `filepath`, `description`, `displayorder`, `createtime`, `updatetime`) VALUES
+(1, 6, 3, 1, 'fresh Florida stone crab', '20.85', 'fresh Florida stone crab.jpg^data/upload/uid_3/1601001q1lrxee1x8xec1d.jpg', 'fresh Florida stone crab', 0, 1394005776, 1394077489),
+(2, 12, 3, 1, 'Hot Milk Tea', '10.58', 'Adagio_Teas.jpg^data/upload/uid_3/160302tuvtetzq7tp02nrd.jpg', 'Hot Milk Tea', 0, 1394006584, 1394006584),
+(3, 12, 3, 1, 'chocolate', '15.25', 'chocolate.jpg^data/upload/uid_3/160401dezwevwjifdbubt8.jpg', 'chocolate', 0, 1394006643, 1394006643),
+(4, 13, 3, 1, 'Bacon', '25.8', 'Bacon.jpg^data/upload/uid_3/160445hzkrbcvkzv2kpe3v.jpg', 'Bacon', 0, 1394006689, 1394006689),
+(5, 13, 3, 1, 'Bolognaise', '11.5', 'Bolognaise.jpg^data/upload/uid_3/160526eaorgpeep5oae6lr.jpg', 'Bolognaise', 0, 1394006727, 1394006727),
+(6, 13, 3, 1, 'Tomato sauce', '30.5', 'Tomato sauce.jpg^data/upload/uid_3/160559mmwq3mqnzm8y1ydw.jpg', 'Tomato sauce', 0, 1394006761, 1394006761),
+(7, 13, 3, 1, 'Sausage', '15.00', 'Sausage.jpg^data/upload/uid_3/160638ckryj5yykqollgzf.jpg', 'Sausage', 0, 1394006800, 1394006817),
+(8, 13, 3, 1, 'Shrimp', '34.52', 'Shrimp.jpg^data/upload/uid_3/160725wl08a8nwnnlann0q.jpg', 'Shrimp', 0, 1394006846, 1394006846),
+(9, 13, 3, 1, 'minced pork', '17.2', 'minced pork.jpg^data/upload/uid_3/160759qxok8se82gogk8jy.jpg', 'minced pork', 0, 1394006881, 1394006881),
+(10, 13, 3, 1, 'Mushrooms', '35.8', 'Mushrooms.jpg^data/upload/uid_3/1608281ad7z1hu1h9da9za.jpg', 'Mushrooms', 0, 1394006909, 1394006909),
+(11, 5, 3, 1, 'Seafood Supreme', '34', 'Seafood Supreme.jpg^data/upload/uid_3/160949qsgb8sb9g2ocrv2q.jpg', 'Seafood Supreme', 0, 1394006991, 1394006991),
+(12, 5, 3, 1, 'Delicious Bacon', '65.3', 'Delicious Bacon.jpg^data/upload/uid_3/161022omknsfcnqmmxysnv.jpg', 'Delicious Bacon', 0, 1394007023, 1394007023),
+(13, 5, 3, 1, 'Corn Chicken', '45.68', 'Corn Chicken.jpg^data/upload/uid_3/161047cjnz9905223xj2j9.jpg', 'Corn Chicken', 0, 1394007048, 1394007048),
+(14, 5, 3, 1, 'BBQ Sausage', '68.2', 'BBQ Sausage.jpg^data/upload/uid_3/161115t0gwz6z6f5jgj09o.jpg', 'BBQ Sausage', 0, 1394007077, 1394007077),
+(15, 5, 3, 1, 'New Orleans', '45.62', 'New Orleans.jpg^data/upload/uid_3/161152folurddc2vlukpdm.jpg', 'New Orleans', 0, 1394007113, 1394007133),
+(16, 5, 3, 1, 'Surf&Turf Pizza', '54.5', 'Surf&Turf Pizza.jpg^data/upload/uid_3/1612447maa1c7amovzaaj3.jpg', 'Surf&Turf Pizza', 0, 1394007166, 1394007330),
+(17, 5, 3, 1, 'Popcorn Shrimp', '39.58', 'Popcorn Shrimp.jpg^data/upload/uid_3/1613144zysqy0by0248bi8.jpg', 'Popcorn Shrimp', 0, 1394007195, 1394007195),
+(18, 12, 3, 1, 'Regular Drink', '12.85', 'Regular Drink.jpg^data/upload/uid_3/161340jvcp7j8vv77io3j3.jpg', 'Regular Drink', 0, 1394007221, 1394077426),
+(19, 12, 3, 1, 'Large Drink', '17.5', 'Large Drink.jpg^data/upload/uid_3/161408557l625i6y60jzhh.jpg', 'Large Drink', 0, 1394007249, 1394077213);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `vl_orders`
+--
+
+DROP TABLE IF EXISTS `vl_orders`;
+CREATE TABLE IF NOT EXISTS `vl_orders` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `company_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `order_id` varchar(14) NOT NULL DEFAULT '',
+  `order_key` varchar(50) NOT NULL DEFAULT '',
+  `phone` varchar(30) NOT NULL DEFAULT '',
+  `address` varchar(255) NOT NULL DEFAULT '',
+  `dishes` text NOT NULL,
+  `totalprice` varchar(30) NOT NULL DEFAULT '',
+  `status` tinyint(1) NOT NULL DEFAULT '0',
+  `dateline` int(10) unsigned NOT NULL DEFAULT '0',
+  `app` varchar(30) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
+
+--
+-- Dumping data for table `vl_orders`
+--
+
+INSERT INTO `vl_orders` (`id`, `uid`, `company_id`, `order_id`, `order_key`, `phone`, `address`, `dishes`, `totalprice`, `status`, `dateline`, `app`) VALUES
+(9, 12, 1, '14030616320014', '', '18108675003', '反对\r\n范德萨发大幅', '{"4":{"food_count":"2","id":"4","cid":"13","uid":"3","company_id":"1","name":"Bacon","price":"25.8","filepath":"Bacon.jpg^data/upload/uid_3/160445hzkrbcvkzv2kpe3v.jpg","description":"Bacon","displayorder":"0","createtime":"1394006689","updatetime":"1394006689","food_totalprice":51.6,"path":"data/upload/uid_3/160445hzkrbcvkzv2kpe3v.jpg"},"5":{"food_count":"1","id":"5","cid":"13","uid":"3","company_id":"1","name":"Bolognaise","price":"11.5","filepath":"Bolognaise.jpg^data/upload/uid_3/160526eaorgpeep5oae6lr.jpg","description":"Bolognaise","displayorder":"0","createtime":"1394006727","updatetime":"1394006727","food_totalprice":11.5,"path":"data/upload/uid_3/160526eaorgpeep5oae6lr.jpg"}}', '63.1', 0, 1394094722, 'foodorder'),
+(7, 10, 1, '14030615560012', '', '18108675001', '反对\r\n范德萨发大幅', '{"4":{"food_count":"1","id":"4","cid":"13","uid":"3","company_id":"1","name":"Bacon","price":"25.8","filepath":"Bacon.jpg^data/upload/uid_3/160445hzkrbcvkzv2kpe3v.jpg","description":"Bacon","displayorder":"0","createtime":"1394006689","updatetime":"1394006689","food_totalprice":25.8,"path":"data/upload/uid_3/160445hzkrbcvkzv2kpe3v.jpg"}}', '25.8', 0, 1394092601, 'foodorder'),
+(8, 11, 1, '14030616300013', '', '18108675002', '反对\r\n范德萨发大幅', '{"11":{"food_count":"1","id":"11","cid":"5","uid":"3","company_id":"1","name":"Seafood Supreme","price":"34","filepath":"Seafood Supreme.jpg^data/upload/uid_3/160949qsgb8sb9g2ocrv2q.jpg","description":"Seafood Supreme","displayorder":"0","createtime":"1394006991","updatetime":"1394006991","food_totalprice":34,"path":"data/upload/uid_3/160949qsgb8sb9g2ocrv2q.jpg"},"12":{"food_count":"1","id":"12","cid":"5","uid":"3","company_id":"1","name":"Delicious Bacon","price":"65.3","filepath":"Delicious Bacon.jpg^data/upload/uid_3/161022omknsfcnqmmxysnv.jpg","description":"Delicious Bacon","displayorder":"0","createtime":"1394007023","updatetime":"1394007023","food_totalprice":65.3,"path":"data/upload/uid_3/161022omknsfcnqmmxysnv.jpg"}}', '99.3', 0, 1394094610, 'foodorder'),
+(6, 9, 1, '14030615530011', '', '18108675000', '反对\r\n范德萨发大幅', '{"5":{"food_count":"4","id":"5","cid":"13","uid":"3","company_id":"1","name":"Bolognaise","price":"11.5","filepath":"Bolognaise.jpg^data/upload/uid_3/160526eaorgpeep5oae6lr.jpg","description":"Bolognaise","displayorder":"0","createtime":"1394006727","updatetime":"1394006727","food_totalprice":46,"path":"data/upload/uid_3/160526eaorgpeep5oae6lr.jpg"},"6":{"food_count":"1","id":"6","cid":"13","uid":"3","company_id":"1","name":"Tomato sauce","price":"30.5","filepath":"Tomato sauce.jpg^data/upload/uid_3/160559mmwq3mqnzm8y1ydw.jpg","description":"Tomato sauce","displayorder":"0","createtime":"1394006761","updatetime":"1394006761","food_totalprice":30.5,"path":"data/upload/uid_3/160559mmwq3mqnzm8y1ydw.jpg"}}', '76.5', 0, 1394092399, 'foodorder'),
+(5, 8, 1, '14030615520010', '', '18108675120', 'test\r\nfdsaf\r\n范德萨发大幅', '{"4":{"food_count":"3","id":"4","cid":"13","uid":"3","company_id":"1","name":"Bacon","price":"25.8","filepath":"Bacon.jpg^data/upload/uid_3/160445hzkrbcvkzv2kpe3v.jpg","description":"Bacon","displayorder":"0","createtime":"1394006689","updatetime":"1394006689","food_totalprice":77.4,"path":"data/upload/uid_3/160445hzkrbcvkzv2kpe3v.jpg"}}', '77.4', 0, 1394092358, 'foodorder'),
+(10, 13, 1, '14030616340015', '', '18108675004', '反对\r\n范德萨发大幅', '{"4":{"food_count":"1","id":"4","cid":"13","uid":"3","company_id":"1","name":"Bacon","price":"25.8","filepath":"Bacon.jpg^data/upload/uid_3/160445hzkrbcvkzv2kpe3v.jpg","description":"Bacon","displayorder":"0","createtime":"1394006689","updatetime":"1394006689","food_totalprice":25.8,"path":"data/upload/uid_3/160445hzkrbcvkzv2kpe3v.jpg"},"5":{"food_count":"1","id":"5","cid":"13","uid":"3","company_id":"1","name":"Bolognaise","price":"11.5","filepath":"Bolognaise.jpg^data/upload/uid_3/160526eaorgpeep5oae6lr.jpg","description":"Bolognaise","displayorder":"0","createtime":"1394006727","updatetime":"1394006727","food_totalprice":11.5,"path":"data/upload/uid_3/160526eaorgpeep5oae6lr.jpg"}}', '37.3', 0, 1394094892, 'foodorder'),
+(11, 14, 1, '14030616360016', '', '18108675005', '反对\r\n范德萨发大幅', '{"4":{"food_count":"3","id":"4","cid":"13","uid":"3","company_id":"1","name":"Bacon","price":"25.8","filepath":"Bacon.jpg^data/upload/uid_3/160445hzkrbcvkzv2kpe3v.jpg","description":"Bacon","displayorder":"0","createtime":"1394006689","updatetime":"1394006689","food_totalprice":77.4,"path":"data/upload/uid_3/160445hzkrbcvkzv2kpe3v.jpg"},"5":{"food_count":"1","id":"5","cid":"13","uid":"3","company_id":"1","name":"Bolognaise","price":"11.5","filepath":"Bolognaise.jpg^data/upload/uid_3/160526eaorgpeep5oae6lr.jpg","description":"Bolognaise","displayorder":"0","createtime":"1394006727","updatetime":"1394006727","food_totalprice":11.5,"path":"data/upload/uid_3/160526eaorgpeep5oae6lr.jpg"}}', '88.9', 0, 1394094960, 'foodorder'),
+(12, 15, 1, '14030616400017', '', '18108675006', '反对\r\n范德萨发大幅', '{"4":{"food_count":"1","id":"4","cid":"13","uid":"3","company_id":"1","name":"Bacon","price":"25.8","filepath":"Bacon.jpg^data/upload/uid_3/160445hzkrbcvkzv2kpe3v.jpg","description":"Bacon","displayorder":"0","createtime":"1394006689","updatetime":"1394006689","food_totalprice":25.8,"path":"data/upload/uid_3/160445hzkrbcvkzv2kpe3v.jpg"}}', '25.8', 0, 1394095244, 'foodorder'),
+(13, 15, 1, '14030616490018', '', '18108675006', '反对\r\n范德萨发大幅', '{"4":{"food_count":"2","id":"4","cid":"13","uid":"3","company_id":"1","name":"Bacon","price":"25.8","filepath":"Bacon.jpg^data/upload/uid_3/160445hzkrbcvkzv2kpe3v.jpg","description":"Bacon","displayorder":"0","createtime":"1394006689","updatetime":"1394006689","food_totalprice":51.6,"path":"data/upload/uid_3/160445hzkrbcvkzv2kpe3v.jpg"},"5":{"food_count":"1","id":"5","cid":"13","uid":"3","company_id":"1","name":"Bolognaise","price":"11.5","filepath":"Bolognaise.jpg^data/upload/uid_3/160526eaorgpeep5oae6lr.jpg","description":"Bolognaise","displayorder":"0","createtime":"1394006727","updatetime":"1394006727","food_totalprice":11.5,"path":"data/upload/uid_3/160526eaorgpeep5oae6lr.jpg"}}', '63.1', 0, 1394095747, 'foodorder'),
+(14, 16, 1, '14030616490019', '', '18108675007', '反对\r\n范德萨发大幅', '{"4":{"food_count":"2","id":"4","cid":"13","uid":"3","company_id":"1","name":"Bacon","price":"25.8","filepath":"Bacon.jpg^data/upload/uid_3/160445hzkrbcvkzv2kpe3v.jpg","description":"Bacon","displayorder":"0","createtime":"1394006689","updatetime":"1394006689","food_totalprice":51.6,"path":"data/upload/uid_3/160445hzkrbcvkzv2kpe3v.jpg"}}', '51.6', 0, 1394095769, 'foodorder'),
+(15, 16, 1, '14030617070020', '', '18108675007', '反对\r\n范德萨发大幅', '{"11":{"food_count":"2","id":"11","cid":"5","uid":"3","company_id":"1","name":"Seafood Supreme","price":"34","filepath":"Seafood Supreme.jpg^data/upload/uid_3/160949qsgb8sb9g2ocrv2q.jpg","description":"Seafood Supreme","displayorder":"0","createtime":"1394006991","updatetime":"1394006991","food_totalprice":68,"path":"data/upload/uid_3/160949qsgb8sb9g2ocrv2q.jpg"},"12":{"food_count":"2","id":"12","cid":"5","uid":"3","company_id":"1","name":"Delicious Bacon","price":"65.3","filepath":"Delicious Bacon.jpg^data/upload/uid_3/161022omknsfcnqmmxysnv.jpg","description":"Delicious Bacon","displayorder":"0","createtime":"1394007023","updatetime":"1394007023","food_totalprice":130.6,"path":"data/upload/uid_3/161022omknsfcnqmmxysnv.jpg"}}', '198.6', 0, 1394096840, 'foodorder'),
+(16, 16, 1, '14030617070021', '', '18108675007', '反对\r\n范德萨发大幅', '{"4":{"food_count":"1","id":"4","cid":"13","uid":"3","company_id":"1","name":"Bacon","price":"25.8","filepath":"Bacon.jpg^data/upload/uid_3/160445hzkrbcvkzv2kpe3v.jpg","description":"Bacon","displayorder":"0","createtime":"1394006689","updatetime":"1394006689","food_totalprice":25.8,"path":"data/upload/uid_3/160445hzkrbcvkzv2kpe3v.jpg"},"5":{"food_count":"1","id":"5","cid":"13","uid":"3","company_id":"1","name":"Bolognaise","price":"11.5","filepath":"Bolognaise.jpg^data/upload/uid_3/160526eaorgpeep5oae6lr.jpg","description":"Bolognaise","displayorder":"0","createtime":"1394006727","updatetime":"1394006727","food_totalprice":11.5,"path":"data/upload/uid_3/160526eaorgpeep5oae6lr.jpg"}}', '37.3', 0, 1394096852, 'foodorder'),
+(17, 16, 1, '14030617070022', '', '18108675007', '反对\r\n范德萨发大幅', '{"5":{"food_count":"1","id":"5","cid":"13","uid":"3","company_id":"1","name":"Bolognaise","price":"11.5","filepath":"Bolognaise.jpg^data/upload/uid_3/160526eaorgpeep5oae6lr.jpg","description":"Bolognaise","displayorder":"0","createtime":"1394006727","updatetime":"1394006727","food_totalprice":11.5,"path":"data/upload/uid_3/160526eaorgpeep5oae6lr.jpg"},"6":{"food_count":"1","id":"6","cid":"13","uid":"3","company_id":"1","name":"Tomato sauce","price":"30.5","filepath":"Tomato sauce.jpg^data/upload/uid_3/160559mmwq3mqnzm8y1ydw.jpg","description":"Tomato sauce","displayorder":"0","createtime":"1394006761","updatetime":"1394006761","food_totalprice":30.5,"path":"data/upload/uid_3/160559mmwq3mqnzm8y1ydw.jpg"},"4":{"food_count":"3","id":"4","cid":"13","uid":"3","company_id":"1","name":"Bacon","price":"25.8","filepath":"Bacon.jpg^data/upload/uid_3/160445hzkrbcvkzv2kpe3v.jpg","description":"Bacon","displayorder":"0","createtime":"1394006689","updatetime":"1394006689","food_totalprice":77.4,"path":"data/upload/uid_3/160445hzkrbcvkzv2kpe3v.jpg"},"8":{"food_count":"2","id":"8","cid":"13","uid":"3","company_id":"1","name":"Shrimp","price":"34.52","filepath":"Shrimp.jpg^data/upload/uid_3/160725wl08a8nwnnlann0q.jpg","description":"Shrimp","displayorder":"0","createtime":"1394006846","updatetime":"1394006846","food_totalprice":69.04,"path":"data/upload/uid_3/160725wl08a8nwnnlann0q.jpg"},"9":{"food_count":"1","id":"9","cid":"13","uid":"3","company_id":"1","name":"minced pork","price":"17.2","filepath":"minced pork.jpg^data/upload/uid_3/160759qxok8se82gogk8jy.jpg","description":"minced pork","displayorder":"0","createtime":"1394006881","updatetime":"1394006881","food_totalprice":17.2,"path":"data/upload/uid_3/160759qxok8se82gogk8jy.jpg"},"10":{"food_count":"1","id":"10","cid":"13","uid":"3","company_id":"1","name":"Mushrooms","price":"35.8","filepath":"Mushrooms.jpg^data/upload/uid_3/1608281ad7z1hu1h9da9za.jpg","description":"Mushrooms","displayorder":"0","createtime":"1394006909","updatetime":"1394006909","food_totalprice":35.8,"path":"data/upload/uid_3/1608281ad7z1hu1h9da9za.jpg"},"12":{"food_count":"2","id":"12","cid":"5","uid":"3","company_id":"1","name":"Delicious Bacon","price":"65.3","filepath":"Delicious Bacon.jpg^data/upload/uid_3/161022omknsfcnqmmxysnv.jpg","description":"Delicious Bacon","displayorder":"0","createtime":"1394007023","updatetime":"1394007023","food_totalprice":130.6,"path":"data/upload/uid_3/161022omknsfcnqmmxysnv.jpg"},"13":{"food_count":"1","id":"13","cid":"5","uid":"3","company_id":"1","name":"Corn Chicken","price":"45.68","filepath":"Corn Chicken.jpg^data/upload/uid_3/161047cjnz9905223xj2j9.jpg","description":"Corn Chicken","displayorder":"0","createtime":"1394007048","updatetime":"1394007048","food_totalprice":45.68,"path":"data/upload/uid_3/161047cjnz9905223xj2j9.jpg"}}', '417.72', 0, 1394096874, 'foodorder'),
+(18, 16, 1, '14030617310023', '', '18108675007', '反对\r\n范德萨发大幅', '{"1":{"food_count":"1","id":"1","cid":"6","uid":"3","company_id":"1","name":"fresh Florida stone crab","price":"20.85","filepath":"fresh Florida stone crab.jpg^data/upload/uid_3/1601001q1lrxee1x8xec1d.jpg","description":"fresh Florida stone crab","displayorder":"0","createtime":"1394005776","updatetime":"1394077489","food_totalprice":20.85,"path":"data/upload/uid_3/1601001q1lrxee1x8xec1d.jpg"},"11":{"food_count":"1","id":"11","cid":"5","uid":"3","company_id":"1","name":"Seafood Supreme","price":"34","filepath":"Seafood Supreme.jpg^data/upload/uid_3/160949qsgb8sb9g2ocrv2q.jpg","description":"Seafood Supreme","displayorder":"0","createtime":"1394006991","updatetime":"1394006991","food_totalprice":34,"path":"data/upload/uid_3/160949qsgb8sb9g2ocrv2q.jpg"},"12":{"food_count":"1","id":"12","cid":"5","uid":"3","company_id":"1","name":"Delicious Bacon","price":"65.3","filepath":"Delicious Bacon.jpg^data/upload/uid_3/161022omknsfcnqmmxysnv.jpg","description":"Delicious Bacon","displayorder":"0","createtime":"1394007023","updatetime":"1394007023","food_totalprice":65.3,"path":"data/upload/uid_3/161022omknsfcnqmmxysnv.jpg"},"5":{"food_count":"3","id":"5","cid":"13","uid":"3","company_id":"1","name":"Bolognaise","price":"11.5","filepath":"Bolognaise.jpg^data/upload/uid_3/160526eaorgpeep5oae6lr.jpg","description":"Bolognaise","displayorder":"0","createtime":"1394006727","updatetime":"1394006727","food_totalprice":34.5,"path":"data/upload/uid_3/160526eaorgpeep5oae6lr.jpg"}}', '154.65', 0, 1394098276, 'foodorder'),
+(19, 16, 1, '14030617450024', '', '18108675007', '反对\r\n范德萨发大幅', '{"4":{"food_count":"1","id":"4","cid":"13","uid":"3","company_id":"1","name":"Bacon","price":"25.8","filepath":"Bacon.jpg^data/upload/uid_3/160445hzkrbcvkzv2kpe3v.jpg","description":"Bacon","displayorder":"0","createtime":"1394006689","updatetime":"1394006689","food_totalprice":25.8,"path":"data/upload/uid_3/160445hzkrbcvkzv2kpe3v.jpg"}}', '25.8', 0, 1394099147, 'foodorder');
 
 -- --------------------------------------------------------
 
@@ -8220,18 +8269,28 @@ CREATE TABLE IF NOT EXISTS `vl_users` (
   `username` char(32) NOT NULL DEFAULT '',
   `password` char(32) NOT NULL DEFAULT '',
   `userlevel` tinyint(1) NOT NULL DEFAULT '0',
+  `status` tinyint(1) NOT NULL DEFAULT '0',
   `dateline` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`uid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
 
 --
 -- Dumping data for table `vl_users`
 --
 
-INSERT INTO `vl_users` (`uid`, `username`, `password`, `userlevel`, `dateline`) VALUES
-(3, 'company1', 'fc538398defd0ba100bf9ccb33b93e00', 6, 1393838424),
-(2, 'ehomeshasha', 'fc538398defd0ba100bf9ccb33b93e00', 9, 1393837091),
-(5, 'custom2', 'fc538398defd0ba100bf9ccb33b93e00', 1, 1393980706);
+INSERT INTO `vl_users` (`uid`, `username`, `password`, `userlevel`, `status`, `dateline`) VALUES
+(3, 'company1', 'fc538398defd0ba100bf9ccb33b93e00', 6, 0, 1393838424),
+(2, 'ehomeshasha', 'fc538398defd0ba100bf9ccb33b93e00', 9, 0, 1393837091),
+(5, 'custom2', 'fc538398defd0ba100bf9ccb33b93e00', 1, 0, 1393980706),
+(8, '18108675120', '5fa03412f103f92fe8a6fb764aca3022', 1, 0, 1394092358),
+(9, '18108675000', '1568f8d38020b8f24e9c8d4366662bda', 1, 0, 1394092399),
+(10, '18108675001', '70b27f8190baa1577cad7214650999ef', 1, 0, 1394092601),
+(11, '18108675002', 'c77f564674c3755a2e96263b61ecb957', 1, 0, 1394094610),
+(12, '18108675003', '4715dc2baacd07a7e02b68e31fc98fa5', 1, 0, 1394094722),
+(13, '18108675004', '72d167596f0e5cdbde4f29601ea863a2', 1, 0, 1394094892),
+(14, '18108675005', '408ad55111b2983968c384d54c734993', 1, 0, 1394094960),
+(15, '18108675006', '375d47da1b2ef8706cd4e44739cbe7b7', 1, 0, 1394095244),
+(16, '18108675007', '9e74f0bbf304636a89ed7121abf0e0e0', 1, 0, 1394095769);
 
 -- --------------------------------------------------------
 
@@ -8242,11 +8301,28 @@ INSERT INTO `vl_users` (`uid`, `username`, `password`, `userlevel`, `dateline`) 
 DROP TABLE IF EXISTS `vl_user_info`;
 CREATE TABLE IF NOT EXISTS `vl_user_info` (
   `uid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `contactname` varchar(30) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `weixin` varchar(20) CHARACTER SET utf8 NOT NULL DEFAULT '',
   `phone` varchar(30) CHARACTER SET utf8 NOT NULL DEFAULT '',
   `address` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
   `credits` varchar(20) CHARACTER SET utf8 NOT NULL DEFAULT '',
   UNIQUE KEY `uid` (`uid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `vl_user_info`
+--
+
+INSERT INTO `vl_user_info` (`uid`, `contactname`, `weixin`, `phone`, `address`, `credits`) VALUES
+(8, '', '', '18108675120', 'test\r\nfdsaf\r\n范德萨发大幅', '77.4'),
+(9, '', '', '18108675000', '反对\r\n范德萨发大幅', '76.5'),
+(10, '', '', '18108675001', '反对\r\n范德萨发大幅', '25.8'),
+(11, '', '', '18108675002', '反对\r\n范德萨发大幅', '99.3'),
+(12, '', '', '18108675003', '反对\r\n范德萨发大幅', '63.1'),
+(13, '', '', '18108675004', '反对\r\n范德萨发大幅', '37.3'),
+(14, '', '', '18108675005', '反对\r\n范德萨发大幅', '88.9'),
+(15, '', '', '18108675006', '反对\r\n范德萨发大幅', '88.9'),
+(16, '', '', '18108675007', '反对\r\n范德萨发大幅', '885.67');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

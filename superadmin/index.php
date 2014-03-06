@@ -27,11 +27,8 @@ if(!is_file(ROOT_PATH.'/'.SUPERADMIN_DIR.'/controls/'.$controller.'.class.php'))
 	$controller='index';
 	$action='index';
 }
-print_r($_COOKIE);
-if(!check_login()) {
-	//$controller='login';
-	//$action = $action == 'login' ? $action : 'index';
-}
+check_login('superadmin');
+
 $_G['controller'] = $controller;
 $_G['action'] = $action;
 $_G['active_nav'] = get_active_nav();

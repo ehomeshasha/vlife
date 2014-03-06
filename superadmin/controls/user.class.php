@@ -17,7 +17,7 @@ class user_controller {
 		
 		if($_G['userlevel'] != $_G['setting']['userlevel']['superadmin'] && $superadmin_count != 0) {
 			$msg = "Please login as superadmin first";
-			login_page($msg);
+			superadmin_login_page($msg);
 		}
 	}
 	
@@ -44,19 +44,14 @@ class user_controller {
 		} elseif($userlevel == $_G['setting']['userlevel']['company']) {
 			$company_active = "active";
 		}
-		$perpage = getgpc('perpage');
-		if(!empty($perpage)) {
-			$_SESSION['perpage'] = $perpage;
-		} else {
-			$perpage = empty($_SESSION['perpage'])? $_G['setting']['perpage'] : $_SESSION['perpage'];
-		}
 		
-		$page = empty($_GET['page'])?0:intval($_GET['page']);
-		if($page<1) $page=1;
-		$start = ($page-1)*$perpage;
-		if(!$_G['mobile']) {
-			$limit = "LIMIT $start, $perpage";
-		}
+		include_once ROOT_PATH.'./inc/paginator.class.php';
+		$count = $this->users->GetCount(" and userlevel='$userlevel'");
+		$paginator = new paginator($count, "index.php?home=".$_G['controller']."&userlevel=$userlevel");
+		$perpage = $paginator->get_perpage();
+		$limit = $paginator->get_limit();
+		$multi = $paginator->get_multi();
+		
 		$user_list = $GLOBALS['db']->fetch_all("SELECT * FROM ".tname('users')." WHERE 1 AND userlevel='$userlevel' ORDER BY dateline DESC $limit");
 		
 		include_once template('superadmin#user_list');

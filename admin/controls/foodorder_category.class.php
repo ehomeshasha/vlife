@@ -12,7 +12,7 @@ class foodorder_category_controller {
 		$this->category = new common('category');
 		if($_G['userlevel'] != $_G['setting']['userlevel']['company']) {
 			$msg = "Company only for Admin Center";
-			login_page($msg);
+			admin_login_page($msg);
 		}
 		check_company_exists();
 	}

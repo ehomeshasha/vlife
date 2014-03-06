@@ -12,7 +12,7 @@ class foodorder_dishes_controller {
 		$this->dishes = new common('dishes');
 		if($_G['userlevel'] != $_G['setting']['userlevel']['company']) {
 			$msg = "Company only for Admin Center";
-			login_page($msg);
+			admin_login_page($msg);
 		}
 		check_company_exists();
 	}
@@ -111,20 +111,13 @@ class foodorder_dishes_controller {
 			
 		);
 		
+		include_once ROOT_PATH.'./inc/paginator.class.php';
+		$count = $this->dishes->GetCount(" and uid='$_G[uid]'");
+		$paginator = new paginator($count);
+		$perpage = $paginator->get_perpage();
+		$limit = $paginator->get_limit();
+		$multi = $paginator->get_multi();
 		
-		$perpage = getgpc('perpage');
-		if(!empty($perpage)) {
-			$_SESSION['perpage'] = $perpage;
-		} else {
-			$perpage = empty($_SESSION['perpage'])? $_G['setting']['perpage'] : $_SESSION['perpage'];
-		}
-		
-		$page = empty($_GET['page'])?0:intval($_GET['page']);
-		if($page<1) $page=1;
-		$start = ($page-1)*$perpage;
-		if(!$_G['mobile']) {
-			$limit = "LIMIT $start, $perpage";
-		}
 		$dishes = $GLOBALS['db']->fetch_all("SELECT a.*,b.name as restaurant_name 
 		FROM ".tname('dishes')." AS a LEFT JOIN ".tname('company')." AS b ON a.company_id=b.id 
 		WHERE a.uid='$_G[uid]' ORDER BY a.createtime DESC $limit");

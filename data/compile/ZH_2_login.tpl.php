@@ -9,7 +9,7 @@ $("#next").val(location.href);
 <div class="container-fluid">
 <div class="row-fluid">
 <div class="span12"><? include template('breadcrumb', '0', ''); ?><?=$_G['message']?>
-<form action="<?=SITE_ROOT?>index.php?home=login&act=login" class="post_form form-horizontal" method="post" autocomplete="off">
+<form action="<?=SITE_ROOT?>admin/index.php?home=login&act=login" class="post_form form-horizontal" method="post" autocomplete="off">
 <?=$csrf?>
 <input type="hidden" name="next" id="next" value="" />
 <fieldset>

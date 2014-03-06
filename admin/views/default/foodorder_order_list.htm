@@ -5,27 +5,28 @@
 	<table class="table table-condensed">
 		<tr>
 			<td width="">ID</td>
-			<td width="">{lang Name}</td>
-			<!--{if !$_G['mobile']}-->
-			<td width="">{lang Phone}</td>
-			<td width="">{lang Address}</td>
-			<!--{/if}-->
+			<td width="">{lang OrderID}</td>
+	    	<td width="">{lang Amount}</td>
+	    	<!--{if !$_G['mobile']}-->
+	    	<td width="">{lang Phone}</td>
+	    	<td width="">{lang Address}</td>
+	    	<!--{/if}-->
 	    	<td width="">{lang Createtime}</td>
-	    	<td width="">Opration</td>
+	    	<td width="">{lang Opration}</td>
 	  	</tr>
-		<!--{loop $company_list $k $v}-->
+		<!--{loop $orders $k $v}-->
 		<tr>
 		
 	    	<td>$v['id']</td>
-	    	<td>{$v['name']}</td>
+	    	<td>{$v['order_id']}</td>
+	    	<td>{$v['totalprice']}</td>
 	    	<!--{if !$_G['mobile']}-->
 	    	<td>{$v['phone']}</td>
-	    	<td>{$v['address']}</td>
+	    	<td>{eval echo get_br($v['address']);}</td>
 	    	<!--{/if}-->
 	    	<td>{eval echo get_abbr_date($v['dateline'], true);}</td>
 	    	<td>
-	    		<a href="index.php?home=foodorder_company&act=post&opt=edit&id={$v['id']}" href="">{lang Edit}</a>
-	    		<a href="javascript:;" class="deletelink" data-uid="{$v['uid']}" data-id="{$v['id']}" data-type="Restaurant" data-href="index.php?home=foodorder_company&act=delete">{lang Delete}</a>
+	    		<a href="index.php?home=foodorder_order&act=view&id={$v['id']}">{lang View}</a>
 	    	</td>
 	    </tr>
 		<!--{/loop}-->

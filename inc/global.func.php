@@ -2,6 +2,9 @@
 if(!defined('IN_SYSTEM')) {
 	exit('Access Denied');
 }
+function get_br($val) {
+	return preg_replace("/\r{0,1}\n/", "<br />", $val);
+}
 function logout() {
 	include_once ROOT_PATH."./controls/login.class.php";
 	$login = new login_controller();
@@ -25,6 +28,14 @@ function user_save($data) {
 		$GLOBALS['db']->query("INSERT INTO ".tname('user_info')." 
 		(uid,contactname,weixin,phone,address,credits) VALUES 
 		('$uid','$contactname','$weixin','$phone','$address','$credits')");
+		
+		
+		$_POST['username'] = $_POST['password'] = trim($_COOKIE['telephone']);
+		include_once ROOT_PATH.'./controls/login.class.php';
+		$login = new login_controller();
+		$login->login_action(1);
+		
+		
 	} else {
 		$uid = $user_info['uid'];
 		$credits = floatval($user_info['credits']) + floatval($credits);
@@ -207,8 +218,24 @@ function login_page($msg) {
 	$login->index_action();
 	exit;
 }
-
-
+function admin_login_page($msg) {
+	global $_G;
+	$_SESSION['message'] = array('code' => '-1', 'content' => array(lang($msg)));
+	$_G['message'] = initmessage();
+	include_once ROOT_PATH.'./admin/controls/login.class.php';
+	$login = new login_controller();
+	$login->index_action();
+	exit;
+}
+function superadmin_login_page($msg) {
+	global $_G;
+	$_SESSION['message'] = array('code' => '-1', 'content' => array(lang($msg)));
+	$_G['message'] = initmessage();
+	include_once ROOT_PATH.'./superadmin/controls/login.class.php';
+	$login = new login_controller();
+	$login->index_action();
+	exit;
+}
 
 
 function selectOpt($opt, $optArr) {
@@ -777,9 +804,13 @@ function cutstr($string, $length, $dot = ' ...') {
 	}
 	return $strcut.$dot;
 }
-function check_login() {
+function check_login($model) {
 	global $_G,$cookies;
-	$encode_str = $cookies->get("system_auth");
+	if(!empty($model)) {
+		$encode_str = $cookies->get($model."_system_auth");
+	} else {
+		$encode_str = $cookies->get("system_auth");
+	}
 	if(empty($encode_str)) return false;
 	$decode_str = uc_authcode($encode_str, 'DECODE', SYSTEM_KEY);
 	if(checkuser($decode_str)) {
@@ -794,13 +825,15 @@ function checkuser($decode_str) {
 	$password = urldecode($decode_str_arr[2]);
 	if(getcount('users',"uid='$uid' AND username='$username' AND password='$password'") > 0) {
 		global $_G;
-		$user = $GLOBALS['db']->fetch_all("SELECT a.*,b.* 
-		FROM ".tname('users')." AS a LEFT JOIN ".tname('user_info')." AS b ON a.uid=b.uid 
-		WHERE a.uid='$uid' AND a.username='$username' AND a.password='$password'");
-		$_G['uid'] = $user[0]['uid'];
-		$_G['username'] = $user[0]['username'];
-		$_G['userlevel'] = $user[0]['userlevel'];
-		$_G['userinfo'] = $user[0];
+		$user = $GLOBALS['db']->fetch_first("SELECT * FROM ".tname('users')." WHERE uid='$uid' AND username='$username' AND password='$password'");
+		$user_info = $GLOBALS['db']->fetch_first("SELECT * FROM ".tname('user_info')." WHERE uid='$uid'");
+		if(!empty($user_info)) {
+			$user = array_merge($user, $user_info);	
+		}
+		$_G['uid'] = $user['uid'];
+		$_G['username'] = $user['username'];
+		$_G['userlevel'] = $user['userlevel'];
+		$_G['userinfo'] = $user;
 		return true;
 	}
 	return false;
