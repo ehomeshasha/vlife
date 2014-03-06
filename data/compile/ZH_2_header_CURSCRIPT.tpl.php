@@ -1,20 +1,21 @@
 <? if(!defined('IN_SYSTEM')) exit('Access Denied'); ?>
 <!DOCTYPE html>
-<html>
+<html lang="en-us">
 <head>
-<title>Vlife | Admin Center</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="<?=SITE_ROOT?>views/default/css/bootstrap.min.css" type="text/css" rel="stylesheet" media="screen">
-<link href="<?=SITE_ROOT?>views/default/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet" media="screen">
-<link href="<?=SITE_ROOT?>views/default/css/datepicker.css" type="text/css" rel="stylesheet">
-<!--<link href="views/default/css/datepicker.less" type="text/css" rel="stylesheet/less">-->
-<link href="<?=SITE_ROOT?>views/default/css/common.css" type="text/css" rel="stylesheet">
-<script src="<?=SITE_ROOT?>views/default/js/jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="<?=SITE_ROOT?>views/default/js/bootstrap.min.js" type="text/javascript"></script>
-<script src="<?=SITE_ROOT?>views/default/js/bootstrap-datepicker.js" type="text/javascript"></script>
-<script src="<?=SITE_ROOT?>views/default/js/common.js" type="text/javascript"></script>
-<script src="<?=SITE_ROOT?>uploadify/jquery.uploadify.min.js" type="text/javascript" type="text/javascript"></script>
-<link rel="stylesheet" type="text/css" href="<?=SITE_ROOT?>uploadify/uploadify.css">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0" /> -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="keywords" content=" " />
+<meta name="description" content=" " />
+<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" type="text/css"/>
+<link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css" type="text/css"/>
+<script src="views/default/js/jquery-1.10.2.min.js" type="text/javascript"></script>
+<script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="views/default/js/front.js" type="text/javascript"></script>
+<link rel="stylesheet" href="views/default/css/common.css" type="text/css"/>
+<link rel="icon" href="" type="image/x-icon" />
+<link rel="shortcut icon" href="" type="image/x-icon" />
+<title> Enjoy the quality of life, to try Home Dishes! </title>
 <script type="text/javascript">
 var controller = "<?=$_G['controller']?>";
 var action = "<?=$_G['action']?>";
@@ -30,36 +31,18 @@ $(".clear_session").trigger('click');
 </script>
 </head>
 <body>
-<header>
-<div class="container-fluid">
-<div class="row-fluid">
-<div class="span12">
-<div class="navbar">
-<div class="navbar-inner">
-<div class="brand">
-<a href="index.php?home=foodorder_company" style="color:#777;"><?=$_G['username']?> Console</a>
-<a href="<?=SITE_ROOT?>admin/index.php?home=login&act=logout"class="mrm">
-<sub>
-[Signout]
-</sub>
-</a>
-</div>
-<ul class="nav jznav">
-<li class="<? if($_G['active_nav']['model'] == 'foodorder') { ?>active<? } ?>"><a href="index.php?home=foodorder_company">Food Order</a></li>
+<div class="container body" id="body">
+<div class="header">
+<nav class="navbar navbar-default" id="navigation" role="navigation" style="">
+<!-- Brand and toggle get grouped for better mobile display -->
+<div class="navbar-header">
+<ul class="nav navbar-nav" style="margin:0;">
+<li class="pull-left <? if($_G['active_nav']['model'] == 'index') { ?>active<? } ?>"><a href=".">HOME</a></li>
+<li class="pull-left <? if($_G['active_nav']['model'] == 'menu') { ?>active<? } ?>"><a href="index.php?home=menu">Menu</a></li>
+<li class="pull-left <? if($_G['active_nav']['model'] == 'cart') { ?>active<? } ?>"><a href="index.php?home=cart">Cart</a></li>
+<li class="pull-left <? if($_G['active_nav']['model'] == 'order') { ?>active<? } ?>"><a href="index.php?home=order">Orders</a></li>
+<li class="pull-left <? if($_G['active_nav']['model'] == 'setting') { ?>active<? } ?>"><a href="index.php?home=setting">Setting</a></li>
 </ul>
 </div>
+</nav>
 </div>
-</div>
-</div>
-</div>
-</header>
-<div class="container-fluid">
-<div class="row-fluid">
-<div class="span12">
-<div class="tabbable">
-<ul class="nav nav-tabs">
-<li class="<? if($_G['active_nav']['value'] == 'foodorder_company#index') { ?>active<? } ?>"><a href="index.php?home=foodorder_company">Restaurant</a></li>
-<li class="<? if($_G['active_nav']['value'] == 'foodorder_category#index') { ?>active<? } ?>"><a href="index.php?home=foodorder_category">Category</a></li>
-<li class="<? if($_G['active_nav']['value'] == 'foodorder_dishes#index') { ?>active<? } ?>"><a href="index.php?home=foodorder_dishes">Dishes</a></li>
-<li class="<? if($_G['active_nav']['value'] == 'foodorder_order#index') { ?>active<? } ?>"><a href="index.php?home=foodorder_order">Order</a></li>
-</ul>

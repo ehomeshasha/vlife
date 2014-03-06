@@ -24,14 +24,17 @@ class paginator {
 		$this->page = empty($_GET['page'])?0:intval($_GET['page']);
 		if($this->page<1) $this->page=1;
 		$this->start = ($this->page-1)*$this->perpage;
-		if(!$_G['mobile']) {
-			$this->limit = "LIMIT $this->start, $this->perpage";
-		}
 		
 		if($url == "") {
 			$url = "index.php?home=".$_G['controller'];
 		}
-		$this->multi = multi($this->count, $this->perpage, $this->page, $url);
+		if(!$_G['mobile']) {
+			$this->limit = "LIMIT $this->start, $this->perpage";
+			$this->multi = multi($this->count, $this->perpage, $this->page, $url);
+		} else {
+			$this->multi = "";
+		}
+		
 		
 	}
 	
