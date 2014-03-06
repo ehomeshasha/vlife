@@ -7,7 +7,7 @@ class index_controller {
 
 	//构造函数
 	public function __construct() {
-		include ROOT_PATH.'./models/common.php';
+		include_once ROOT_PATH.'./models/common.php';
 		$this->company = new common('company');
 		$this->dishes = new common('dishes');
 		$this->users = new common('users');
@@ -24,7 +24,7 @@ class index_controller {
 			$main_menu .= ",".$v['name'];
 		}
 		$main_menu = substr($main_menu, 1);
-		include template('index');
+		include_once template('index');
 	}
 	
 	

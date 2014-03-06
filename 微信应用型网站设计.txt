@@ -43,7 +43,6 @@ userlevel
 6 => '商家',
 1 => '普通用户',
 apps 设置'点餐', '团购', ...等商家或用户起作用的app类别，用json字符串进行存储,一个user可以对应多个app
-phone
 dateline 注册时间
 
 2.商户信息数据表设计 vl_company
@@ -61,6 +60,7 @@ app
 3.类别数据表设计 vl_category
 cid
 uid
+company_id
 fid
 name
 displayorder
@@ -70,6 +70,7 @@ app
 id
 cid
 uid
+company_id
 name
 price
 filepath

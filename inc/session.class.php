@@ -119,6 +119,8 @@ class session {
 	}
 	
 	
+	
+	
 	function csrfguard_start() {
 		if (count ( $_POST )) {
 			if (! isset ( $_POST ['CSRFName'] ) or ! isset ( $_POST ['CSRFToken'] )) {

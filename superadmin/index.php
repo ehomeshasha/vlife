@@ -3,9 +3,9 @@ session_start();
 global $_G;
 $_G['system_model'] = 2;
 define(SUPERADMIN_DIR, 'superadmin');
-require('../inc/common.inc.php');
-require(ROOT_PATH.'/inc/cookies.class.php');
-require(ROOT_PATH.'/inc/session.class.php');
+require_once('../inc/common.inc.php');
+require_once(ROOT_PATH.'/inc/cookies.class.php');
+require_once(ROOT_PATH.'/inc/session.class.php');
 $cookies = new cookies();
 $session = new session();
 
@@ -27,6 +27,7 @@ if(!is_file(ROOT_PATH.'/'.SUPERADMIN_DIR.'/controls/'.$controller.'.class.php'))
 	$controller='index';
 	$action='index';
 }
+print_r($_COOKIE);
 if(!check_login()) {
 	//$controller='login';
 	//$action = $action == 'login' ? $action : 'index';

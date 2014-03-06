@@ -7,7 +7,7 @@ class user_controller {
 
 	public function __construct() {
 		global $_G;
-		include ROOT_PATH.'./models/common.php';
+		include_once ROOT_PATH.'./models/common.php';
 		$this->users = new common('users');
 		$superadmin_count = $this->users->GetCount(" and userlevel={$_G['setting']['userlevel']['superadmin']}");
 		$this->userlevel_array = $_G['setting']['userlevel'];
@@ -59,7 +59,7 @@ class user_controller {
 		}
 		$user_list = $GLOBALS['db']->fetch_all("SELECT * FROM ".tname('users')." WHERE 1 AND userlevel='$userlevel' ORDER BY dateline DESC $limit");
 		
-		include template('superadmin#user_list');
+		include_once template('superadmin#user_list');
 	}
 	
 	public function post_action() {
@@ -85,7 +85,7 @@ class user_controller {
 			);
 			
 			
-			include template('superadmin#user_post');
+			include_once template('superadmin#user_post');
 		} else {
 			$GLOBALS['session']->csrfguard_start();
 			$username = getgpc('username');

@@ -1,5 +1,6 @@
 {template header}
 <div class="main">
+	{$_G['message']}
 	<div class="image_layer" style="position:absolute;top:5em;left:0;z-index:998;padding:8px 8px;background-color:rgba(0,0,0,0.1);display:none;">
 		<span class="image_close_btn glyphicon glyphicon-remove-sign" style="position:absolute;right:0;top:-5px;font-size:1.5em;z-index:999;cursor:pointer;"></span>
 		<div class="image_container"></div>	
@@ -42,7 +43,7 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div></div>
 <script type="text/javascript">
 $(function(){
 	$(".food_image_link").click(function(){

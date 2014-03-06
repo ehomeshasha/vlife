@@ -7,13 +7,14 @@ class foodorder_category_controller {
 
 	public function __construct() {
 		global $_G;
-		include ROOT_PATH.'./models/common.php';
+		include_once ROOT_PATH.'./models/common.php';
 		$this->users = new common('users');
 		$this->category = new common('category');
 		if($_G['userlevel'] != $_G['setting']['userlevel']['company']) {
 			$msg = "Company only for Admin Center";
 			login_page($msg);
 		}
+		check_company_exists();
 	}
 	
 	
@@ -29,6 +30,9 @@ class foodorder_category_controller {
 				$category = $GLOBALS['db']->fetch_first("SELECT * FROM ".tname('category')." WHERE cid='$cid' AND uid='$_G[uid]'");
 				$displayorder = $category['displayorder'];
 				$head_text = lang('Edit category');
+				$restaurant_html = init_restaurant($category['company_id']);
+			} else {
+				$restaurant_html = init_restaurant();
 			}
 			
 			$category_html = init_category($_G['categorytree']['foodorder'], $category[fid], 0, 0);
@@ -39,7 +43,8 @@ class foodorder_category_controller {
 			);
 			$csrf = $GLOBALS['session']->get_csrf();
 			
-			include template('admin#foodorder_category_post');
+			
+			include_once template('admin#foodorder_category_post');
 			
 			
 		} else {
@@ -48,12 +53,14 @@ class foodorder_category_controller {
 			
 			$name = chkLength("Restaurant name", getgpc('name'), 0, 30);
 			$fid = chkDigits("Father category", getgpc('fid'), 1, 8);
+			$company_id = chkDigits("Restaurant", getgpc('company_id'), 1, 8);
 			$displayorder = chkDigits("Displayorder", getgpc('displayorder'), 1, 3);
 			validate_start();
 			
 			$data = array(
 				'name' => $name,
 				'fid' => $fid,
+				'company_id' => $company_id,
 				'displayorder' => $displayorder,
 				'app' => 'foodorder',
 			);
@@ -99,15 +106,19 @@ class foodorder_category_controller {
 			),
 			
 		);
-		include template('admin#foodorder_category_list');
+		include_once template('admin#foodorder_category_list');
 		
 	}
 	
 	public function delete_action() {
+		global $_G;
 		$id = getgpc('id');
-		$GLOBALS['db']->query("DELETE FROM ".tname('category')." WHERE `cid`='$id'");
-		unlink(ROOT_PATH."data/cache/category.php");
-		unlink(ROOT_PATH."data/cache/categorytree.php");
+		$uid = getgpc('uid');
+		if(empty($uid) || $uid == $_G['uid']) {
+			$GLOBALS['db']->query("DELETE FROM ".tname('category')." WHERE `cid`='$id'");
+			unlink(ROOT_PATH."data/cache/category.php");
+			unlink(ROOT_PATH."data/cache/categorytree.php");
+		}
 	}
 }
 ?>

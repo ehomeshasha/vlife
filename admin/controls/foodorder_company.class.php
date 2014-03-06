@@ -7,7 +7,7 @@ class foodorder_company_controller {
 
 	public function __construct() {
 		global $_G;
-		include ROOT_PATH.'./models/common.php';
+		include_once ROOT_PATH.'./models/common.php';
 		$this->users = new common('users');
 		$this->company = new common('company');
 		if($_G['userlevel'] != $_G['setting']['userlevel']['company']) {
@@ -16,20 +16,28 @@ class foodorder_company_controller {
 		}
 	}
 	
-	public function index_action() {
+	public function post_action() {
 		
 		global $_G;
-		$where = "uid='$_G[uid]' AND app='foodorder'";
-		$restaurant = $GLOBALS['db']->fetch_first("SELECT * FROM ".tname('company')." WHERE $where");
-		if(!submitcheck('submit')) {
-			$head_text = lang('Restaurant Information');
+		$opt = selectOpt(getgpc('opt'), array('new','edit'));
+		if($_POST['submit'] != "true") {
+			$head_text = lang('Create new Restaurant');
+			
+			if($opt == 'edit') {
+				$id = getgpc('id');
+				$restaurant = $GLOBALS['db']->fetch_first("SELECT * FROM ".tname('company')." WHERE id='$id' AND uid='$_G[uid]' AND app='foodorder'");
+				$head_text = lang('Edit Restaurant Info.');
+				$filepatharr = explode(",", $restaurant['filepath']);
+			}
+			
 			$breadcrumb = array(
-				array('text' => $head_text, 'href' => 'index.php?home='.$_G['controller']),
+				array('text' => lang('restaurant list'), 'href' => 'index.php?home='.$_G['controller']),
+				array('text' => $head_text),
 			);
 			$csrf = $GLOBALS['session']->get_csrf();
-			$filepatharr = explode(",", $restaurant['filepath']);
-			include template('admin#foodorder_company');
+			include_once template('admin#foodorder_company_post');
 		} else {
+			
 			$GLOBALS['session']->csrfguard_start();
 			
 			$name = chkLength("Restaurant name", getgpc('name'), 0, 30);
@@ -49,18 +57,55 @@ class foodorder_company_controller {
 				'address' => $address,
 				'app' => 'foodorder',
 			);
-			if(empty($restaurant)) {
+			if($opt == 'new') {
+				$msg = lang("Create restaurant successfully");
 				$data['uid'] = $_G['uid'];
+				$data['dateline'] = $_G['timestamp'];
 				$this->company->insert($data);
-			} else {
-				$this->company->UpdateData($data, " and $where");
+			} elseif($opt == 'edit') {
+				$msg = lang("Setting your restaurant information successfully");
+				$id = getgpc('id');
+				$this->company->UpdateData($data, " and id='$id' AND uid='$_G[uid]' AND app='foodorder'");
 			}
-			
-			
-			$msg = lang("Setting your restaurant information successfully");
 			$_SESSION['message'] = array('code' => '1', 'content' => array(lang($msg)));
 			
 			header('Location: index.php?home='.$_G['controller']);
+		}
+	}
+	
+	public function index_action() {
+		global $_G;
+		$breadcrumb = array(
+			array('text' => lang('restaurant list')),
+			array(
+				'text' => '+', 
+				'href' => 'index.php?home='.$_G['controller'].'&act=post',
+				'is_label' => 1, 
+				'tooltip' => lang('Create new Restaurant'),
+				'label_type' => 'default',
+			),
+			
+		);
+		
+		include_once ROOT_PATH.'./inc/paginator.class.php';
+		$count = $this->company->GetCount(" and uid='$_G[uid]'");
+		$paginator = new paginator($count);
+		$perpage = $paginator->get_perpage();
+		$limit = $paginator->get_limit();
+		$multi = $paginator->get_multi();
+		
+		$dishes = $GLOBALS['db']->fetch_all("SELECT * FROM ".tname('company')." WHERE uid='$_G[uid]' ORDER BY dateline DESC $limit");
+		
+		include_once template('admin#foodorder_company_list');
+		
+	}
+	
+	public function delete_action() {
+		global $_G;
+		$id = getgpc('id');
+		$uid = getgpc('uid');
+		if(empty($uid) || $uid == $_G['uid']) {
+			$GLOBALS['db']->query("DELETE FROM ".tname('company')." WHERE `id`='$id'");
 		}
 	}
 }

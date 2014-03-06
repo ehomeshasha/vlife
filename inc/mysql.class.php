@@ -74,7 +74,7 @@ class mysql {
 		if(!($query = $func($sql, $this->link))) {
 			if(in_array($this->errno(), array(2006, 2013)) && substr($type, 0, 5) != 'RETRY') {
 				$this->close();
-				require ROOT_PATH.'/inc/config.inc.php';
+				require_once ROOT_PATH.'/inc/config.inc.php';
 				$this->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect, true, $dbcharset);
 				return $this->query($sql, 'RETRY'.$type);
 			} elseif($type != 'SILENT' && substr($type, 5) != 'SILENT') {

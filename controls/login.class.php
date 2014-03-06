@@ -8,7 +8,7 @@ class login_controller {
 		include_once ROOT_PATH.'./models/common.php';
 		$this->users = new common('users');
 	}
-	public function index_action() {
+	public function index_action($username="") {
 		global $_G;
 		$head_text = lang('Login Form');
 		$breadcrumb = array(
@@ -16,12 +16,15 @@ class login_controller {
 			array('text' => $head_text),
 		);
 		$csrf = $GLOBALS['session']->get_csrf();
-		include template('login');
+		include_once template('login');
 	}
-	public function login_action() {
-		$GLOBALS['session']->csrfguard_start();
+	public function login_action($simulate_login=0) {
+		if($simulate_login == 0) {
+			$GLOBALS['session']->csrfguard_start();
+		}
 		$username = getgpc('username');
 		$password = getgpc('password');
+		
 		$user = $this->users->GetOne(" AND username='$username'");
 		if($user['password'] == md5($password)) {
 			global $_G, $cookies;
@@ -35,12 +38,14 @@ class login_controller {
 			$msg = lang("Username or Password is not correct");
 			login_page($msg);
 		}
-		$next = getgpc('next');
-		if(strpos($next, "index.php?home=login") === false) {
-			header("Location: ".$next);
-			
-		} else {
-			header("Location: index.php");	
+		if($simulate_login == 0) {
+			$next = getgpc('next');
+			if(strpos($next, "index.php?home=login") === false) {
+				header("Location: ".$next);
+				
+			} else {
+				header("Location: index.php");	
+			}	
 		}
 		
 	}
@@ -49,7 +54,7 @@ class login_controller {
 		$cookiearr = array(
 			'system_uid' => '',
 			'system_username' => '',
-			'system_auth' => ''
+			'system_auth' => 'aaa'
 		);
 		$cookies->destroy($cookiearr);
 		header("Location: index.php");

@@ -3,11 +3,11 @@ if(!defined('IN_SYSTEM')) {
 	exit('Access Denied');
 }
 
-class index_controller {
+class setting_controller {
 
 	//构造函数
 	public function __construct() {
-		include ROOT_PATH.'./models/common.php';
+		include_once ROOT_PATH.'./models/common.php';
 		$this->company = new common('company');
 		$this->dishes = new common('dishes');
 		$this->users = new common('users');
@@ -15,16 +15,38 @@ class index_controller {
 	
 	public function index_action() {
 		global $_G;
-		$company = $GLOBALS['db']->fetch_first("SELECT * FROM ".tname('company')." WHERE id='{$_G['company_id']}'");
-		$filepatharr = explode(",", $company['filepath']);
-		$patharr = explode("^", $filepatharr[0]);
-		$categoryArr = $GLOBALS['db']->fetch_all("SELECT name FROM ".tname('category')." WHERE uid='$company[uid]' ORDER BY displayorder ASC LIMIT 0,3");
-		$main_menu = "";
-		foreach($categoryArr as $v) {
-			$main_menu .= ",".$v['name'];
+		if($_POST['submit'] != "true") {
+			$head_text = "Settings";
+			$csrf = $GLOBALS['session']->get_csrf();
+			include_once template('setting');
+		} else {
+			
+			//$GLOBALS['session']->csrfguard_start();
+			
+			
+			$contactname = chkLength("Contact name", getgpc('contactname'), 0, 30);
+			$weixin = chkLength("WeiXin No.", getgpc('weixin'), 0, 20);
+			$phone = chkLength("Telephone", getgpc('phone'), 0, 30);
+			$address = chkLength("Your address", getgpc('address'), 0, 255);
+			$password = trim($_POST['password']);
+			validate_start();
+			
+			$user_data = array(
+				'phone' => $phone,
+				'address' => $address,
+				'credits' => 0,
+				'contactname' => $contactname,
+				'weixin' => $weixin,
+				'password' => $password,
+			);
+			echo '<pre>';
+			print_r($user_data);
+			user_save($user_data);
+			
+			//header("Location: index.php?home=".$_G['controller']);
+			
+			
 		}
-		$main_menu = substr($main_menu, 1);
-		include template('index');
 	}
 	
 	

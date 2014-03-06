@@ -27,12 +27,12 @@ if(DEBUG == 1) {
 	ini_set("error_display", "Off");
 }
 
-require(ROOT_PATH.'/data/config.inc.php');
-require(ROOT_PATH.'./data/config.default.php');
-require(ROOT_PATH.'./data/ArrayData.php');
-require(ROOT_PATH.'/inc/mysql.class.php');
-require(ROOT_PATH.'/inc/global.func.php');
-require(ROOT_PATH."/data/lang/global.lang.php");
+require_once(ROOT_PATH.'/data/config.inc.php');
+require_once(ROOT_PATH.'./data/config.default.php');
+require_once(ROOT_PATH.'./data/ArrayData.php');
+require_once(ROOT_PATH.'/inc/mysql.class.php');
+require_once(ROOT_PATH.'/inc/global.func.php');
+require_once(ROOT_PATH."/data/lang/global.lang.php");
 //初始化数据连接//---------------------------------------------------------
 $db = new mysql();
 $db->connect($dbhost,$dbuser,$dbpw,$dbname);
@@ -49,7 +49,7 @@ define("SITE_ROOT", $_G['siteurl']);
 define('VERSION','VLIFE_1.0');
 
 $tplrefresh = 0;
-require(ROOT_PATH.'/inc/template.func.php');
+require_once(ROOT_PATH.'/inc/template.func.php');
 
 $timezone = 'Asia/Shanghai';
 date_default_timezone_set($timezone);

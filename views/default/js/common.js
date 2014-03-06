@@ -1,6 +1,6 @@
 var digit_regex = /^\d+$/
-function is_empty(obj) {
-	if(typeof(redirect_url) == "undefined" || redirect_url = null || redirect_url == "") {
+function is_empty(val) {
+	if(typeof val === 'undefined' || val == null || val == "") {
 		return true;
 	}
 	return false;
@@ -70,10 +70,14 @@ $(function(){
 	
 	$(".deletelink").click(function(){
 		var id = jQuery(this).attr("data-id");
+		var uid = jQuery(this).attr("data-uid");
 		var type = jQuery(this).attr("data-type");
 		var redirect_url = jQuery(this).attr("data-redirect");
 		var url = jQuery(this).attr("data-href");
 		
+		if(is_empty(uid)) {
+			uid = "";
+		}
 		
 		var confirm_msg = 'Are you sure to delete this '+type+'?(cannot be undone)';
 		
@@ -81,11 +85,11 @@ $(function(){
 			jQuery.ajax({
 				url: url,
 	            type:'POST',
-	            data: {id:id, type:type},
+	            data: {id:id, type:type, uid:uid},
 	            complete :function(){},
 	            error: function() { alert('Please try again');},
 	            success: function() {
-	            	if(is_empty) {
+	            	if(is_empty(redirect_url)) {
 	            		location.href = location.href;
 	            	} else {
 	            		location.href = redirect_url;

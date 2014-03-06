@@ -7,7 +7,7 @@ class menu_controller {
 
 	//构造函数
 	public function __construct() {
-		include ROOT_PATH.'./models/common.php';
+		include_once ROOT_PATH.'./models/common.php';
 		$this->company = new common('company');
 		$this->dishes = new common('dishes');
 		$this->users = new common('users');
@@ -21,8 +21,7 @@ class menu_controller {
 				$foodArr[$food_id] = $v;
 			}
 		}
-		$company = $GLOBALS['db']->fetch_first("SELECT * FROM ".tname('company')." WHERE id='{$_G['company_id']}'");
-		$category_list = $GLOBALS['db']->fetch_all("SELECT cid,name FROM ".tname('category')." WHERE uid='$company[uid]' ORDER BY displayorder ASC");
+		$category_list = $GLOBALS['db']->fetch_all("SELECT cid,name FROM ".tname('category')." WHERE company_id='$_G[company_id]' ORDER BY displayorder ASC");
 		$cid = getgpc('cid');
 		if(empty($cid)) {
 			$active_cid = $category_list[0]['cid'];
@@ -30,9 +29,9 @@ class menu_controller {
 			$active_cid = $cid;
 		}
 		foreach($category_list as $k=>$v) {
-			$category_list[$k]['count'] = $this->dishes->GetCount(" and uid='$company[uid]' AND cid='$v[cid]'");
+			$category_list[$k]['count'] = $this->dishes->GetCount(" and company_id='$_G[company_id]' AND cid='$v[cid]'");
 		}
-		$dishes = $GLOBALS['db']->fetch_all("SELECT * FROM ".tname('dishes')." WHERE uid='$company[uid]' AND cid='$active_cid'");
+		$dishes = $GLOBALS['db']->fetch_all("SELECT * FROM ".tname('dishes')." WHERE company_id='$_G[company_id]' AND cid='$active_cid'");
 		foreach($dishes as $key=>$val) {
 			$filepatharr = explode(",", $val['filepath']);
 			$patharr = explode("^", $filepatharr[0]);
@@ -48,7 +47,7 @@ class menu_controller {
 		
 		
 		
-		include template('menu');
+		include_once template('menu');
 	}
 	
 	

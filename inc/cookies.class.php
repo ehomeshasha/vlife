@@ -31,10 +31,11 @@ class cookies {
 	function destroy($val) {
 		if (is_array($val)) {
 			foreach ($val as $k => $v) {
-				setcookie($k,$v,COOKIE_EXPIRE);
+				echo $k;
+				setcookie($k,$v,-1);
 			}
 		} else {
-			setcookie($val,'',COOKIE_EXPIRE);
+			setcookie($val,'',-1);
 		}
 	}
 }

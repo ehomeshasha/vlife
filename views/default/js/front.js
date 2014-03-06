@@ -1,3 +1,45 @@
+var digit_regex = /^\d+$/
+function is_empty(val) {
+	if(typeof val === 'undefined' || val == null || val == "") {
+		return true;
+	}
+	return false;
+}
+function chkNumber(n, v) {
+	if(v == "" || isNaN(v)) {
+		alert('Number only for '+n);
+		return false;
+	}
+	return true;
+}
+function chkDigit(n, v, min, max) {
+	if(chkLength(n, v, min, max) === false) {
+		return false;
+	}
+	if(!digit_regex.test(v)) {
+		alert('Digit only for '+n);
+		return false;
+	}
+	return true;
+}
+function chkLength(n, v, min, max) {
+	if(min == 0 && v == "") {
+		alert(n+' can not be empty');
+		return false;
+	}
+	if(v.length < min || v.length > max) {
+		alert('The length of '+n+' is not valid(must '+min+' < '+max+')');
+		return false;
+	}
+	return true;
+}
+function chkUploadExist(n,o) {
+	if(o.length == 0 || o.val() == "") {
+		alert("Please upload "+n);
+		return false;
+	}
+	return true;
+}
 function checkCookie(cname) {
 	var cookiename=getCookie(cname);
 	if (cookiename!="") {
@@ -24,3 +66,21 @@ for(var i=0; i<ca.length; i++)
   }
 return "";
 }
+$(function(){
+	$(document).on("click", ".clear_session", function() {
+		$.post(site_url+'index.php?home=misc&act=clear_session');
+	});
+	$(".collapse_btn").click(function(){
+		var id = $(this).attr("data-id");
+		var status = $(this).attr("data-status");
+		if(status == 'collapse') {
+			$(this).attr("data-status", "expand");
+			$(this).html("expand");
+			$(this).next().removeClass("hidden");
+		} else if(status == 'expand') {
+			$(this).attr("data-status", "collapse");
+			$(this).html("collapse");
+			$(this).next().addClass("hidden");
+		}
+	});
+});

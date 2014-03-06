@@ -26,6 +26,14 @@
 </div>
 </div>
 <div class="control-group">
+<label class="control-label" for="inputCompanyId">Restaurant</label>
+<div class="controls">
+<select name="company_id" id="inputCompanyId">
+<?=$restaurant_html?>
+</select>
+</div>
+</div>
+<div class="control-group">
 <label class="control-label" for="inputDisplayorder">Displayorder(0~999)</label>
 <div class="controls">
 <input type="text" class="input-mini" name="displayorder" value="<?=$displayorder?>" id="inputDisplayorder" placeholder="" maxlength="3" >
@@ -136,6 +144,7 @@ $.post('<?=$_G['siteurl']?>index.php?home=misc&act=cancel_upload',{table_name: '
 $("#dishes_form").submit(function(){
 if(
 chkLength("Dish name", $("#inputName").val(), 0, 30) &&
+chkDigit("Restaurant", $("#inputCompanyID").val(), 1, 8) &&
 chkLength("Short description", $("#inputDescription").val(), -1, 255) &&
 chkNumber("Price", $("#inputPrice").val()) &&
 chkDigit("Category", $("#inputCategory").val(), 1, 8) &&

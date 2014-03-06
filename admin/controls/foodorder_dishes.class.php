@@ -7,13 +7,14 @@ class foodorder_dishes_controller {
 
 	public function __construct() {
 		global $_G;
-		include ROOT_PATH.'./models/common.php';
+		include_once ROOT_PATH.'./models/common.php';
 		$this->users = new common('users');
 		$this->dishes = new common('dishes');
 		if($_G['userlevel'] != $_G['setting']['userlevel']['company']) {
 			$msg = "Company only for Admin Center";
 			login_page($msg);
 		}
+		check_company_exists();
 	}
 	
 	
@@ -31,8 +32,10 @@ class foodorder_dishes_controller {
 				$head_text = lang('Edit dish');
 				$category_html = init_category($_G['categorytree']['foodorder'], $dish['cid']);
 				$filepatharr = explode(",", $dish['filepath']);
+				$restaurant_html = init_restaurant($dish['company_id']);
 			} else {
 				$category_html = init_category($_G['categorytree']['foodorder']);
+				$restaurant_html = init_restaurant();
 			}
 			
 			$breadcrumb = array(
@@ -41,13 +44,14 @@ class foodorder_dishes_controller {
 			);
 			$csrf = $GLOBALS['session']->get_csrf();
 			
-			include template('admin#foodorder_dishes_post');
+			include_once template('admin#foodorder_dishes_post');
 			
 			
 		} else {
 			
 			$GLOBALS['session']->csrfguard_start();
 			$name = chkLength("Dish name", getgpc('name'), 0, 30);
+			$company_id = chkDigits("Restaurant", getgpc('company_id'), 1, 8);
 			$description = chkLength("Short description", getgpc('name'), -1, 255);
 			$price = chkNumber("Price", getgpc('price'));
 			$cid = chkDigits("Category", getgpc('cid'), 1, 8);
@@ -57,6 +61,7 @@ class foodorder_dishes_controller {
 			
 			$data = array(
 				'name' => $name,
+				'company_id' => $company_id,
 				'description' => $description,
 				'price' => $price,
 				'cid' => $cid,
@@ -120,16 +125,21 @@ class foodorder_dishes_controller {
 		if(!$_G['mobile']) {
 			$limit = "LIMIT $start, $perpage";
 		}
-		$dishes = $GLOBALS['db']->fetch_all("SELECT * FROM ".tname('dishes')." WHERE uid='$_G[uid]' ORDER BY createtime DESC $limit");
+		$dishes = $GLOBALS['db']->fetch_all("SELECT a.*,b.name as restaurant_name 
+		FROM ".tname('dishes')." AS a LEFT JOIN ".tname('company')." AS b ON a.company_id=b.id 
+		WHERE a.uid='$_G[uid]' ORDER BY a.createtime DESC $limit");
 		
-		
-		include template('admin#foodorder_dishes_list');
+		include_once template('admin#foodorder_dishes_list');
 		
 	}
 	
 	public function delete_action() {
+		global $_G;
 		$id = getgpc('id');
-		$GLOBALS['db']->query("DELETE FROM ".tname('dishes')." WHERE `id`='$id'");
+		$uid = getgpc('uid');
+		if(empty($uid) || $uid == $_G['uid']) {
+			$GLOBALS['db']->query("DELETE FROM ".tname('dishes')." WHERE `id`='$id'");
+		}
 	}
 }
 ?>

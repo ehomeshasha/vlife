@@ -2,6 +2,83 @@
 if(!defined('IN_SYSTEM')) {
 	exit('Access Denied');
 }
+function logout() {
+	include_once ROOT_PATH."./controls/login.class.php";
+	$login = new login_controller();
+	$login->logout_action();
+}
+function user_save($data) {
+	global $_G;
+	$phone = $data['phone'];
+	$address = $data['address'];
+	$credits = $data['credits'];
+	$contactname = $data['contactname'];
+	$weixin = $data['weixin'];
+	$password = md5($phone);
+	
+	$user_info = $GLOBALS['db']->fetch_first("SELECT * FROM ".tname('user_info'). " WHERE phone='$phone'");
+	if(empty($user_info)) {
+		$GLOBALS['db']->query("INSERT INTO ".tname('users')." 
+		(username,password,userlevel,dateline) VALUES 
+		('$phone','$password',1,$_G[timestamp])");
+		$uid = $GLOBALS['db']->insert_id();
+		$GLOBALS['db']->query("INSERT INTO ".tname('user_info')." 
+		(uid,contactname,weixin,phone,address,credits) VALUES 
+		('$uid','$contactname','$weixin','$phone','$address','$credits')");
+	} else {
+		$uid = $user_info['uid'];
+		$credits = floatval($user_info['credits']) + floatval($credits);
+		$GLOBALS['db']->query("UPDATE ".tname('user_info')." 
+		SET contactname='$contactname',weixin='$weixin',
+			phone='$phone',address='$address',credits='$credits' WHERE uid='$uid'");
+	}
+	return $uid;
+}
+
+
+
+function orderId($length=4) {
+    $date = date('ymdHi');
+    $oid_filename = ROOT_PATH.'./data/cache/tmp.txt';
+
+    $oid = @file_get_contents($oid_filename);
+
+    if($oid >= str_pad('9',$length,'9')) {
+        $oid = 1;
+    } else {
+        $oid+=1;
+    }
+
+    file_put_contents($oid_filename,$oid);
+    $oid = str_pad($oid,$length,'0',0);
+    return $date.$oid;
+}
+function check_company_exists($app='foodorder', $name='restaurant', $url='index.php') {
+	global $_G;
+	$company = $GLOBALS['db']->fetch_first("SELECT COUNT(*) AS count FROM ".tname('company')." WHERE uid='$_G[uid]' AND app='$app'");
+	if(empty($company['count'])) {
+		$msg = "Please create new $name first";
+		$_SESSION['message'] = array('code' => '-1', 'content' => array(lang($msg)));
+		header('Location: '.$url);
+		exit;
+	}
+}
+function init_restaurant($company_id = "") {
+	global $_G;
+	$Arr = $GLOBALS['db']->fetch_all("SELECT id,name FROM ".tname('company')." WHERE uid='$_G[uid]' ORDER BY dateline ASC");
+	$html = "";
+	if($company_id == "") {
+		foreach($Arr as $v) {
+			$html .= "<option value='$v[id]'>$v[name]</option>";
+		}	
+	} else {
+		foreach($Arr as $v) {
+			$select = $v[id] == $company_id ? "selected='selected'" : ""; 
+			$html .= "<option value='$v[id]' $select>$v[name]</option>";
+		}
+	}
+	return $html;
+}
 function init_categorylist($categoryArr) {
 	global $_G;
 	$html = "";
@@ -11,7 +88,7 @@ function init_categorylist($categoryArr) {
 		<p>
 		<span>$value[name]</span>
 		<a href='".$_G['siteurl'].ADMIN_DIR."/index.php?home=foodorder_category&act=post&opt=edit&cid=$value[cid]'>[edit]</a>
-		<a href='javascript:;' class='deletelink' data-id='$value[cid]' data-type='Category' data-href='index.php?home=foodorder_category&act=delete'>[delete]</a></p><ul>";
+		<a href='javascript:;' class='deletelink' data-uid='$value[uid]' data-id='$value[cid]' data-type='Category' data-href='index.php?home=foodorder_category&act=delete'>[delete]</a></p><ul>";
 		$html .= init_categorylist($value['subcate']);
 		$html .= "</ul></li>";
 	}
@@ -354,7 +431,7 @@ function showerror($errorstr) {
 		'icon' => "icon-error-sign",
 		'button2' => "确定",
 	);
-	include template('confirmbox');
+	include_once template('confirmbox');
 	exit;
 }
 function get_threadtype($threadtype) {
@@ -485,20 +562,25 @@ function get_userlist_htmls($action, $pm, $sendlist = '') {
 	}
 	return $userlist_html;
 }
-function initmessage() {
+function initmessage($location = "") {
+	if($location == "front") {
+		$red_css = "danger";
+	} else {
+		$red_css = "error";
+	}
 	$str = "";
   	if($_SESSION['message']) {
 		$message = $_SESSION['message']; 
 		$code = $message['code'];
 		if($code == -1) {
-			$alertclass = 'alert-error';
+			$alertclass = 'alert-'.$red_css;
 		} elseif($code == 0) {
 			$alertclass = 'alert-info';
 		} elseif($code == 1) {
 			$alertclass = 'alert-success';
 		}
-		$str .= "<div class='alert $alertclass' id='message'>
-					<button type='button'' class='close clear_session' data-dismiss='alert'>&times;</button>
+		$str .= "<div class='alert $alertclass alert-dismissable' id='message'>
+					<button type='button'' class='close clear_session' data-dismiss='alert' aria-hidden='true'>&times;</button>
 					<ul style='margin-bottom:0;'>";
 		foreach ($message['content'] as $v) {
 			$str .= "<li>$v</li>";
@@ -579,7 +661,7 @@ function showmessage($message, $code = -1, $url = '') {
 	exit;
 }
 function showresult($result_body, $alert_type = 'alert-error', $button_type = 'btn-danger') {
-	include template('result');
+	include_once template('result');
 	exit;
 }
 function global_addslashes($str) {
@@ -712,7 +794,9 @@ function checkuser($decode_str) {
 	$password = urldecode($decode_str_arr[2]);
 	if(getcount('users',"uid='$uid' AND username='$username' AND password='$password'") > 0) {
 		global $_G;
-		$user = $GLOBALS['db']->fetch_all("SELECT * FROM ".tname('users')." WHERE uid='$uid' AND username='$username' AND password='$password'");
+		$user = $GLOBALS['db']->fetch_all("SELECT a.*,b.* 
+		FROM ".tname('users')." AS a LEFT JOIN ".tname('user_info')." AS b ON a.uid=b.uid 
+		WHERE a.uid='$uid' AND a.username='$username' AND a.password='$password'");
 		$_G['uid'] = $user[0]['uid'];
 		$_G['username'] = $user[0]['username'];
 		$_G['userlevel'] = $user[0]['userlevel'];
@@ -903,7 +987,7 @@ function checkfile($file,$cachetime=60) {
 	}
 	$file=ROOT_PATH.'/data/cache/'.$file.'.php';
 	if(is_file($file)) {
-		include $file;
+		include_once $file;
 		if(($writetime+$cachetime)>time()) {
 			return true; //不更新文件
 		} else {
@@ -947,7 +1031,7 @@ function writefile($file,$content)
 //读文件
 function read($file) {
 	$file1 = ROOT_PATH.'/data/cache/'.$file.'.php';
-	include($file1);	
+	include_once($file1);	
 	return $content;
 }
 //删除文件

@@ -1,4 +1,5 @@
 <? if(!defined('IN_SYSTEM')) exit('Access Denied'); include template('header', '0', ''); ?><div class="main">
+<?=$_G['message']?>
 <div class="image_layer" style="position:absolute;top:5em;left:0;z-index:998;padding:8px 8px;background-color:rgba(0,0,0,0.1);display:none;">
 <span class="image_close_btn glyphicon glyphicon-remove-sign" style="position:absolute;right:0;top:-5px;font-size:1.5em;z-index:999;cursor:pointer;"></span>
 <div class="image_container"></div>	
@@ -20,9 +21,7 @@
 <div class="pull-left  food_info_area">
 <div><?=$val['name']?></div>
 <div class="clearfix">
-<div class="pull-left">
-<?=$val['price']?>								
-</div>
+<div class="pull-left"><? echo number_format($val['price']); ?></div>
 <div class="pull-right">
 <span class="glyphicon glyphicon-minus-sign minus_btn" data-id="<?=$val['id']?>" style="font-size:1.2em;"></span>
 <span class="order_number xw1" style="font-size:1.2em;"><?=$val['current_count']?></span>
@@ -33,7 +32,7 @@
 </div><? } } ?></div>
 </div>
 </div>
-</div>
+</div></div>
 <script type="text/javascript">
 $(function(){
 $(".food_image_link").click(function(){

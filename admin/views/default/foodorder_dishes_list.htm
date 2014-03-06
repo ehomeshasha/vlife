@@ -5,10 +5,13 @@
 	<table class="table table-condensed">
 		<tr>
 			<td width="">ID</td>
-			<td width="">{lang Category}</td>
-	    	<td width="">{lang Name}</td>
+			<td width="">{lang Name}</td>
 	    	<td width="">{lang Price}</td>
+	    	<!--{if !$_G['mobile']}-->
+	    	<td width="">{lang Category}</td>
+	    	<td width="">{lang Restaurant}</td>
 	    	<td width="">{lang Displayorder}</td>
+	    	<!--{/if}-->
 	    	<td width="">{lang Createtime}</td>
 	    	<td width="">Opration</td>
 	  	</tr>
@@ -16,14 +19,17 @@
 		<tr>
 		
 	    	<td>$v['id']</td>
-	    	<td>{$_G['category'][$v['cid']]['name']}</td>
 	    	<td>{$v['name']}</td>
 	    	<td>{$v['price']}</td>
+	    	<!--{if !$_G['mobile']}-->
+	    	<td>{$_G['category'][$v['cid']]['name']}</td>
+	    	<td>{$v['restaurant_name']}</td>
 	    	<td>{$v['displayorder']}</td>
+	    	<!--{/if}-->
 	    	<td>{eval echo get_abbr_date($v['createtime'], true);}</td>
 	    	<td>
 	    		<a href="index.php?home=foodorder_dishes&act=post&opt=edit&id={$v['id']}" href="">{lang Edit}</a>
-	    		<a href="javascript:;" class="deletelink" data-id="{$v['id']}" data-type="Dish" data-href="index.php?home=foodorder_dishes&act=delete">{lang Delete}</a>
+	    		<a href="javascript:;" class="deletelink" data-uid="{$v['uid']}" data-id="{$v['id']}" data-type="Dish" data-href="index.php?home=foodorder_dishes&act=delete">{lang Delete}</a>
 	    	</td>
 	    </tr>
 		<!--{/loop}-->

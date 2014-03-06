@@ -2,9 +2,9 @@
 session_start();
 global $_G;
 $_G['system_model'] = 0;
-require('inc/common.inc.php');
-require(ROOT_PATH.'/inc/cookies.class.php');
-require(ROOT_PATH.'/inc/session.class.php');
+require_once('inc/common.inc.php');
+require_once(ROOT_PATH.'/inc/cookies.class.php');
+require_once(ROOT_PATH.'/inc/session.class.php');
 $cookies = new cookies();
 $session = new session();
 
@@ -26,10 +26,14 @@ if(!is_file(ROOT_PATH.'/controls/'.$controller.'.class.php')) {
 	$controller='index';
 	$action='index';
 }
-if(!check_login()) {
-	//$controller='login';
-	//$action = $action == 'login' ? $action : 'index';
+if($_POST['submit'] != 'true' && !empty($_COOKIE['telephone'])) {
+	$_POST['username'] = $_POST['password'] = trim($_COOKIE['telephone']);
+	include_once ROOT_PATH.'./controls/login.class.php';
+	$login = new login_controller();
+	$login->login_action(1);
 }
+
+check_login();
 $_G['controller'] = $controller;
 $_G['action'] = $action;
 $_G['active_nav'] = get_active_nav();
@@ -43,7 +47,7 @@ if(!empty($_G['company_id'])) {
 //echo " home=".$_G['controller']." act=".$_G['action'];
 
 $_G['cur_link'] = 'index.php?home='.$_G['controller'].'&act='.$_G['action'];
-$_G['message'] = initmessage();
+$_G['message'] = initmessage('front');
 require_once ROOT_PATH.'/controls/'.$controller.'.class.php';
 
 $conclass = $controller.'_controller';

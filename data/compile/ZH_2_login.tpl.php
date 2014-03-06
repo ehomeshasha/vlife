@@ -17,7 +17,7 @@ $("#next").val(location.href);
 <div class="control-group">
 <label class="control-label" for="inputUsername">Username</label>
 <div class="controls">
-<input type="text" name="username" id="inputUsername" placeholder="Username">
+<input type="text" name="username" value="<?=$username?>" id="inputUsername" placeholder="Username">
 </div>
 </div>
 <div class="control-group">

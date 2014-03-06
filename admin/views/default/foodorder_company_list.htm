@@ -1,0 +1,41 @@
+{template admin#header}
+<div class="tab-content">
+	{template breadcrumb}
+	{$_G['message']}
+	<table class="table table-condensed">
+		<tr>
+			<td width="">ID</td>
+			<td width="">{lang Name}</td>
+			<!--{if !$_G['mobile']}-->
+			<td width="">{lang Phone}</td>
+			<td width="">{lang Address}</td>
+			<!--{/if}-->
+	    	<td width="">{lang Createtime}</td>
+	    	<td width="">Opration</td>
+	  	</tr>
+		<!--{loop $dishes $k $v}-->
+		<tr>
+		
+	    	<td>$v['id']</td>
+	    	<td>{$v['name']}</td>
+	    	<!--{if !$_G['mobile']}-->
+	    	<td>{$v['phone']}</td>
+	    	<td>{$v['address']}</td>
+	    	<!--{/if}-->
+	    	<td>{eval echo get_abbr_date($v['dateline'], true);}</td>
+	    	<td>
+	    		<a href="index.php?home=foodorder_company&act=post&opt=edit&id={$v['id']}" href="">{lang Edit}</a>
+	    		<a href="javascript:;" class="deletelink" data-uid="{$v['uid']}" data-id="{$v['id']}" data-type="Restaurant" data-href="index.php?home=foodorder_company&act=delete">{lang Delete}</a>
+	    	</td>
+	    </tr>
+		<!--{/loop}-->
+	</table>
+	<!--{if !$_G['mobile']}-->
+	<div class="pagination pagination-right">
+		{template perpage}
+		{$multi}
+	</div>
+	<!--{/if}-->
+</div>
+</div></div></div></div>
+{template footer}

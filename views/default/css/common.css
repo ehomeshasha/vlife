@@ -94,3 +94,4 @@ input[type="checkbox"].input-checkbox-table {margin:-3px 0 0 0;}
 .food_price {}
 .food_image {}
 .category_list {padding:8px 10px;}
+.minus_btn, .plus_btn {cursor: pointer;}

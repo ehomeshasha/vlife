@@ -4,9 +4,9 @@ global $_G;
 $_G['system_model'] = 1;
 define(ADMIN_DIR, 'admin');
 
-require('../inc/common.inc.php');
-require(ROOT_PATH.'/inc/cookies.class.php');
-require(ROOT_PATH.'/inc/session.class.php');
+require_once('../inc/common.inc.php');
+require_once(ROOT_PATH.'/inc/cookies.class.php');
+require_once(ROOT_PATH.'/inc/session.class.php');
 $cookies = new cookies();
 $session = new session();
 
