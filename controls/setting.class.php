@@ -39,11 +39,9 @@ class setting_controller {
 				'weixin' => $weixin,
 				'password' => $password,
 			);
-			echo '<pre>';
-			print_r($user_data);
 			user_save($user_data);
 			
-			//header("Location: index.php?home=".$_G['controller']);
+			header("Location: index.php?home=".$_G['controller']);
 			
 			
 		}

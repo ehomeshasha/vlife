@@ -16,7 +16,7 @@ class login_controller {
 			array('text' => $head_text),
 		);
 		$csrf = $GLOBALS['session']->get_csrf();
-		include_once template('admin#login');
+		include_once template('admin#admin_login');
 	}
 	public function login_action() {
 		$GLOBALS['session']->csrfguard_start();

@@ -9,7 +9,7 @@ define('CHARSET','utf-8'); //用于cutstr函数
 define('COOKIE_EXPIRE', 86400); //登录COOKIE的过期时间
 define('UPLOAD_DIR', '/data/upload/'); //设置上传目录路径
 $_G['setting']['userlevel']['superadmin'] = 9; //设置超级管理员userlevel
-$_G['setting']['userlevel']['company'] = 6; //设置超级管理员userlevel
+$_G['setting']['userlevel']['company'] = 6; //设置商家userlevel
 $_G['setting']['userlevel']['custom'] = 1; //设置普通客户userlevel
 $_G['setting']['perpage'] = 20; //设置每页显示条数
 $_G['setting']['company_id'] = 1; //设置默认的company

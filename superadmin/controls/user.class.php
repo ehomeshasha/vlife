@@ -86,20 +86,35 @@ class user_controller {
 			$username = getgpc('username');
 			$userlevel = getgpc('userlevel');
 			$password = getgpc('password');
-			if($username == "" || $password == "") {
-				$_SESSION['message'] = array('code' => '-1', 'content' => array(lang("Please input username or password")));
-				header("Location: ".$_SERVER['HTTP_REFERER']);
+			$msg_content = array();
+			$validate = true;
+			if(empty($username)) {
+				$msg_content[] = lang("Please input username");
+				$_SESSION['message'] = array('code' => '-1', 'content' => $msg_content);
+				$validate = false;
 			}
 			
-			if($opt == 'new' && getcount('users', "username='".global_addslashes($username)."'") > 0) {
-				$_SESSION['message'] = array('code' => '-1', 'content' => array(lang("User exists")));
+			if($opt == 'new' && getcount('users', "username='".$username."'") > 0) {
+				$msg_content[] = lang("User exists");
+				$_SESSION['message'] = array('code' => '-1', 'content' => $msg_content);
+				$validate = false;
+			}
+			if($opt == 'new' && empty($password)) {
+				$msg_content[] = lang("Please input password");
+				$_SESSION['message'] = array('code' => '-1', 'content' => $msg_content);
+				$validate = false;
+			}
+			if($validate === false) {
 				header("Location: ".$_SERVER['HTTP_REFERER']);
+				exit;
 			}
 			$data = array(
 				'username' => $username,
-				'password' => md5($password),
 				'userlevel' => $userlevel,
 			);
+			if(!empty($password)) {
+				$data['password'] = md5($password);
+			}
 			if($opt == 'new') {
 				$data['dateline'] = $_G['timestamp'];
 				$this->users->insert($data);

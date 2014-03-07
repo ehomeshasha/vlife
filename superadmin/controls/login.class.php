@@ -16,7 +16,7 @@ class login_controller {
 			array('text' => $head_text),
 		);
 		$csrf = $GLOBALS['session']->get_csrf();
-		include_once template('superadmin#login');
+		include_once template('superadmin#superadmin_login');
 	}
 	public function login_action($simulate_login=0) {
 		if($simulate_login == 0) {

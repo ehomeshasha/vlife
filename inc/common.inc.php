@@ -18,8 +18,9 @@ define('IN_SYSTEM',1);
 define('TEMPLATEID','2');
 define('COMPILEDIR','compile');
 define('SESSION_DB',1);
-define('DEBUG',1);
-if(DEBUG == 1) {
+define('DEBUG',0);
+//if(DEBUG == 1) {
+if(0) {
 	error_reporting(E_ALL);
 	ini_set("error_display", "On");
 } else {

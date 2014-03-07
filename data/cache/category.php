@@ -1,4 +1,4 @@
-<?php if(!defined("IN_SYSTEM")){echo "error!";} $writetime=1394115537; $content=array (
+<?php if(!defined("IN_SYSTEM")){echo "error!";} $writetime=1394158923; $content=array (
   5 => 
   array (
     'cid' => '5',

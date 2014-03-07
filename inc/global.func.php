@@ -293,6 +293,60 @@ function get_timezone_diff() {
 	$timeOffset = $dateTimeZone->getOffset($dateTime); 
 	return $timeOffset; 
 } 
+//英文版本的日期格式化
+function get_abbr_date($timestamp, $timedisplay = false, $dformat = '', $tformat = '', $timeoffset = '9999') {
+	global $_G;
+	$dformat = empty($dformat) ? $_G['setting']['date_short_format'] : $dformat;
+	$tformat = empty($tformat) ? $_G['setting']['time_short_format'] : $tformat;
+	$dtformat = $dformat.' '.$tformat;
+	$offset = get_timezone_diff();
+	$offset = $offset/3600;
+	
+	$timeoffset = $timeoffset == 9999 ? $offset : $timeoffset;
+	$timestamp += $timeoffset * 3600;
+	if($timedisplay == false) {
+		$s = gmdate($dformat, $timestamp);
+	} else {
+		$s = gmdate($dtformat, $timestamp);
+	}
+	
+	$todaytimestamp = $_G['timestamp'] - ($_G['timestamp'] + $timeoffset * 3600) % 86400 + $timeoffset * 3600;
+	$time = $_G['timestamp'] + $timeoffset * 3600 - $timestamp;
+	if($timestamp >= $todaytimestamp) {
+		if($time > 3600) {
+			return intval($time / 3600).' hours ago';
+		} elseif($time > 1800) {
+			return 'half hour ago';
+		} elseif($time > 60) {
+			return intval($time / 60).' minutes ago';
+		} elseif($time > 0) {
+			return $time.' seconds ago';
+		} elseif($time == 0) {
+			return 'just now';
+		} else {
+			return $s;
+		}
+	} elseif(($days = intval(($todaytimestamp - $timestamp) / 86400)) >= 0 && $days < 0) {
+		if($days == 0) {
+			if($timedisplay == false) {
+				return 'yestoday';
+			} else {
+				return 'yestoday '.gmdate($tformat, $timestamp);
+			}
+		} elseif($days == 1) {
+			if($timedisplay == false) {
+				return 'DBY';
+			} else {
+				return 'DBY '.gmdate($tformat, $timestamp);
+			}
+		} else {
+			return ($days + 1).' days ago';
+		}
+	} else {
+		return $s;
+	}
+}
+/* 中文版本的日期格式化
 function get_abbr_date($timestamp, $timedisplay = false, $dformat = '', $tformat = '', $timeoffset = '9999') {
 	global $_G;
 	$dformat = empty($dformat) ? $_G['setting']['date_short_format'] : $dformat;
@@ -345,7 +399,7 @@ function get_abbr_date($timestamp, $timedisplay = false, $dformat = '', $tformat
 	} else {
 		return $s;
 	}
-}
+}*/
 function fill_tablerow_with_blank($data, $limitcount = 5) {
 	if(empty($data)) $data = array('');
 	$count = count($data);
@@ -355,74 +409,6 @@ function fill_tablerow_with_blank($data, $limitcount = 5) {
 		}
 	}
 	return $data;
-}
-function get_statistic_count($date) {
-	global $_G;
-	$where = " AND status>=0 AND dateline>'{$date['starttime']}' AND dateline<'{$date['endtime']}'";
-	$where_a = " AND a.status>=0 AND a.dateline>'{$date['starttime']}' AND a.dateline<'{$date['endtime']}'";
-	$businesslogcount = getcount('businesslog',"uid=$_G[uid]".$where);
-	$threadcount = getcount('forum_thread',"uid=$_G[uid]".$where);
-	
-	$businesslogreplycount_data = $GLOBALS['db']->fetch_first("SELECT COUNT(*) AS count FROM ".tname('reply')." AS a LEFT JOIN ".tname('businesslog')." AS b ON a.fid=b.bid WHERE b.status>=0 AND a.uid='$_G[uid]' AND a.replytype=0".$where_a);
-	$threadreplycount_data = $GLOBALS['db']->fetch_first("SELECT COUNT(*) AS count FROM ".tname('reply')." AS a LEFT JOIN ".tname('forum_thread')." AS b ON a.fid=b.tid WHERE b.status>=0 AND a.uid='$_G[uid]' AND a.replytype=1".$where_a);
-	$businesslogreplycount = $businesslogreplycount_data['count'];
-	$threadreplycount = $threadreplycount_data['count'];
-	 
-	$businesslog_at_count = $thread_at_count = 0;
-	$businesslog = $GLOBALS['db']->fetch_all("SELECT sendlist, dateline FROM ".tname('businesslog')." WHERE 1 ".$where." ORDER BY dateline ASC"); 
-	foreach ($businesslog as $val) {
-		$arr2 = explode(',', $val['sendlist']);
-		if(!in_array($_G['username'], $arr2)) continue;
-		$businesslog_at_count++;
-		$businesslog_at_dateline = $val['dateline'];
-	}
-	$thread = $GLOBALS['db']->fetch_all("SELECT sendlist, dateline FROM ".tname('forum_thread')." WHERE 1 ".$where." ORDER BY dateline ASC");
-	foreach ($thread as $v) {
-		$arr2 = explode(',', $v['sendlist']);
-		if(!in_array($_G['username'], $arr2)) continue;
-		$thread_at_count++;
-		$thread_at_dateline = $v['dateline'];
-	}
-	
-	if($businesslogcount != 0) {
-		$businesslog_dateline = $GLOBALS['db']->fetch_first("SELECT dateline FROM ".tname('businesslog')." WHERE uid='$_G[uid]'".$where." ORDER BY dateline DESC");
-		$businesslog_date = date("Y-m-d H:i:s", $businesslog_dateline['dateline']);	
-	}
-	if($threadcount != 0) {
-		$thread_dateline = $GLOBALS['db']->fetch_first("SELECT dateline FROM ".tname('forum_thread')." WHERE uid='$_G[uid]'".$where." ORDER BY dateline DESC");
-		$thread_date = date("Y-m-d H:i:s", $thread_dateline['dateline']);
-	}
-	if($businesslogreplycount != 0) {
-		$businesslogreply_dateline = $GLOBALS['db']->fetch_first("SELECT a.dateline,a.reply,b.bid FROM ".tname('reply')." AS a LEFT JOIN ".tname('businesslog')." AS b ON a.fid=b.bid WHERE  b.status>=0 AND a.uid='$_G[uid]' AND a.replytype=0".$where_a." ORDER BY a.dateline DESC");
-		$businesslogreply_date = get_abbr_date($businesslogreply_dateline['dateline']);
-		$businesslogreply_content = "<a href='index.php?home=businesslog&act=view&bid=$businesslogreply_dateline[bid]' target='_blank'>".cutstr($businesslogreply_dateline['reply'], 15, "")."</a>";	
-	}
-	if($threadreplycount != 0) {
-		$threadreply_dateline = $GLOBALS['db']->fetch_first("SELECT a.dateline,a.reply,b.tid FROM ".tname('reply')." AS a LEFT JOIN ".tname('forum_thread')." AS b ON a.fid=b.tid WHERE b.status>=0 AND a.uid='$_G[uid]' AND a.replytype=1 ".$where_a." ORDER BY a.dateline DESC");
-		$threadreply_date = get_abbr_date($threadreply_dateline['dateline']);
-		$threadreply_content = "<a href='index.php?home=thread&act=view&tid=$threadreply_dateline[tid]' target='_blank'>".cutstr($threadreply_dateline['reply'], 15, "")."</a>";	
-	}
-	if($businesslog_at_count != 0) $businesslog_at_date = date("Y-m-d H:i:s", $businesslog_at_dateline);
-	if($thread_at_count != 0) $thread_at_date = date("Y-m-d H:i:s", $thread_at_dateline); 
-	
-	$statistic_count = array(
-		'businesslogcount' => $businesslogcount,
-		'threadcount' => $threadcount, 
-		'businesslogreplycount' => $businesslogreplycount, 
-		'threadreplycount' => $threadreplycount,
-		'businesslog_at_count' => $businesslog_at_count,
-		'thread_at_count' => $thread_at_count,
-		'businesslog_date' => $businesslog_date,
-		'thread_date' => $thread_date,
-		'businesslogreply_date' => $businesslogreply_date,
-		'businesslogreply_content' => $businesslogreply_content,
-		'threadreply_date' => $threadreply_date,
-		'threadreply_content' => $threadreply_content,
-		'businesslog_at_date' => $businesslog_at_date,
-		'thread_at_date' => $thread_at_date,
-		
-	);
-	return $statistic_count;
 }
 function get_statistic_date() {
 	global $_G;
@@ -451,41 +437,6 @@ function get_active_nav() {
 		'value' => $value,
 	);
 }
-function showerror($errorstr) {
-	$cfm_box = array(
-		'title' => "错误",
-		'body' => $errorstr,
-		'icon' => "icon-error-sign",
-		'button2' => "确定",
-	);
-	include_once template('confirmbox');
-	exit;
-}
-function get_threadtype($threadtype) {
-	global $_G;
-	return $_G['ArrayData']['threadtype'][$threadtype]['name'];
-}
-function get_uploadfile($filepath) {
-	global $_G;
-	$filepathArr = explode(",", $filepath);
-	$html = $html_pic = "";
-	foreach ($filepathArr as $v) {
-		$file = explode("^", $v);
-		$fileTypes = array('jpg','jpeg','gif','png'); // File extensions
-		$fileParts = pathinfo($file[1]);
-		if (in_array(strtolower($fileParts['extension']),$fileTypes)  && $_G['controller'] == 'businesslog' && $_G['action'] == 'view') {
-			$html_pic .= "<p>
-							<a href='$file[1]' target='_blank' style='display:block;'>
-								<span>$file[0]</span><br/>
-								<img src='$file[1]' />
-							</a>
-						</p>";
-		} else {
-			$html .= "<a href='$file[1]' target='_blank'>$file[0]</a><br />";
-		}
-	}
-	return $html.$html_pic;
-}
 //生成随即数
 function random($length, $numeric = 0) {
 	$seed = base_convert(md5(microtime().$_SERVER['DOCUMENT_ROOT']), 16, $numeric ? 10 : 35);
@@ -496,98 +447,6 @@ function random($length, $numeric = 0) {
 		$hash .= $seed{mt_rand(0, $max)};
 	}
 	return $hash;
-}
-function get_newreply_date($dateline){
-	if($dateline == 0) {
-		return '';
-	}
-	return get_abbr_date($dateline);
-}
-function get_userlist_html($action, $sendlist = '') {
-	global $_G;
-	$users = new common('users');
-	if(file_exists(ROOT_PATH.'/data/cache/userlist.php')) {
-		$userlist = read('userlist');
-	} else {
-		$userlist = $users->getAll(' AND uid !=60 AND userlevel !=-1', array('uid','username','userlevel','manager','PM','dateline'), "ORDER BY userlevel DESC,dateline DESC");
-		write('userlist', $userlist);
-	}
-	$userlist_html = "";
-	if($action == 'post') {
-		foreach ($userlist as $val) {
-			if($val['uid'] == $_G['uid']) continue;
-			$userlist2[] = $val;
-		}
-	} else {
-		$userlist2 = $userlist;
-	}
-	if($action == 'edit') $readonly = "readonly='readonly'";
-	foreach ($userlist2 as $k=>$v) {
-		$icon = geticon($v['userlevel']);
-		$disabled = $checked = "";
-		if($action == 'post' || $sendlist == '') {
-			$checked = $v['userlevel'] == '9' ? "checked='checked'" : '';
-			//$disabled = $v['userlevel'] == '9' ? "disabled='disabled'" : '';
-		} else {
-			$sendlistArr = explode(",", $sendlist);
-			if(in_array($v['username'], $sendlistArr)) {
-				if($v['userlevel'] != '-2'){
-					$checked = "checked='checked'";	
-				}
-			}	
-			//if($v['userlevel'] == '9' || $action == 'view') $disabled = "disabled='disabled'";
-		}
-		$br = $v['userlevel'] != $userlist2[$k+1]['userlevel'] ? "<br />" : "";
-		$userlist_html .= "<label class='checkbox inline'>
-								<i class='$icon'></i>
-			      				<input type='checkbox' name='sendlist[]' $checked $disabled $readonly value='{$v['username']}'>{$v['username']}
-			      			</label>$br";	 
-	}
-	return $userlist_html;
-}
-function get_userlist_htmls($action, $pm, $sendlist = '') {
-	global $_G;
-	$users = new common('users');
-	if(file_exists(ROOT_PATH.'/data/cache/userlist.php')) {
-		$userlist = read('userlist');
-	} else {
-		$userlist = $users->getAll(' AND uid !=60 AND userlevel !=-1', array('uid','username','userlevel','manager','PM','dateline'), "ORDER BY userlevel DESC,dateline DESC");
-		write('userlist', $userlist);
-	}
-	$userlist_html = "";
-	if($action == 'post') {
-		foreach ($userlist as $val) {
-			if($val['uid'] == $_G['uid']) continue;
-			$userlist2[] = $val;
-		}
-	} else {
-		$userlist2 = $userlist;
-	}
-	if($action == 'edit') $readonly = "readonly='readonly'";
-	foreach ($userlist2 as $k=>$v) {
-		$icon = geticon($v['userlevel']);
-		$disabled = $checked = "";
-		if($action == 'post' || $sendlist == '') {
-			if($pm){
-				$checked = $v['PM'] == '1' ? "checked='checked'" : '';
-			}else{
-				$checked = $v['userlevel'] != '-1' && $v['userlevel'] != '11' ? "checked='checked'" : '';
-			}
-			//$disabled = $v['userlevel'] == '9' ? "disabled='disabled'" : '';
-		} else {
-			$sendlistArr = explode(",", $sendlist);
-			if(in_array($v['username'], $sendlistArr)) {
-				$checked = "checked='checked'";	
-			}	
-			//if($v['userlevel'] == '9' || $action == 'view') $disabled = "disabled='disabled'";
-		}
-		$br = $v['userlevel'] != $userlist2[$k+1]['userlevel'] ? "<br />" : "";
-		$userlist_html .= "<label class='checkbox inline'>
-								<i class='$icon'></i>
-			      				<input type='checkbox' name='sendlist[]' $checked $disabled $readonly value='{$v['username']}'>{$v['username']}
-			      			</label>$br";	 
-	}
-	return $userlist_html;
 }
 function initmessage($location = "") {
 	if($location == "front") {
@@ -685,10 +544,6 @@ function showmessage($message, $code = -1, $url = '') {
 		'url' => $url
 	);
 	echo json_encode($arr);
-	exit;
-}
-function showresult($result_body, $alert_type = 'alert-error', $button_type = 'btn-danger') {
-	include_once template('result');
 	exit;
 }
 function global_addslashes($str) {
