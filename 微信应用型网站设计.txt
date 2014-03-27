@@ -78,6 +78,13 @@ phone
 address
 credits
 
+7.短信验证表 vl_security_code
+id 
+phone
+security_code
+dateline
+
+
 
 
 二微信订阅号

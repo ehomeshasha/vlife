@@ -69,20 +69,19 @@ return "";
 $(function(){
 	
 	$(".deletelink").click(function(){
-		var id = jQuery(this).attr("data-id");
-		var uid = jQuery(this).attr("data-uid");
-		var type = jQuery(this).attr("data-type");
-		var redirect_url = jQuery(this).attr("data-redirect");
-		var url = jQuery(this).attr("data-href");
+		var id = $(this).attr("data-id");
+		var uid = $(this).attr("data-uid");
+		var type = $(this).attr("data-type");
+		var redirect_url = $(this).attr("data-redirect");
+		var url = $(this).attr("data-href");
 		
 		if(is_empty(uid)) {
 			uid = "";
 		}
 		
 		var confirm_msg = 'Are you sure to delete this '+type+'?(cannot be undone)';
-		
 		if(confirm(confirm_msg)) {
-			jQuery.ajax({
+			$.ajax({
 				url: url,
 	            type:'POST',
 	            data: {id:id, type:type, uid:uid},

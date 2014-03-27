@@ -46,10 +46,25 @@
 								<label for="inputPhone">Telephone</label>
    								<input type="text" class="form-control" id="inputPhone" placeholder="" name="phone" value="{$_COOKIE['telephone']}" maxlength="30" />
  							</div>
+ 							<!-- 
+ 							<div class="form-group hidden">
+								<label for="inputPassword">Password</label>
+								<input type="hidden" name="check_password" value="0" />
+   								<input type="password" class="form-control" id="inputPassword" placeholder="" name="password" value="" maxlength="30" />
+   								<p class="help-block">If you have a password already, input it here and you could skip the security code verity</p>
+ 							</div>
+ 							-->
  							<div class="form-group">
 								<label for="inputAddress">Order Address</label>
    								<textarea name="address" class="form-control" id="inputAddress" style="height:100px;">{$_G['userinfo']['address']}</textarea>
  							</div>
+ 							<!-- 
+ 							<div class="form-group">
+								<label for="inputAddress">Security code</label>
+   								<input type="text" class="form-control" id="inputCode" placeholder="" name="code" value="" maxlength="6" />
+   								<button type="button" class="btn btn-default get_code">get code</button>
+ 							</div>
+ 							-->
  							<button type="submit" class="btn btn-primary">Submit</button>
 						</form>
 					</div>
@@ -62,6 +77,34 @@
 </div></div>
 <script type="text/javascript">
 $(function(){
+	/*
+	$(".get_code").click(function(){
+		$(this).html("wait ")
+		$.ajax({
+			type: "post",
+			data: "",
+			dataType: "json"
+			url : 'index.php?home=misc&act=get_code',
+			error: function(){
+				alert('your request has some problem, please contact the website administrator');
+			},
+			success: function(data){
+				//$("#inputCode").val(data);
+			},
+		});
+	});
+	*/
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	$("#order_form").submit(function(){
 		if(
 			chkLength("Telephone", $("#inputPhone").val(), 0, 30) &&

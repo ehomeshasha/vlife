@@ -36,4 +36,10 @@ class misc_controller {
 		unlink(ROOT_PATH.$pathArr[1]);
 	}
 	
+	public function get_code_action() {
+		global $_G;
+		$security_code = random(6);
+		echo $security_code;
+	}
+	
 }
