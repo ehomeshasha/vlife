@@ -61,9 +61,12 @@ class foodorder_order_controller {
 	
 	
 	public function print_action() {
+		include_once ROOT_PATH.'./class/print.class.php';
+		//include_once ROOT_PATH."./class/print.class.php";
 		global $_G;
 		$id = getgpc('id');
 		$order = $this->orders->GetOne(" AND id='$id'");
+		//print_r($order);
 		//update status
 		//$GLOBALS['db']->query("UPDATE ".tname('orders')." SET status=1 WHERE id='$id'");
 		//create order file

@@ -1,0 +1,1 @@
+﻿#13*1*10003*1;Chiken;3.00;*0*0;29.10;4;Tom;Address of the Customer;15:47 03-08-10;113;7;cod:;008612345678;*Comment#
