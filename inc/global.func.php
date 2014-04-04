@@ -2,6 +2,139 @@
 if(!defined('IN_SYSTEM')) {
 	exit('Access Denied');
 }
+
+//writed by GoodCom
+//author:coolbi
+$sRange = "";
+$sUserAgent = "";
+$useraccount = "";
+$userpwd = "";
+$defaultcount = "testuser";
+$defaultpwd = "test";
+$fileName = "goodcomorder.txt";
+
+function WriteByBinary($isRange, $filename, $iStart, $iEnd) {
+	extract ( $GLOBALS );
+	
+	$FilePath = $filename;
+	
+	if (! file_exists ( $FilePath )) {
+		return 0;
+	}
+	$fp = fopen ( $FilePath, 'rb' );
+	if (! $fp) {
+		return 0;
+	}
+	$fileLength = filesize ( $FilePath );
+	$sStr1 = "";
+	if (($isRange > 0)) {
+		
+		header ( "Content-type: " . "application/octet-stream" );
+		if ($toBytes >= $fileLength) {
+			if ($fileLength > 1) {
+				$toBytes = $fileLength - 1;
+			} else {
+				$toBytes = 1;
+			}
+		
+		}
+		
+		if (($startBytes > $fileLength)) {
+			
+			$startBytes = $toBytes;
+			header ( "HTTP/1.1 416 Request Range Not Satisfialbe" );
+			$sStr1 = "";
+			print substr ( $sStr1, $startBytes + 1 - 1, $toBytes + 1 - $startBytes );
+		
+		} else {
+			ob_end_clean (); //added to fix ZIP file corruption 
+			ob_start (); //added to fix ZIP file corruption 
+			
+
+			fseek ( $fp, $startBytes );
+			$contentRange = "bytes " . ($startBytes) . "-" . ($toBytes) . "/" . ($fileLength);
+			header ( "Content-Range" . ": " . $contentRange );
+			$rangesize = ($toBytes + 1 - $startBytes) > 0 ? ($toBytes + 1 - $startBytes) : 0;
+			$sStr1 = fread ( $fp, $rangesize );
+			header ( "Content-Length:" . $rangesize );
+			
+			echo $sStr1;
+			ob_flush ();
+			flush ();
+		
+		}
+	
+	} else {
+		
+		$startBytes = 0;
+		$toBytes = $fileLength;
+		$sStr1 = fread ( $fp, $fileLength );
+		print substr ( $sStr1, $startBytes + 1 - 1, $toBytes + 1 - $startBytes );
+	}
+	
+	fclose ( $fp );
+	
+	return 1;
+}
+
+if (isset ( $_SERVER ["HTTP_RANGE"] )) {
+	$sRange = $_SERVER ["HTTP_RANGE"];
+}
+
+if (isset ( $_SERVER ["HTTP_USER-AGENT"] )) {
+	$sUserAgent = $_SERVER ["HTTP_USER-AGENT"];
+}
+
+if (isset ( $_GET ['u'] )) {
+	$useraccount = strtolower ( $_GET ['u'] );
+}
+if (isset ( $_GET ['p'] )) {
+	$userpwd = strtolower ( $_GET ['p'] );
+}
+if ((strcasecmp ( $defaultcount, $useraccount ) == 0) && (strcasecmp ( $defaultpwd, $userpwd ) == 0)) {
+	if (($sRange != "")) {
+		
+		header ( "HTTP/1.1 206 Partial Content" );
+		
+		$bytes = explode ( "=", $sRange );
+		$range = explode ( "-", $bytes [1] );
+		
+		$startBytes = intval ( $range [0] );
+		$toBytes = intval ( $range [1] );
+		
+		WriteByBinary ( 1, $fileName, $startBytes, $toBytes );
+	
+	} else {
+		
+		WriteByBinary ( 0, $fileName, 0, 0 );
+	}
+} else {
+	print substr ( "", 0, 1 );
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function get_br($val) {
 	return preg_replace("/\r{0,1}\n/", "<br />", $val);
 }

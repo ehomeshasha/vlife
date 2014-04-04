@@ -1,4 +1,11 @@
 <? if(!defined('IN_SYSTEM')) exit('Access Denied'); include template('admin#admin_header', '0', ''); ?><div class="tab-content"><? include template('breadcrumb', '0', ''); ?><?=$_G['message']?>
+<div>
+<ul class="nav nav-tabs">
+<li class="<? if($printed=='0') { ?>active<? } ?>"><a href="index.php?home=foodorder_order&amp;printed=0">Unprinted</a></li>
+<li class="<? if($printed=='1') { ?>active<? } ?>"><a href="index.php?home=foodorder_order&amp;printed=1">Printed</a></li>
+</ul>
+</div>
+dfsafds
 <table class="table table-condensed">
 <tr>
 <td width="">ID</td>
@@ -21,7 +28,8 @@
     	<? } ?>
     	<td><? echo get_abbr_date($v['dateline'], true); ?></td>
     	<td>
-    		<a href="index.php?home=foodorder_order&amp;act=view&amp;id=<?=$v['id']?>">View</a>
+    		<a href="index.php?home=foodorder_order&amp;act=view&amp;id=<?=$v['id']?>" class="mrn">View</a>
+    		<a href="index.php?home=foodorder_order&amp;act=print&amp;id=<?=$v['id']?>" class="text-success">Print</a>
     	</td>
     </tr><? } } ?></table>
 <? if(!$_G['mobile']) { ?>

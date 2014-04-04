@@ -2,6 +2,13 @@
 <div class="tab-content">
 	{template breadcrumb}
 	{$_G['message']}
+	<div>
+		<ul class="nav nav-tabs">
+			<li class="{if $printed=='0'}active{/if}"><a href="index.php?home=foodorder_order&printed=0">Unprinted</a></li>
+			<li class="{if $printed=='1'}active{/if}"><a href="index.php?home=foodorder_order&printed=1">Printed</a></li>
+		</ul>
+	</div>
+	dfsafds
 	<table class="table table-condensed">
 		<tr>
 			<td width="">ID</td>
@@ -26,7 +33,8 @@
 	    	<!--{/if}-->
 	    	<td>{eval echo get_abbr_date($v['dateline'], true);}</td>
 	    	<td>
-	    		<a href="index.php?home=foodorder_order&act=view&id={$v['id']}">{lang View}</a>
+	    		<a href="index.php?home=foodorder_order&act=view&id={$v['id']}" class="mrn">{lang View}</a>
+	    		<a href="index.php?home=foodorder_order&act=print&id={$v['id']}" class="text-success">{lang Print}</a>
 	    	</td>
 	    </tr>
 		<!--{/loop}-->

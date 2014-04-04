@@ -19,13 +19,15 @@ class foodorder_order_controller {
 	
 	public function index_action() {
 		global $_G;
+		$printed = selectOpt(getgpc('printed'), array('0','1'));
+		
 		$breadcrumb = array(
 			array('text' => lang('order list')),
 		);
 		
 		
 		include_once ROOT_PATH.'./inc/paginator.class.php';
-		$company_list = $GLOBALS['db']->fetch_all("SELECT id FROM ".tname('company')." WHERE uid='$_G[uid]' AND app='foodorder' ORDER BY dateline DESC $limit");
+		$company_list = $GLOBALS['db']->fetch_all("SELECT id FROM ".tname('company')." WHERE uid='$_G[uid]' AND app='foodorder' ORDER BY dateline DESC");
 		$company_ids = "";
 		foreach($company_list as $c) {
 			$company_ids = ",'".$c['id']."'";
@@ -37,7 +39,7 @@ class foodorder_order_controller {
 		$limit = $paginator->get_limit();
 		$multi = $paginator->get_multi();
 		
-		$orders = $GLOBALS['db']->fetch_all("SELECT * FROM ".tname('orders')." WHERE company_id IN ($company_ids) ORDER BY dateline DESC $limit");
+		$orders = $GLOBALS['db']->fetch_all("SELECT * FROM ".tname('orders')." WHERE company_id IN ($company_ids) AND status='$printed' ORDER BY dateline DESC $limit");
 		include_once template('admin#foodorder_order_list');
 		
 	}
@@ -56,5 +58,39 @@ class foodorder_order_controller {
 		include_once template('admin#foodorder_order_view');
 	}
 	
+	
+	
+	public function print_action() {
+		global $_G;
+		$id = getgpc('id');
+		$order = $this->orders->GetOne(" AND id='$id'");
+		//update status
+		//$GLOBALS['db']->query("UPDATE ".tname('orders')." SET status=1 WHERE id='$id'");
+		//create order file
+		$printer = new Printer($order);
+		$printer->do_print();
+		
+		
+		
+		
+		
+	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ?>
