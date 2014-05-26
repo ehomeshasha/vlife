@@ -1,0 +1,81 @@
+{template header}
+<div class="main">
+	{$_G['message']}
+	<div class="image_layer" style="position:absolute;top:5em;left:0;z-index:998;padding:8px 8px;background-color:rgba(0,0,0,0.1);display:none;">
+		<span class="image_close_btn glyphicon glyphicon-remove-sign" style="position:absolute;right:0;top:-5px;font-size:1.5em;z-index:999;cursor:pointer;"></span>
+		<div class="image_container"></div>	
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<table class="table table-condensed">
+				<thead>
+				<tr>
+					<th>{lang Order No.}</th>
+					<th>{lang Status}</th>
+					<th>{lang Detail}</th>
+					<th>{lang Date}</th>
+				</tr>
+				</thead>
+				<tbody>
+				<!--{loop $orders $v}-->
+				<tr>
+					<td>{$v['order_id']}</td>
+					<td class="load_status"><img src="{$_G['siteurl']}views/default/img/loading.gif" style="width:20px;height:20px;" /></td>
+					<td><a href="index.php?home=order&act=view&id=$v[order_id]">View</a></td>
+					<td>{eval echo get_abbr_date($v['dateline'], true);}</td>
+					<!-- 
+					<td>
+						<a href="javascript:;" class="collapse_btn" data-id="{$v['id']}" data-status="collapse">collapse</a>
+						{eval $dishes = json_decode($v['dishes'], true);}
+						<div class="hidden">
+							<ul class="no-margin plw">
+								{loop $dishes $val}
+								<li>
+									<span class="mrn">{$val['name']}</span>
+									<span class="mrn"><strong>{$val['food_count']}</strong></span>
+									<span class="mrn"><strong>{$val['food_totalprice']}</strong></span>
+									<a href="javascript:;" class="food_image_link text-danger" data-id="{$val['id']}">
+										<img src="{$_G['siteurl']}{$val['path']}" class="hidden" />
+										pic
+									</a>
+								</li>
+								{/loop}
+							</ul>
+						</div>
+					</td>
+					-->
+				</tr>
+				<!--{/loop}-->
+				</tbody>
+				
+			</table>
+		</div>	
+	</div>
+</div></div>
+<script type="text/javascript">
+/*
+$(".food_image_link").click(function(){
+	var src = $(this).find("img").attr("src");
+	var img = $(this).find("img")[0];
+	ori_width = parseInt(img.width);
+	ori_height = parseInt(img.height);
+	layer_width = parseInt($(window).width());
+	layer_height = (layer_width/ori_width) * ori_height;
+	img_width = layer_width - 16;
+	img_height = layer_height - 16;
+
+	
+	
+	$(".image_layer").css("width", layer_width).css("height", layer_height);
+	$(".image_container").html("<img src='"+src+"' width='"+img_width+"' height='"+img_height+"' '>")
+	$(".image_layer").fadeIn();
+
+
+	
+});
+
+$(".image_close_btn").click(function(){
+	$(".image_layer").fadeOut();
+});*/
+</script>
+{template footer}

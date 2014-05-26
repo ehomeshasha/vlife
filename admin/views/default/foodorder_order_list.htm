@@ -2,13 +2,11 @@
 <div class="tab-content">
 	{template breadcrumb}
 	{$_G['message']}
-	<div>
-		<ul class="nav nav-tabs">
-			<li class="{if $printed=='0'}active{/if}"><a href="index.php?home=foodorder_order&printed=0">Unprinted</a></li>
-			<li class="{if $printed=='1'}active{/if}"><a href="index.php?home=foodorder_order&printed=1">Printed</a></li>
-		</ul>
-	</div>
-	dfsafds
+	<ul class="nav nav-tabs">
+		<li class="{$success_active}"><a href="index.php?home=foodorder_order&status={$_G['setting']['order_status']['success']}">{lang Printed}({$success_count})</a></li>
+		<li class="{$wait_active}"><a href="index.php?home=foodorder_order&status={$_G['setting']['order_status']['wait']}">{lang Unprinted}({$wait_count})</a></li>
+		<li class="{$failed_active}"><a href="index.php?home=foodorder_order&status={$_G['setting']['order_status']['failed']}">{lang Failed}({$failed_count})</a></li>
+	</ul>
 	<table class="table table-condensed">
 		<tr>
 			<td width="">ID</td>
@@ -34,7 +32,7 @@
 	    	<td>{eval echo get_abbr_date($v['dateline'], true);}</td>
 	    	<td>
 	    		<a href="index.php?home=foodorder_order&act=view&id={$v['id']}" class="mrn">{lang View}</a>
-	    		<a href="index.php?home=foodorder_order&act=print&id={$v['id']}" class="text-success">{lang Print}</a>
+	    		<!--<a href="index.php?home=foodorder_order&act=print&id={$v['id']}" class="text-success">{lang Print}</a>-->
 	    	</td>
 	    </tr>
 		<!--{/loop}-->

@@ -1,0 +1,46 @@
+{template admin#admin_header}
+<div class="tab-content">
+	{template breadcrumb}
+	{$_G['message']}
+	<table class="table table-condensed">
+		<tr>
+			<td width="">ID</td>
+			<td width="">{lang Name}</td>
+			<td width="">{lang UUID}</td>
+			<td width="">{lang Restaurant}</td>
+			<td width="">{lang Recommend Dishes}</td>
+			<td width="">{lang Url}</td>
+			<td width="">{lang Createtime}</td>
+	    	<td width="">Opration</td>
+	  	</tr>
+		<!--{loop $beacon_list $v}-->
+		<tr>
+		
+	    	<td>$v['id']</td>
+	    	<td>$v['name']</td>
+	    	<td>{$v['uuid']}</td>
+	    	<td>{$v['company_name']}</td>
+	    	<td>
+	    		<span class="mrm">{eval echo count(explode(",", $v['dish_ids']));} dishes</span>
+	    		<a href="index.php?home=foodorder_beacon&act=view&id={$v['id']}">Detail</a>
+	    	</td>
+	    	<td>
+	    		<a href="{$v['url']}" target="_blank">{$v['url']}</a>
+	    	</td>
+	    	<td>{eval echo get_abbr_date($v['dateline'], true);}</td>
+	    	<td>
+	    		<a href="index.php?home=foodorder_beacon&act=post&opt=edit&id={$v['id']}">{lang Edit}</a>
+	    		<a href="javascript:;" class="deletelink" data-uid="{$v['uid']}" data-id="{$v['id']}" data-type="Beacon" data-href="index.php?home=foodorder_beacon&act=delete">{lang Delete}</a>
+	    	</td>
+	    </tr>
+		<!--{/loop}-->
+	</table>
+	<!--{if !$_G['mobile']}-->
+	<div class="pagination pagination-right">
+		{template perpage}
+		{$multi}
+	</div>
+	<!--{/if}-->
+</div>
+</div></div></div></div>
+{template footer}

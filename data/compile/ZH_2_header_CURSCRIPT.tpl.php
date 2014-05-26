@@ -32,6 +32,9 @@ $(".clear_session").trigger('click');
 </head>
 <body>
 <div class="container body" id="body">
+<? if($_G['mobile'] && $_G['mobile_app']) { ?>
+<div class="btn"></div>
+<? } else { ?>
 <div class="header">
 <nav class="navbar navbar-default" id="navigation" role="navigation" style="">
 <!-- Brand and toggle get grouped for better mobile display -->
@@ -46,3 +49,4 @@ $(".clear_session").trigger('click');
 </div>
 </nav>
 </div>
+<? } ?>

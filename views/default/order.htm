@@ -1,31 +1,37 @@
 {template header}
 <div class="main">
 	{$_G['message']}
+	<!-- 
 	<div class="image_layer" style="position:absolute;top:5em;left:0;z-index:998;padding:8px 8px;background-color:rgba(0,0,0,0.1);display:none;">
 		<span class="image_close_btn glyphicon glyphicon-remove-sign" style="position:absolute;right:0;top:-5px;font-size:1.5em;z-index:999;cursor:pointer;"></span>
 		<div class="image_container"></div>	
 	</div>
+	-->
 	<div class="row">
 		<div class="col-lg-12">
 			<table class="table table-condensed">
 				<thead>
 				<tr>
-					<th>{lang OrderID}</th>
-					<th>{lang Date}</th>
+					<th>{lang Order No.}</th>
+					<th>{lang Status}</th>
 					<th>{lang Detail}</th>
+					<th>{lang Date}</th>
 				</tr>
 				</thead>
 				<tbody>
 				<!--{loop $orders $v}-->
 				<tr>
 					<td>{$v['order_id']}</td>
+					<td class="load_status" data-status="$v['status']" data-id="$v['id']" >{eval echo init_order_status($v['status']);}</td>
+					<td><a href="index.php?home=order&act=view&id=$v[id]">View</a></td>
 					<td>{eval echo get_abbr_date($v['dateline'], true);}</td>
+					<!-- 
 					<td>
 						<a href="javascript:;" class="collapse_btn" data-id="{$v['id']}" data-status="collapse">collapse</a>
 						{eval $dishes = json_decode($v['dishes'], true);}
 						<div class="hidden">
 							<ul class="no-margin plw">
-								<!--{loop $dishes $val}-->
+								{loop $dishes $val}
 								<li>
 									<span class="mrn">{$val['name']}</span>
 									<span class="mrn"><strong>{$val['food_count']}</strong></span>
@@ -35,10 +41,11 @@
 										pic
 									</a>
 								</li>
-								<!--{/loop}-->
+								{/loop}
 							</ul>
 						</div>
 					</td>
+					-->
 				</tr>
 				<!--{/loop}-->
 				</tbody>
@@ -48,6 +55,47 @@
 	</div>
 </div></div>
 <script type="text/javascript">
+var load_status_url = "index.php";
+/*
+function getOrderStatus(id) {
+	$.get(load_status_url, {id:id, home:"misc", act: "get_orderstatus"}, function(data){
+		if(data == "3" || data == "4") {
+			obj.html(data);
+			//window.clearInterval(int);
+		}
+	});
+}
+getOrderStatus(29);
+*/
+$(document).ready(function(){
+	$(".load_status[data-status='0']").each(function(){
+		var obj = $(this);
+		var id = obj.attr("data-id");
+		var int=self.setInterval(function (){getOrderStatus(id);}, 500);
+		function getOrderStatus(id) {
+			$.get(load_status_url, {id:id, home:"misc", act: "get_orderstatus"}, function(data){
+				if(data != "") {
+					obj.html(data);
+					window.clearInterval(int);
+				}
+			});
+		}
+	});
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 $(".food_image_link").click(function(){
 	var src = $(this).find("img").attr("src");
 	var img = $(this).find("img")[0];
@@ -70,6 +118,6 @@ $(".food_image_link").click(function(){
 
 $(".image_close_btn").click(function(){
 	$(".image_layer").fadeOut();
-});
+});*/
 </script>
 {template footer}

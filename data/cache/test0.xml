@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<add>
+  <doc>
+    <dishes>
+      <dish>
+        <name>testname</name>
+      </dish>
+    </dishes>
+    <dishes>
+      <dish>
+        <name>testname</name>
+      </dish>
+    </dishes>
+    <dishes>
+      <dish>
+        <name>testname</name>
+      </dish>
+    </dishes>
+  </doc>
+</add>

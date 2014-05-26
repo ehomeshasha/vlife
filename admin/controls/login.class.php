@@ -25,8 +25,19 @@ class login_controller {
 		$password = getgpc('password');
 		
 		$user = $this->users->GetOne(" AND username='$username'");
-		if($user['password'] == md5($password)) {
+		if($user['password'] == md5($password)) {	//用户密码校验通过
 			global $_G, $cookies;
+			
+			if($user['status'] == 0 || $user['status'] == -1) {
+				$superadmin = $this->users->GetOne(" AND userlevel={$_G['setting']['userlevel']['superadmin']}", array("email"));
+				if($user['status'] == 0) {	//商户还在待审核状态,无法登录管理后台
+					$msg = lang("CompanyUser is waited for cetification by Superadmin, please connect $superadmin[email]");
+				} elseif($user['status'] == -1) {	//商户处在无效状态,无法登录管理后台
+					$msg = lang("CompanyUser is not valid yet, please connect $superadmin[email]");	
+				}
+				admin_login_page($msg);
+			}
+			
 			$decode_str = urlencode($user['uid'])."&".urlencode($user['username'])."&".urlencode($user['password']);
 			$encode_str = uc_authcode($decode_str, 'ENCODE', SYSTEM_KEY);
 			$cookiearr = array(

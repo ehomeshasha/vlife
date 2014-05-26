@@ -106,6 +106,14 @@ class foodorder_category_controller {
 			),
 			
 		);
+		$current_category_list = array();
+		foreach($_G['categorytree']['foodorder'] as $v) {
+			if($v['company_id'] != $_G['company_id']) continue;
+			$current_category_list[] = $v;
+		}
+		
+		
+		
 		include_once template('admin#foodorder_category_list');
 		
 	}

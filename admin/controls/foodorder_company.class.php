@@ -30,6 +30,9 @@ class foodorder_company_controller {
 				$filepatharr = explode(",", $restaurant['filepath']);
 			}
 			
+			
+			//init_dish_options($_G['uid'], )
+			
 			$breadcrumb = array(
 				array('text' => lang('restaurant list'), 'href' => 'index.php?home='.$_G['controller']),
 				array('text' => $head_text),
@@ -46,6 +49,7 @@ class foodorder_company_controller {
 			$address = chkLength("Restaurant address", getgpc('address'), 0, 100);
 			$description = chkLength("Restaurant short description", getgpc('description'), 0, 255);
 			$filepath = chkUploadExist("Restaurant thumb", getgpc('filepath'));
+			$weixin = chkLength("Weixin number", getgpc('weixin'), 0, 20);
 			validate_start();
 			
 			$data = array(
@@ -55,6 +59,7 @@ class foodorder_company_controller {
 				'description' => $description,
 				'phone' => $phone,
 				'address' => $address,
+				'weixin' => $weixin,
 				'app' => 'foodorder',
 			);
 			if($opt == 'new') {
@@ -86,15 +91,6 @@ class foodorder_company_controller {
 			),
 			
 		);
-		
-		include_once ROOT_PATH.'./inc/paginator.class.php';
-		$count = $this->company->GetCount(" and uid='$_G[uid]'");
-		$paginator = new paginator($count);
-		$perpage = $paginator->get_perpage();
-		$limit = $paginator->get_limit();
-		$multi = $paginator->get_multi();
-		
-		$company_list = $GLOBALS['db']->fetch_all("SELECT * FROM ".tname('company')." WHERE uid='$_G[uid]' AND app='foodorder' ORDER BY dateline DESC $limit");
 		
 		include_once template('admin#foodorder_company_list');
 		

@@ -43,8 +43,18 @@ if(!empty($_G['company_id'])) {
 } else {
 	$_G['company_id'] = empty($_SESSION['company_id'])? $_G['setting']['company_id'] : $_SESSION['company_id'];
 }
+$_G['weixin'] = getgpc('weixin');
+if(!empty($_G['weixin'])) {
+	$company = $GLOBALS['db']->fetch_first("SELECT id FROM ".tname('company')." WHERE weixin='{$_G['weixin']}'");
+	$_G['company_id'] = $company['id'];
+}
 
 //echo " home=".$_G['controller']." act=".$_G['action'];
+if(!empty($_GET['mobile_app'])) {
+	$_G['mobile_app'] = $_SESSION['mobile_app'] = $_GET['mobile_app'];
+} else {
+	$_G['mobile_app'] = empty($_SESSION['mobile_app'])? "" : $_SESSION['mobile_app'];
+}
 
 $_G['cur_link'] = 'index.php?home='.$_G['controller'].'&act='.$_G['action'];
 $_G['message'] = initmessage('front');

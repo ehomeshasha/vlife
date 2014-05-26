@@ -6,6 +6,7 @@
 		<tr>
 			<td width="">ID</td>
 			<td width="">{lang Name}</td>
+			<td width="">{lang Weixin}</td>
 			<!--{if !$_G['mobile']}-->
 			<td width="">{lang Phone}</td>
 			<td width="">{lang Address}</td>
@@ -13,11 +14,12 @@
 	    	<td width="">{lang Createtime}</td>
 	    	<td width="">Opration</td>
 	  	</tr>
-		<!--{loop $company_list $k $v}-->
+		<!--{loop $_G['company_list'] $k $v}-->
 		<tr>
 		
 	    	<td>$v['id']</td>
 	    	<td>{$v['name']}</td>
+	    	<td>{$v['weixin']}</td>
 	    	<!--{if !$_G['mobile']}-->
 	    	<td>{$v['phone']}</td>
 	    	<td>{$v['address']}</td>
@@ -30,12 +32,6 @@
 	    </tr>
 		<!--{/loop}-->
 	</table>
-	<!--{if !$_G['mobile']}-->
-	<div class="pagination pagination-right">
-		{template perpage}
-		{$multi}
-	</div>
-	<!--{/if}-->
 </div>
 </div></div></div></div>
 {template footer}

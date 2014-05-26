@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<dishes>
+	<dish>
+		<name>Tomato sauce</name>
+		<description>Some description of Tomato sauce Some description of Tomato sauce Some description of Tomato sauce Some description of Tomato sauce Some description of Tomato sauce Some description of Tomato sauce</description>
+		<price>30.5</price>
+		<filepath>data/upload/uid_3/160559mmwq3mqnzm8y1ydw.jpg</filepath>
+	</dish>
+</dishes>

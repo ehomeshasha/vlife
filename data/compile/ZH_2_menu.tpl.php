@@ -30,6 +30,12 @@
 </div>
 </div>
 </div><? } } ?></div>
+<div>
+<form action="index.php" method="get">
+<input type="hidden" value="cart" name="home" />
+<button class="btn btn-primary mbm" type="submit">AddtoCart</button>
+</form>
+</div>
 </div>
 </div>
 </div></div>

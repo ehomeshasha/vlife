@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<dishes>
+	<dish>
+		<name>Tomato sauce</name>
+		<description>Some description of Tomato sauce Some description of Tomato sauce Some description of Tomato sauce Some description of Tomato sauce Some description of Tomato sauce Some description of Tomato sauce</description>
+		<price>30.5</price>
+		<filepath>data/upload/uid_3/160559mmwq3mqnzm8y1ydw.jpg</filepath>
+	</dish>
+	<dish>
+		<name>Hot Milk Tea</name>
+		<description>Some description of Hot Milk Tea</description>
+		<price>10.58</price>
+		<filepath>data/upload/uid_3/160302tuvtetzq7tp02nrd.jpg</filepath>
+	</dish>
+	<dish>
+		<name>chocolate</name>
+		<description>Some description of chocolate</description>
+		<price>15.25</price>
+		<filepath>data/upload/uid_3/160401dezwevwjifdbubt8.jpg</filepath>
+	</dish>
+	<dish>
+		<name>BBQ Sausage</name>
+		<description>Some description of BBQ Sausage</description>
+		<price>68.2</price>
+		<filepath>data/upload/uid_3/161115t0gwz6z6f5jgj09o.jpg</filepath>
+	</dish>
+	<dish>
+		<name>Sausage</name>
+		<description>Some description of Sausage</description>
+		<price>15.00</price>
+		<filepath>data/upload/uid_3/160638ckryj5yykqollgzf.jpg</filepath>
+	</dish>
+</dishes>

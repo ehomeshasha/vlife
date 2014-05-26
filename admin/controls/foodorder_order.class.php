@@ -19,27 +19,34 @@ class foodorder_order_controller {
 	
 	public function index_action() {
 		global $_G;
-		$printed = selectOpt(getgpc('printed'), array('0','1'));
+		
+		$status = selectOpt(getgpc('status'), array($_G['setting']['order_status']['success'], $_G['setting']['order_status']['wait'], $_G['setting']['order_status']['failed']));
+		$wait_count = $this->orders->GetCount(" and status='{$_G['setting']['order_status']['wait']}' {$_G['company_where']}");
+		$success_count = $this->orders->GetCount(" and status='{$_G['setting']['order_status']['success']}' {$_G['company_where']}");
+		$failed_count = $this->orders->GetCount(" and status='{$_G['setting']['order_status']['failed']}' {$_G['company_where']}");
+		if($status == $_G['setting']['order_status']['wait']) {
+			$wait_active = "active";
+		} elseif($status == $_G['setting']['order_status']['success']) {
+			$success_active = "active";
+		} elseif($status == $_G['setting']['order_status']['failed']) {
+			$failed_active = "active";
+		}
+		
 		
 		$breadcrumb = array(
-			array('text' => lang('order list')),
+			array('text' => lang('Order list')),
 		);
 		
 		
 		include_once ROOT_PATH.'./inc/paginator.class.php';
-		$company_list = $GLOBALS['db']->fetch_all("SELECT id FROM ".tname('company')." WHERE uid='$_G[uid]' AND app='foodorder' ORDER BY dateline DESC");
-		$company_ids = "";
-		foreach($company_list as $c) {
-			$company_ids = ",'".$c['id']."'";
-		}
-		$company_ids = substr($company_ids, 1);
-		$count = $this->orders->GetCount(" and company_id IN ($company_ids)");
+		$where = $_G['company_where']." AND status='$status'";
+		$count = $this->orders->GetCount($where);
 		$paginator = new paginator($count);
 		$perpage = $paginator->get_perpage();
 		$limit = $paginator->get_limit();
 		$multi = $paginator->get_multi();
 		
-		$orders = $GLOBALS['db']->fetch_all("SELECT * FROM ".tname('orders')." WHERE company_id IN ($company_ids) AND status='$printed' ORDER BY dateline DESC $limit");
+		$orders = $GLOBALS['db']->fetch_all("SELECT * FROM ".tname('orders')." WHERE 1 $where ORDER BY dateline DESC $limit");
 		include_once template('admin#foodorder_order_list');
 		
 	}
@@ -60,24 +67,7 @@ class foodorder_order_controller {
 	
 	
 	
-	public function print_action() {
-		include_once ROOT_PATH.'./class/print.class.php';
-		//include_once ROOT_PATH."./class/print.class.php";
-		global $_G;
-		$id = getgpc('id');
-		$order = $this->orders->GetOne(" AND id='$id'");
-		//print_r($order);
-		//update status
-		//$GLOBALS['db']->query("UPDATE ".tname('orders')." SET status=1 WHERE id='$id'");
-		//create order file
-		$printer = new Printer($order);
-		$printer->do_print();
-		
-		
-		
-		
-		
-	}
+	
 	
 }
 

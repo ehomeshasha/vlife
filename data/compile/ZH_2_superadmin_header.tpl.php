@@ -38,7 +38,7 @@ $(".clear_session").trigger('click');
 <div class="navbar-inner">
 <div class="brand">
 <a href="index.php?home=user" style="color:#777;">SuperAdmin Center</a>
-<a href="<?=$_G['siteurl']?>superadmin/index.php?home=login&act=logout"class="mrm">
+<a href="index.php?home=login&amp;act=logout"class="mrm">
 <sub>
 [Signout]
 </sub>
@@ -58,6 +58,6 @@ $(".clear_session").trigger('click');
 <div class="span12">
 <div class="tabbable">
 <ul class="nav nav-tabs">
-<li class="<? if($_G['active_nav']['value'] == 'user#index') { ?>active<? } ?>"><a href="index.php?home=user">UserList</a></li>
-<li class="<? if($_G['active_nav']['value'] == 'user#post') { ?>active<? } ?>"><a href="index.php?home=user&amp;act=post">AddUser</a></li>
+<li class="<? if($_G['active_nav']['value'] == 'user#index') { ?>active<? } ?>"><a href="index.php?home=user">CompanyUserList</a></li>
+<li class="<? if($_G['active_nav']['value'] == 'user#post') { ?>active<? } ?>"><a href="index.php?home=user&amp;act=post">AddCompanyUser</a></li>
 </ul>

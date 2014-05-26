@@ -1,14 +1,4 @@
-<?php if(!defined("IN_SYSTEM")){echo "error!";} $writetime=1396602788; $content=array (
-  5 => 
-  array (
-    'cid' => '5',
-    'fid' => '0',
-    'uid' => '3',
-    'company_id' => '1',
-    'name' => 'Pizza',
-    'displayorder' => '0',
-    'app' => 'foodorder',
-  ),
+<?php if(!defined("IN_SYSTEM")){echo "error!";} $writetime=1400940997; $content=array (
   6 => 
   array (
     'cid' => '6',
@@ -86,6 +76,66 @@
     'uid' => '0',
     'company_id' => '3',
     'name' => 'fdsafsdafdsaf',
+    'displayorder' => '0',
+    'app' => 'foodorder',
+  ),
+  16 => 
+  array (
+    'cid' => '16',
+    'fid' => '0',
+    'uid' => '3',
+    'company_id' => '2',
+    'name' => 'Noodles',
+    'displayorder' => '0',
+    'app' => 'foodorder',
+  ),
+  19 => 
+  array (
+    'cid' => '19',
+    'fid' => '0',
+    'uid' => '34',
+    'company_id' => '4',
+    'name' => '肉类',
+    'displayorder' => '0',
+    'app' => 'foodorder',
+  ),
+  20 => 
+  array (
+    'cid' => '20',
+    'fid' => '0',
+    'uid' => '34',
+    'company_id' => '4',
+    'name' => '蔬菜',
+    'displayorder' => '0',
+    'app' => 'foodorder',
+  ),
+  21 => 
+  array (
+    'cid' => '21',
+    'fid' => '0',
+    'uid' => '34',
+    'company_id' => '4',
+    'name' => '海鲜',
+    'displayorder' => '0',
+    'app' => 'foodorder',
+  ),
+  23 => 
+  array (
+    'cid' => '23',
+    'fid' => '0',
+    'uid' => '34',
+    'company_id' => '5',
+    'name' => '肉类',
+    'displayorder' => '0',
+    'app' => 'foodorder',
+  ),
+  24 => 
+  array (
+    'cid' => '24',
+    'fid' => '0',
+    'uid' => '3',
+    'company_id' => '2',
+    'name' => 'BBQ',
     'displayorder' => '0',
     'app' => 'foodorder',
   ),

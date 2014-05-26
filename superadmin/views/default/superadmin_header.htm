@@ -37,7 +37,7 @@ setTimeout(function() {
 					<div class="navbar-inner">
 						<div class="brand">
 							<a href="index.php?home=user" style="color:#777;">SuperAdmin Center</a>
-							<a href="{$_G['siteurl']}superadmin/index.php?home=login&act=logout"class="mrm">
+							<a href="index.php?home=login&act=logout"class="mrm">
 								<sub>
 									[{lang Signout}]
 								</sub>
@@ -57,6 +57,6 @@ setTimeout(function() {
 		<div class="span12">
 			<div class="tabbable">
 				<ul class="nav nav-tabs">
-					<li class="{if $_G['active_nav']['value'] == 'user#index'}active{/if}"><a href="index.php?home=user">UserList</a></li>
-					<li class="{if $_G['active_nav']['value'] == 'user#post'}active{/if}"><a href="index.php?home=user&act=post">AddUser</a></li>
+					<li class="{if $_G['active_nav']['value'] == 'user#index'}active{/if}"><a href="index.php?home=user">CompanyUserList</a></li>
+					<li class="{if $_G['active_nav']['value'] == 'user#post'}active{/if}"><a href="index.php?home=user&act=post">AddCompanyUser</a></li>
 				</ul>

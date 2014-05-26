@@ -36,8 +36,24 @@ $_G['active_nav'] = get_active_nav();
 
 //echo " home=".$_G['controller']." act=".$_G['action'];
 
+
+
 $_G['cur_link'] = 'index.php?home='.$_G['controller'].'&act='.$_G['action'];
 $_G['message'] = initmessage();
+
+
+$_G['company_list'] = $GLOBALS['db']->fetch_all("SELECT * FROM ".tname('company')." WHERE uid='$_G[uid]' AND app='foodorder' ORDER BY dateline ASC");
+
+
+if(empty($_SESSION['company_id'])) {
+	$_G['company_id'] = $_SESSION['company_id'] = $_G['company_list'][0]['id'];
+} else {
+	$_G['company_id'] = $_SESSION['company_id'];
+}
+$_G['company_where'] = " AND company_id='$_G[company_id]'";
+$_G['company_where_a'] = " AND a.company_id='$_G[company_id]'";
+
+
 require_once ROOT_PATH.'/'.ADMIN_DIR.'/controls/'.$controller.'.class.php';
 
 $conclass = $controller.'_controller';

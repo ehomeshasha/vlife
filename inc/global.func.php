@@ -3,134 +3,82 @@ if(!defined('IN_SYSTEM')) {
 	exit('Access Denied');
 }
 
-//writed by GoodCom
-//author:coolbi
-$sRange = "";
-$sUserAgent = "";
-$useraccount = "";
-$userpwd = "";
-$defaultcount = "testuser";
-$defaultpwd = "test";
-$fileName = "goodcomorder.txt";
 
-function WriteByBinary($isRange, $filename, $iStart, $iEnd) {
-	extract ( $GLOBALS );
+function curl($url) {
 	
-	$FilePath = $filename;
+	// Initialize the curl object
+	$browser = array(
+		'user_agent' => 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.6) Gecko/20091201 Firefox/3.5.6 (.NET CLR 3.5.30729)',
+		'language' => 'en-us,en;q=0.5'
+	);
 	
-	if (! file_exists ( $FilePath )) {
-		return 0;
+	$ch = curl_init();
+	
+	curl_setopt($ch, CURLOPT_URL, $url);
+	
+	curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+					"User-Agent: {$browser['user_agent']}",
+					"Accept-Language: {$browser['language']}"
+				));
+	
+	
+	curl_setopt ( $ch, CURLOPT_USERAGENT, $_SERVER ['HTTP_USER_AGENT'] );
+	curl_setopt ( $ch, CURLOPT_RETURNTRANSFER, 1 );
+	curl_setopt($ch, CURLOPT_HEADER, 0);
+	curl_setopt ( $ch, CURLOPT_FOLLOWLOCATION, 1 );
+	
+	$c_out = curl_exec ( $ch );
+	
+	if ($c_out === FALSE) {
+		exit("cURL Error: " . curl_error($ch));
 	}
-	$fp = fopen ( $FilePath, 'rb' );
-	if (! $fp) {
-		return 0;
+	curl_close ( $ch );
+	
+	return $c_out;
+}
+
+
+function array2XML($arr,$root) {
+	$xml = new SimpleXMLElement('<'.$root.'/>');
+	array_walk_recursive($arr, array ($xml, 'addChild'));
+	print $xml->asXML();
+	
+} 
+
+
+function init_dishes_option($ids, $company_id) {
+	
+	$idArr = explode(",", $ids);
+	$dishes = $GLOBALS['db']->fetch_all("SELECT * FROM ".tname('dishes')." WHERE company_id='$company_id'");
+	$html = "";
+	//print_r($dishes);
+	//print_r($idArr);
+	foreach($dishes as $d) {
+		$selected = in_array($d['id'], $idArr) ? "selected='selected'" : "";
+		$html .= "<option value='$d[id]' $selected>$d[name]</option>";
 	}
-	$fileLength = filesize ( $FilePath );
-	$sStr1 = "";
-	if (($isRange > 0)) {
-		
-		header ( "Content-type: " . "application/octet-stream" );
-		if ($toBytes >= $fileLength) {
-			if ($fileLength > 1) {
-				$toBytes = $fileLength - 1;
-			} else {
-				$toBytes = 1;
-			}
-		
-		}
-		
-		if (($startBytes > $fileLength)) {
-			
-			$startBytes = $toBytes;
-			header ( "HTTP/1.1 416 Request Range Not Satisfialbe" );
-			$sStr1 = "";
-			print substr ( $sStr1, $startBytes + 1 - 1, $toBytes + 1 - $startBytes );
-		
-		} else {
-			ob_end_clean (); //added to fix ZIP file corruption 
-			ob_start (); //added to fix ZIP file corruption 
-			
+	return $html;
+}
 
-			fseek ( $fp, $startBytes );
-			$contentRange = "bytes " . ($startBytes) . "-" . ($toBytes) . "/" . ($fileLength);
-			header ( "Content-Range" . ": " . $contentRange );
-			$rangesize = ($toBytes + 1 - $startBytes) > 0 ? ($toBytes + 1 - $startBytes) : 0;
-			$sStr1 = fread ( $fp, $rangesize );
-			header ( "Content-Length:" . $rangesize );
-			
-			echo $sStr1;
-			ob_flush ();
-			flush ();
-		
-		}
-	
-	} else {
-		
-		$startBytes = 0;
-		$toBytes = $fileLength;
-		$sStr1 = fread ( $fp, $fileLength );
-		print substr ( $sStr1, $startBytes + 1 - 1, $toBytes + 1 - $startBytes );
+
+
+function init_order_status($status) {
+	$str = "";
+	global $_G;
+	switch($status) {
+		case 0:
+		case 1:
+			$str = "<img src='{$_G['siteurl']}views/default/img/loading.gif' style='width:20px;height:20px;' />";
+			break;
+		case 3:
+			$str = "<strong class='text-danger'>UnPrinted</strong>";
+			break;
+		case 4:
+			$str = "<strong class='text-success'>printed</strong>";
+			break;
 	}
-	
-	fclose ( $fp );
-	
-	return 1;
+	return $str;
 }
-
-if (isset ( $_SERVER ["HTTP_RANGE"] )) {
-	$sRange = $_SERVER ["HTTP_RANGE"];
-}
-
-if (isset ( $_SERVER ["HTTP_USER-AGENT"] )) {
-	$sUserAgent = $_SERVER ["HTTP_USER-AGENT"];
-}
-
-if (isset ( $_GET ['u'] )) {
-	$useraccount = strtolower ( $_GET ['u'] );
-}
-if (isset ( $_GET ['p'] )) {
-	$userpwd = strtolower ( $_GET ['p'] );
-}
-if ((strcasecmp ( $defaultcount, $useraccount ) == 0) && (strcasecmp ( $defaultpwd, $userpwd ) == 0)) {
-	if (($sRange != "")) {
-		
-		header ( "HTTP/1.1 206 Partial Content" );
-		
-		$bytes = explode ( "=", $sRange );
-		$range = explode ( "-", $bytes [1] );
-		
-		$startBytes = intval ( $range [0] );
-		$toBytes = intval ( $range [1] );
-		
-		WriteByBinary ( 1, $fileName, $startBytes, $toBytes );
-	
-	} else {
-		
-		WriteByBinary ( 0, $fileName, 0, 0 );
-	}
-} else {
-	print substr ( "", 0, 1 );
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -258,6 +206,7 @@ function get_categorytree($fid = 0, $level = 0 ,$app = '') {
 				'cid' => $value['cid'],
 				'fid' => $value['fid'],
 				'name' => $value['name'],
+				'company_id' => $value['company_id'],
 				'subcate' => get_categorytree($value[cid], $level, $app),
 		);
 	}
@@ -277,7 +226,7 @@ function init_category($categoryArr, $cid = "", $level = 0, $offset = 1, $invali
 			$extattr = "";
 		}
 		$selected = $value[cid] == $cid ? "selected='selected'" : "";
-		$html .= "<option value='$value[cid]' $selected $extattr>".str_repeat("&nbsp;", ($level-$offset)*4).$value[name]."</option>";
+		$html .= "<option value='$value[cid]' $selected $extattr>".str_repeat("&nbsp;", ($level-$offset)*4).$value[name]." (cid:{$value[company_id]})</option>";
 		$html .= init_category($value['subcate'], $cid, $level, $offset, $invalid_count);
 	}
 
@@ -372,7 +321,7 @@ function superadmin_login_page($msg) {
 
 
 function selectOpt($opt, $optArr) {
-	if(empty($opt) || !in_array($opt, $optArr)) {
+	if($opt == "" || !in_array($opt, $optArr)) {
 		return $optArr[0];
 	}
 	return $opt;

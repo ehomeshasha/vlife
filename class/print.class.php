@@ -4,14 +4,20 @@ if(!defined('IN_SYSTEM')) {
 }
 class Printer {
 	
+	private $order;
+	private $format_string;
 	
 	public function __construct($order) {
 		$this->order = $order;
 		$this->format_string = $this->format();
 	}
 	
+	public function get_format_string() {
+		return $this->format_string;
+	}
+	
 	public function do_print() {
-		
+		echo $this->format_string;
 	}
 	
 	
@@ -35,6 +41,7 @@ class Printer {
 		foreach($o as $k=>$v) {
 			if(in_array($k, $refines)) {
 				$o[$k] = preg_replace("/\*;#/", " ", $v);
+				$o[$k] = str_replace(array("\r\n", "\r", "\n"), "%%", $o[$k]);
 			}
 		}
 		
@@ -49,6 +56,9 @@ class Printer {
 			$d['name'] = preg_replace("/\*;#/", " ", $d['name']);
 			$d['food_count'] = preg_replace("/\*;#/", " ", $d['food_count']);
 			$d['food_totalprice'] = preg_replace("/\*;#/", " ", $d['food_totalprice']);
+			$d['name'] = str_replace(array("\r\n", "\r", "\n"), "%%", $d['name']);
+			$d['food_count'] = str_replace(array("\r\n", "\r", "\n"), "%%", $d['food_count']);
+			$d['food_totalprice'] = str_replace(array("\r\n", "\r", "\n"), "%%", $d['food_totalprice']);
 			$str .= $d['name'].";".$d['food_count'].";".$d['food_totalprice'].";";
 		}
 		$str .= "*".$o['totalprice']."*".date("H:i m-d-y", $o['dateline'])."*".$o['phone']."*".$o['address']."#";

@@ -120,7 +120,7 @@ class foodorder_dishes_controller {
 		
 		$dishes = $GLOBALS['db']->fetch_all("SELECT a.*,b.name as restaurant_name 
 		FROM ".tname('dishes')." AS a LEFT JOIN ".tname('company')." AS b ON a.company_id=b.id 
-		WHERE a.uid='$_G[uid]' ORDER BY a.createtime DESC $limit");
+		WHERE a.uid='$_G[uid]' {$_G["company_where_a"]} ORDER BY a.createtime DESC $limit");
 		
 		include_once template('admin#foodorder_dishes_list');
 		

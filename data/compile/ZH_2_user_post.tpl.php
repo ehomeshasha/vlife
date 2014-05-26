@@ -9,20 +9,26 @@
 <div class="control-group">
 <label class="control-label" for="inputUsername">Username</label>
 <div class="controls">
-<input type="text" name="username" value="<?=$user['username']?>" id="inputUsername" placeholder="Username">
+<input type="text" name="username" value="<?=$user['username']?>" id="inputUsername" placeholder="Username" />
 </div>
 </div>
 <div class="control-group">
 <label class="control-label" for="inputPassword">Password</label>
 <div class="controls">
-<input type="text" name="password" value="" id="inputPassword" placeholder="Password">
+<input type="text" name="password" value="" id="inputPassword" placeholder="Password" />
 </div>
 </div>
 <div class="control-group">
-<label class="control-label" for="inputUserLevel">UserLevel</label>
+<label class="control-label" for="inputEmail">Email</label>
 <div class="controls">
-<select name="userlevel" id="inputUserLevel">
-    <? if(is_array($userlevel_array)) { foreach($userlevel_array as $k => $v) { ?>    	<option value="<?=$v?>" <? if($user['userlevel'] == $v) { ?>selected="selected"<? } ?>><? echo lang($k); ?></option>
+<input type="text" name="email" value="<?=$user['email']?>" id="inputEmail" placeholder="Email" />
+</div>
+</div>
+<div class="control-group">
+<label class="control-label" for="inputStatus">Status</label>
+<div class="controls">
+<select name="status" id="inputStatus">
+    <? if(is_array($_G['setting']['status'])) { foreach($_G['setting']['status'] as $k => $v) { ?>    	<option value="<?=$v?>" <? if($user['status'] == $v) { ?>selected="selected"<? } ?>><? echo lang($k); ?></option>
     <? } } ?>    </select>
 </div>
 </div>

@@ -3,16 +3,18 @@
 <tr>
 <td width="">ID</td>
 <td width="">Name</td>
+<td width="">Weixin</td>
 <? if(!$_G['mobile']) { ?>
 <td width="">Phone</td>
 <td width="">Address</td>
 <? } ?>
     	<td width="">Createtime</td>
     	<td width="">Opration</td>
-  	</tr><? if(is_array($company_list)) { foreach($company_list as $k => $v) { ?><tr>
+  	</tr><? if(is_array($_G['company_list'])) { foreach($_G['company_list'] as $k => $v) { ?><tr>
 
     	<td><?=$v['id']?></td>
     	<td><?=$v['name']?></td>
+    	<td><?=$v['weixin']?></td>
     	<? if(!$_G['mobile']) { ?>
     	<td><?=$v['phone']?></td>
     	<td><?=$v['address']?></td>
@@ -23,9 +25,5 @@
     		<a href="javascript:;" class="deletelink" data-uid="<?=$v['uid']?>" data-id="<?=$v['id']?>" data-type="Restaurant" data-href="index.php?home=foodorder_company&amp;act=delete">Delete</a>
     	</td>
     </tr><? } } ?></table>
-<? if(!$_G['mobile']) { ?>
-<div class="pagination pagination-right"><? include template('perpage', '0', ''); ?><?=$multi?>
-</div>
-<? } ?>
 </div>
 </div></div></div></div><? include template('footer', '0', ''); ?>
