@@ -58,6 +58,17 @@ class misc_controller {
 	
 	
 	public function get_recommend_dishes_action() {
+		error_reporting(E_ALL);
+		ini_set("error_display", "On");
+		//将此次推荐写入文件
+		$content = json_encode($_SERVER)."\n";
+		$fp = fopen("data/log/access.log", "a");
+		//echo $content;
+		fwrite($fp, $content);
+		fclose($fp);
+		
+		
+		
 		global $_G;
 		$uuid = getgpc('uuid');
 		//$uuid = "b9407f30-f5f8-466e-aff9-25556b57fe6d";
@@ -89,7 +100,7 @@ class misc_controller {
 		$dish_ids = dimplode(explode(",", $beacon['dish_ids']));
 		$dish_list = $GLOBALS['db']->fetch_all("SELECT * FROM ".tname('dishes')." WHERE id IN ($dish_ids)");
 		
-		$this->generate_dishes_xml($dish_list);
+		//$this->generate_dishes_xml($dish_list);
 	}
 	
 	public function generate_dishes_xml($dishes) {
